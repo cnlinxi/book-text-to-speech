@@ -1,0 +1,1586 @@
+\documentclass[cn,10pt,math=newtx,citestyle=gb7714-2015,bibstyle=gb7714-2015]{elegantbook}
+
+\title{Text to Speech}
+\subtitle{Elegant\LaTeX{} 经典之作}
+
+\author{陈梦楠}
+\institute{Elegant\LaTeX{} Program}
+\date{May 2, 2022}
+\version{4.1}
+\bioinfo{自定义}{信息}
+
+\extrainfo{各人自扫门前雪，休管他人瓦上霜。—— 陈元靓}
+
+\setcounter{tocdepth}{3}
+
+\logo{logo-blue.png}
+\cover{cover.jpg}
+
+% 本文档命令
+\usepackage{array}
+\newcommand{\ccr}[1]{\makecell{{\color{#1}\rule{1cm}{1cm}}}}
+
+\definecolor{customcolor}{RGB}{32,178,170}
+\colorlet{coverlinecolor}{customcolor}
+
+\begin{document}
+
+\maketitle
+\frontmatter
+
+\chapter*{特别声明}
+
+\markboth{Introduction}{前言}
+
+自 2019 年 Elegant\LaTeX{} 系列模板上线 GitHub、CTAN 以来，受到很多用户的喜爱。
+
+2020 年，我打算做 Elegant\LaTeX{} 的最后一个版本，也就是原定计划 ElegantBook 4.x 版本为 Elegant\LaTeX{} 系列模板的终止符。基于我想把 4.x 做成一个最终版本，我计划了很多事情，包括将代码转为 dtx，将三个模板的文档打包进 dtx 里面，然后重新设计封面，补充各种页面，增加元素等等。我想的很多，但是做起来并不是很顺利，中间也发生了很多事情，不想解释。直至今年 4 月，我决定，不论如何，先把 4.1 发布出来。
+
+\vskip 0.5cm
+
+另外，在临近 Elegant\LaTeX{} 模板告别之际，我想和各位用户说：多分享，多奉献。
+
+\vskip 0.5cm
+
+\underline{如果你无法认同我的想法，建议直接删除本模板。}
+
+\vskip 1.5cm
+
+\begin{flushright}
+Ethan Deng\\
+May 2, 2021
+\end{flushright}
+
+\tableofcontents
+
+\mainmatter
+
+\chapter{语音合成概述}
+
+Elegant\LaTeX{} 项目组致力于打造一系列美观、优雅、简便的模板方便用户使用。目前由 \href{https://github.com/ElegantLaTeX/ElegantNote}{ElegantNote}，\href{https://github.com/ElegantLaTeX/ElegantBook}{ElegantBook}，\href{https://github.com/ElegantLaTeX/ElegantPaper}{ElegantPaper} 组成，分别用于排版笔记，书籍和工作论文。强烈推荐使用最新正式版本！本文将介绍本模板的一些设置内容以及基本使用方法。如果您有其他问题，建议或者意见，欢迎在 GitHub 上给我们提交 \href{https://github.com/ElegantLaTeX/ElegantBook/issues}{issues} 或者邮件联系我们。
+
+我们的联系方式如下，建议加入用户 QQ 群提问，这样能更快获得准确的反馈，加群时请备注 \LaTeX{} 或者 Elegant\LaTeX{} 相关内容。
+\begin{itemize}
+  \item 官网：\href{https://elegantlatex.org/}{https://elegantlatex.org/}
+  \item GitHub 网址：\href{https://github.com/ElegantLaTeX/}{https://github.com/ElegantLaTeX/}
+  \item CTAN 地址：\href{https://ctan.org/pkg/elegantbook}{https://ctan.org/pkg/elegantbook}
+  \item 下载地址：\href{https://github.com/ElegantLaTeX/ElegantBook/releases}{正式发行版}，\href{https://github.com/ElegantLaTeX/ElegantBook/archive/master.zip}{最新版}
+  \item 微博：Elegant\LaTeX{}
+  \item 微信公众号：Elegant\LaTeX{}
+  \item 用户 QQ 群：692108391 
+  \item 邮件：\email{elegantlatex2e@gmail.com}
+\end{itemize}
+
+\section{Awesome List}
+\begin{enumerate}
+  \item https://github.com/wenet-e2e/speech-synthesis-paper
+  \item https://github.com/ddlBoJack/Speech-Resources
+  \item https://github.com/sindresorhus/awesome
+\end{enumerate}
+
+\section{参考书籍}
+\begin{enumerate}
+  \item \href{https://nndl.github.io/}{神经网络与深度学习}
+  \item Tan X, Qin T, Soong F, et al. A survey on neural speech synthesis[J]. arXiv preprint arXiv:2106.15561, 2021.
+\end{enumerate}
+
+\section{语音相关的会议、期刊、比赛和公司}
+\subsection{会议}
+\begin{enumerate}
+  \item INTERSPEECH（Conference of the International Speech Communication Association）
+  \item ICASSP（IEEE International Conference on Acoustics, Speech and Signal Processing）
+  \item ASRU（IEEE Automatic Speech Recognition and Understanding Workshop）
+  \item ISCSLP（International Symposium on Chinese Spoken Language Processing）
+  \item ACL（Association of Computational Linguistics）
+\end{enumerate}
+
+\subsection{期刊}
+\begin{enumerate}
+  \item Computer Speech and Language
+\end{enumerate}
+
+\subsection{最新论文}
+\begin{enumerate}
+  \item https://arxiv.org/list/eess.AS/recent
+  \item https://arxiv.org/list/cs.SD/recent
+  \item https://arxiv.org/list/cs.CL/recent
+  \item https://arxiv.org/list/cs.MM/recent
+\end{enumerate}
+
+\subsection{比赛}
+\begin{enumerate}
+  \item Blizzard Challenge
+  \item CHiME: Computational Hearing in Multisource Environment
+  \item NIST
+\end{enumerate}
+
+\subsection{公司}
+\begin{enumerate}
+  \item \href{https://azure.microsoft.com/en-us/services/cognitive-services/text-to-speech/#features}{微软}
+  \item \href{https://cloud.google.com/text-to-speech/docs/voices?hl=zh-cn}{谷歌云}
+  \item \href{https://www.aicloud.com/dev/ability/index.html?key=tts#ability-experience}{捷通华声}
+  \item \href{https://www.nuance.com/omni-channel-customer-engagement/voice-and-ivr/text-to-speech.html#!}{Nuance}
+  \item \href{https://aws.amazon.com/cn/polly/}{Amazon polly}
+  \item \href{https://fanyi.baidu.com/}{百度（翻译）}
+  \item \href{https://ai.sogou.com/product/audio_composition/}{搜狗开发平台}
+  \item \href{https://fanyi.sogou.com/}{搜狗（翻译）}
+  \item \href{https://ai.youdao.com/product-tts.s}{有道开放平台}
+  \item \href{http://fanyi.youdao.com}{有道（翻译）}
+  \item \href{https://cn.bing.com/translator}{微软（翻译）}
+  \item \href{https://translate.google.cn/}{Google翻译}
+\end{enumerate}
+
+\subsection{微信公众号}
+
+\subsection{CCF语音对话与听觉专业组}
+\begin{enumerate}
+  \item https://history.ccf.org.cn/tfsdap/index.html
+\end{enumerate}
+
+\section{数据集}
+\subsection{中文数据集}
+\begin{enumerate}
+  \item \href{https://www.data-baker.com/open_source.html}{标贝中文标准女声音库}: 中文单说话人语音合成数据集，质量高。
+  \item \href{https://www.openslr.org/18/}{THCHS-30}: 中文多说话人数据集，原为语音识别练手级别的数据集，也可用于多说话人中文语音合成。
+  \item \href{https://www.openslr.org/38/}{Free ST Chinese Mandarin Corpus}: 855个说话人，每个说话人120句话，有对应人工核对的文本，共102600句话。
+  \item \href{https://github.com/KuangDD/zhvoice}{zhvoice}: zhvoice语料由8个开源数据集，经过降噪和去除静音处理而成，说话人约3200个，音频约900小时，文本约113万条，共有约1300万字。
+  \item \href{https://arxiv.org/abs/2010.09275}{滴滴800+小时DiDiSpeech语音数据集}: DiDi开源数据集，800小时，48kHz，6000说话人，存在对应文本，背景噪音干净，适用于音色转换、多说话人语音合成和语音识别，参见：https://zhuanlan.zhihu.com/p/268425880。
+  \item \href{https://github.com/khiajohnson/SpiCE-Corpus}{SpiCE-Corpus}: SpiCE是粤语和英语会话双语语料库。
+\end{enumerate}
+
+\subsection{英文数据集}
+\begin{enumerate}
+  \item \href{https://keithito.com/LJ-Speech-Dataset/}{LJSpeech}: 英文单说话人语音合成数据集，质量较高。
+  \item \href{https://datashare.is.ed.ac.uk/handle/10283/2651}{VCTK}: 英文多说话人语音数据集，109个说话人，每人400句话，采样率48kHz，位深16bits。
+  \item \href{https://catalog.ldc.upenn.edu/LDC93S1}{TIMIT}: 630个说话人，8个美式英语口音，每人10句话，采样率16kHz，位深16bits。\href{http://academictorrents.com/details/34e2b78745138186976cbc27939b1b34d18bd5b3}{这里是具体下载地址}，下载方法：首先下载种子，然后执行：
+  \begin{lstlisting}
+    ctorrent *.torrent
+  \end{lstlisting}
+
+  \item \href{http://festvox.org/cmu_arctic/packed/}{CMU ARCTIC}: 共18个说话人。语音质量较高，可以用于英文多说话人的训练。
+
+\end{enumerate}
+
+\subsection{情感数据集}
+\begin{enumerate}
+  \item \href{https://github.com/HLTSingapore/Emotional-Speech-Data}{ESD}: 用于语音合成和语音转换的情感数据集。
+  \item \href{https://github.com/Emotional-Text-to-Speech/dl-for-emo-tts}{情感数据和实验总结}: 实际是情感语音合成的实验总结，包含了一些情感数据集的总结。
+\end{enumerate}
+
+\subsection{其它}
+\begin{enumerate}
+  \item \href{https://wenet.org.cn/opencpop}{Opencpop}: 高质量歌唱合成数据集。
+  \item \href{https://ai.100tal.com/dataset}{好未来开源数据集}: 目前主要开源了3个大的语音数据集，分别是语音识别数据集，语音情感数据集和中英文混合语音数据集，都是多说话人教师授课音频。
+  \item \href{http://www.aishelltech.com/aishell_2}{AISHELL-2}: 希尔贝壳开源了不少中文语音数据集，AISHELL-2是最近开源的一个1000小时的语音数据库，禁止商用。官网上还有其它领域，比如用于语音识别的4个开源数据集。
+  \item \href{https://github.com/Kyubyong/css10}{CSS10}: 十个语种的单说话人语音数据的集合。
+  \item \href{https://www.openslr.org/resources.php}{OpenSLR}: OpenSLR是一个专门托管语音和语言资源的网站，例如语音识别训练语料库和与语音识别相关的软件。迄今为止，已经有100+语音相关的语料。
+  \item \href{https://github.com/jim-schwoebel/voice_datasets}{voice datasets}: Github上较为全面的开源语音和音乐数据集列表，包括语音合成、语音识别、情感语音数据集、语音分离、歌唱等语料，找不到语料可以到这里看看。
+  \item \href{https://github.com/JRMeyer/open-speech-corpora}{Open Speech Corpora}: 开放式语音数据库列表，特点是包含多个语种的语料。
+  \item \href{https://www.emime.org/participate.html}{EMIME}: 包含一些TTS和ASR模型，以及一个中文/英语，法语/英语，德语/英语双语数据集。
+  \item \href{https://github.com/celebrity-audio-collection/videoprocess}{Celebrity Audio Extraction}: 中国名人数据集，包含中国名人语音和图像数据。
+\end{enumerate}
+
+\subsection{开源工具}
+\begin{enumerate}
+  \item \href{https://github.com/waywardgeek/sonic}{sonic}: 语音升降速工具。
+  \item \href{https://github.com/MontrealCorpusTools/Montreal-Forced-Aligner/releases/download/v1.0.1/montreal-forced-aligner_linux.tar.gz}{MFA}: 从语音识别工具Kaldi中提取出来的音素-音频对齐工具，可以利用MFA获取每一个音素的时长，供预标注或时长模型使用。
+  \item \href{https://github.com/jaekookang/p2fa_py3}{宾西法尼亚大学强制对齐标注软件（P2FA）}：\href{https://blog.csdn.net/jojozhangju/article/details/51951622}{这里}有相关的介绍，对于噪音数据鲁棒性差。
+  \item \href{https://github.com/bootphon/ABXpy}{ABXpy}: 语音等测评ABX测试网页。
+  \item \href{https://github.com/bigpon/SpeechSubjectiveTest}{SpeechSubjectiveTest}: 主观测评工具，包括用于语音合成和转换的MOS、PK（倾向性测听）、说话人相似度测试和ABX测试。
+  \item \href{https://github.com/matpool/matools}{Matools}: 机器学习环境配置工具库
+  \item \href{https://github.com/Alinshans/MyTinySTL}{MyTinySTL}: 基于C++11的迷你STL。
+  \item \href{https://github.com/applenob/Cpp_Primer_Practice}{CppPrimerPractice}: 《C++ Primer 中文版（第 5 版）》学习仓库。
+  \item \href{https://github.com/521xueweihan/git-tips}{git-tips}: Git的奇技淫巧。
+\end{enumerate}
+
+\subsection{开源项目}
+\begin{enumerate}
+  \item \href{https://github.com/coqui-ai/TTS}{coqui-ai TTS}: 采用最新研究成果构建的语音合成后端工具集。
+  \item \href{https://github.com/espnet/espnet}{ESPNet}: 语音合成和识别工具集，主要集成后端模型。
+  \item \href{https://github.com/pytorch/fairseq}{fairseq}: 序列到序列建模工具集，包含语音识别、合成、机器翻译等模型。
+  \item \href{https://github.com/espeak-ng/espeak-ng}{eSpeak NG Text-to-Speech}: 共振峰生成的语音合成模型，集成超过100个语种和口音的语音合成系统。
+  \item \href{https://github.com/dmort27/epitran}{Epitran}: 将文本转换为IPA的工具，支持众多语种。
+  \item \href{https://github.com/Rayhane-mamah/Tacotron-2}{Tacotron-2}: Tensorflow版本的Tacotron-2.
+  \item \href{https://github.com/syoyo/tacotron-tts-cpp}{Text-to-speech in (partially) C++ using Tacotron model + Tensorflow}: 采用Tensorflow C++ API运行Tacotron模型。
+\end{enumerate}
+
+\section{语音合成评价指标}
+对合成语音的质量评价，主要可以分为主观和客观评价。主观评价是通过人类对语音进行打分，比如平均意见得分（Mean Opinion Score，MOS）、众包平均意见得分（CrowdMOS，CMOS）和ABX测试。客观评价是通过计算机自动给出语音音质的评估，在语音合成领域研究的比较少，论文中常常通过展示频谱细节，计算梅尔倒谱失真（Mel Cepstral Distortion，MCD）等方法作为客观评价。客观评价还可以分为有参考和无参考质量评估，这两者的主要判别依据在于该方法是否需要标准信号。有参考评估方法除了待评测信号，还需要一个音质优异的，可以认为没有损伤的参考信号。常见的有参考质量评估主要有ITU-T P.861 (MNB)、ITU-T P.862 (PESQ)、ITU-T P.863 (POLQA)、STOI和BSSEval。无参考评估方法则不需要参考信号，直接根据待评估信号，给出质量评分，无参考评估方法还可以分为基于信号、基于参数以及基于深度学习的质量评估方法。常见的基于信号的无参考质量评估包括ITU-T P.563和ANIQUE+，基于参数的方法有ITU-T G.107(E-Model)。近年来，深度学习也逐步应用到无参考质量评估中，如：AutoMOS、QualityNet、NISQA和MOSNet。
+
+主观评价中的MOS评测是一种较为宽泛的说法，由于给出评测分数的主体是人类，因此可以灵活测试语音的不同方面。比如在语音合成领域，主要有自然度MOS（MOS of Naturalness）和相似度MOS（MOS of Similarity）。但是人类给出的评分结果受到的干扰因素较多，谷歌对合成语音的主观评估方法进行了比较，在评估较长语音中的单个句子时，音频样本的呈现形式会显著影响参与人员给出的结果。比如仅提供单个句子而不提供上下文，与相同句子给出语境相比，被测人员给出的评分差异显著。国际电信联盟（International Telecommunication Union，ITU）将MOS评测规范化为ITU-T P.800，其中绝对等级评分（Absolute Category Rating，ACR）应用最为广泛，同时也是本文中采用的语音质量评估标准，ACR的详细评估标准如下表所示。
+
+\begin{table}[htbp]
+  \centering
+  \caption{主观意见得分的评估标准}
+    \begin{tabular}{llll}
+    \toprule
+    音频级别 & 平均意见得分 & 评价标准 \\
+    \midrule
+    优 & 5.0 & 很好，听得清楚；延迟小，交流流畅 \\
+    良 & 4.0 & 稍差，听得清楚；延迟小，交流欠流畅，有点杂音 \\
+    中 & 3.0 & 还可以，听不太清；有一定延迟，可以交流 \\
+    差 & 2.0 & 勉强，听不太清；延迟较大，交流需要重复多遍 \\
+    劣 & 1.0 & 极差，听不懂；延迟大，交流不通畅 \\
+    \bottomrule
+    \end{tabular}%
+\end{table}%
+
+在使用ACR方法对语音质量进行评价时，参与评测的人员（简称被试）对语音整体质量进行打分，分值范围为1~5分，分数越大表示语音质量越好。MOS大于4时，可以认为该音质受到大部分被试的认可，音质较好；若MOS低于3，则该语音有比较大的缺陷，大部分被试并不满意该音质。
+
+\section{平均意见得分的测评要求与方法}
+语音合成的最终目标是，合成语音应尽可能接近真实发音，以至于人类无法区分合成和真实语音。因此让人类对合成语音进行评价打分是最为直观的评价方法，评分经处理之后即可获得平均意见得分。平均意见得分是语音合成系统最重要的性能指标之一，能够直接反映合成语音的自然度、清晰度以及可懂度。
+\subsection{实验要求}
+获取多样化且数量足够大的音频样本，以确保结果在统计上的显著，测评在具有特定声学特性的设备上进行，控制每个被试遵循同样的评估标准，并且确保每个被试的实验环境保持一致。
+\subsection{实验方法}
+为了达到实验要求，可以通过两种方法获得足够精确的测评结果。第一种是实验室方式，该方式让被试在实验室环境中进行测评，在试听过程中环境噪音必须低于35dB，测试语音数量至少保持30个以上，且覆盖该语种所有音素和音素组合，参与评测的被试应尽可能熟练掌握待测合成语音的语种，最好以合成语音的语种为母语。该方法的优点是测试要素容易控制，能够稳定保证实验环境达到测评要求；缺点则主要是需要被试在固定场所完成试听，人力成本高。第二种是众包，也就是将任务发布到网络上，让具有条件的被试在任何地方进行测评。该方法主要优点是易于获得较为有效的评估结果；而缺点则体现在无法确保试听条件。
+\subsection{实验步骤}
+\begin{enumerate}
+  \item 收集合成语音和录制的真实语音；
+  \item 确保文本和语音一一对应，去除发音明显错误的音频样本；
+  \item 生成问卷，将合成语音和真实语音交叉打乱，确保打乱的顺序没有规律，合成语音和真实语音不可让被试提前探知到；
+  \item 开始任务前，被试试听示例语音，并告知其对应的大致得分；
+  \item 被试开始对给定音频打分，前三条语音可以作为被试进入平稳打分状态的铺垫，不计入最终结果；
+  \item 回收问卷，舍弃有明显偏差的评价数据，统计最终得分。
+\end{enumerate}
+
+\subsection{实验设计}
+\begin{enumerate}
+  \item 准备测试语音数据。(1)从各领域和语音合成系统实际应用场景中，摘选常规文本作为测试语料，选取的语句一般尽可能排除生僻字；(2)用于测试的句子一般是未出现在训练集中的；(3)	被试必须使用耳机试听语音，以便于判断更为细微的差别；(4)为了避免被试的疲惫，待测评系统和语料数量不可太多，需要控制测评时间；(5)一个句子需要由多个被试打分。
+  \item 设置实验参数。在准备测试语音时，需要提前设置好训练语料、待测系统、参与测试的句子数量、每个句子被试听的次数等。以中文语音合成系统的语音评估为例，测评设置如下表所示。
+  \begin{table}[htbp]
+    \centering
+    \caption{语音测评设置}
+      \begin{tabular}{llll}
+      \toprule
+      训练集 & 待测系统 & 句子数量 & 每个句子被测次数 \\
+      \midrule
+      内部数据集 & 真实语音 & 40 & 12 \\
+      内部数据集 & Tacotron-2 & 40 & 12 \\
+      内部数据集 & FastSpeech-2 & 40 & 12 \\
+      \bottomrule
+      \end{tabular}%
+  \end{table}%
+
+  \item 准备HTML文档等展示材料，向被试介绍该测试。该HTML文档至少包括：(1)测试注意事项，如被试应该使用何种设备，在何种环境下试听，试听时应该排除的干扰因素等；(2)测试任务，向被试介绍本次试听的测试目标，应关注的侧重点，如：可懂度、相似度、清晰度等方面；(3)参考音频，可以放置一些示例音频，如MOS=5的优质语音，MOS=1的低劣音频，以便被试更好地对音频打分；(4)	测试音频，根据不同任务，放置合理的测试音频，真实和合成音频应提前打乱，并且不可告知被试打乱的顺序。
+  
+\end{enumerate}
+
+\subsection{实验数据处理}
+\begin{enumerate}
+  \item 数据筛选。由于被试有可能没有受到监督，因此需要对收集到的评分进行事后检查，如删除使用扬声器试听的评分。另外，为了控制个体因素对整体结果的影响，减少偏离整体数据的异常值，需要计算每个人的评分与总体得分序列的相关性，相关性的度量使用相关系数来实现，如果相关系数r大于0.25，则保留；否则拒绝该被试的所有评分。相关系数r的计算方法如下：
+  \begin{equation}
+    r=\frac{\mathop{cov}(\mu_{1n},...,\mu_{Mn};\mu_1,...,\mu_M)}{\sqrt{\mathop{var}(\mu_{1n},...,\mu_{Mn})}\cdot \sqrt{\mathop{var}(\mu_1,...,\mu_M)}}
+  \end{equation}
+\end{enumerate}
+
+其中， $M$ 为句子数量，$N$为被试数量， $\mu_{mn}$ 为被试 $n$ 对句子 $m$ 给出的评分，$1\leq m\leq M$ ,$1\leq n\leq N$, $\mu_m=1/N\sum_{n=1}^N\mu_{mn}$ 为句子 $m$ 的总体平均分， $\mathop{cov}$ 为协方差， $\mathop{var}$ 为方差。
+
+\chapter{语音信号基础}
+
+\section{参考资料}
+
+\begin{enumerate}
+  \item \href{http://labrosa.ee.columbia.edu/~dpwe/pubs/Ellis10-introspeech.pdf}{An Introduction to Signal Processing for Speech}
+  \item \href{https://www.inf.ed.ac.uk/teaching/courses/asr/2020-21/asr02-signal.pdf}{爱丁堡大学课件}
+  
+\end{enumerate}
+
+\section{基本概念}
+声波通过空气传播，被麦克风接收，通过 \lstinline{采样}、 \lstinline{量化}、 \lstinline{编码}转换为离散的数字信号，即波形文件。
+
+\begin{enumerate}
+  \item 波形（waveform）: 声音是由声源振动产生的波
+  \item 音高（pitch）: 与频率（frequency）有关，是频谱上的第一共振峰。音高（pitch）是稀疏离散化的基频（f0）。
+  \item 响度: 与振幅（amplitude）有关。
+  \item 音色: 由频谱上的谐波决定。音高、响度和音色被称作声音的三要素。
+  \item 信道: 通信的通道Channel，是信号传输的媒介。
+  \item 声道: 声音在录制和播放时，在不同空间位置采集或回放相互独立的音频信号，因此声道数也就是声音录制时的音源数量或回放时相应的扬声器数量。
+  \item 采样率：单位时间内从连续信号中提取并组成离散信号的采样个数，音频常用单位kHz。
+  \item 采样位数/采样深度：数字信号的二进制位数，与每次采样的可能值个数有关，音频常用单位bit。常见的音频格式： \lstinline{16kHz，16bit}中16kHz指的是采样率，16bit表示采样位深。
+  \item 信噪比（SNR）：和声压级类似，单位仍采用分贝，数值越高，表示声音越干净，噪音比例越小。
+  \item 音素（phoneme）：声音的最小单位，同一音素由不同人/环境阅读，可以形成不同的发音。
+  \item 字素（grapheme）：音素对应的文本。具体的区别参见：\href{https://www.youtube.com/watch?v=25r1fyoorko}{Phonemes, Graphemes, and Morphemes!}
+  \item phone: 某个音素的具体发音。
+\end{enumerate}
+
+对于一段1秒的波形，假设采样率16kHz，采样位深16bit，则包含样本点 $1\times 16000=16000$ 个，所占容量 $1\times 16000\times 16 /8=32000$ 字节（B）。
+
+\section{音频格式}
+\begin{enumerate}
+  \item *.wav: 波形无损压缩格式，是语音合成中音频语料的常用格式，主要的三个参数：采样率，量化位数和通道数。一般来说，合成语音的采样率采用16kHz、22050Hz、24kHz，对于歌唱合成等高质量合成场景采样率可达到48kHz；量化位数采用16bit；通道数采用1.
+  \item *.flac: Free Lossless Audio Codec，无损音频压缩编码。
+  \item *.mp3: Moving Picture Experts Group Audio Player III，有损压缩。
+  \item *.wma: Window Media Audio，有损压缩。
+  \item *.avi: Audio Video Interleaved，avi文件将音频和视频包含在一个文件容器中，允许音视频同步播放。
+\end{enumerate}
+
+\section{发音学}
+
+\section{数字信号处理}
+\subsection{模拟信号到数字信号的转换（Analog to Digital Converter，ADC，模数转换）}
+奈奎斯特采样定理：要从抽样信号中无失真地恢复原信号，抽样频率应大于2倍信号最高频率。抽样频率小于2倍频谱最高频率时，信号的频谱有混叠。抽样频率大于2倍频谱最高频率时，信号的频谱无混叠。如果对语音模拟信号进行采样率为16000Hz的采样，得到的离散信号中包含的最大频率为8000Hz。
+
+\subsection{傅里叶变换}
+
+\subsection{频谱泄露}
+
+音频处理中，经常需要利用傅里叶变换将时域信号转换到频域，而一次快速傅里叶变换（FFT）只能处理有限长的时域信号，但语音信号通常是长的，所以需要将原始语音截断成一帧一帧长度的数据块。这个过程叫\lstinline{信号截断}，也叫\lstinline{分帧}。分完帧后再对每帧做FFT，得到对应的频域信号。FFT是离散傅里叶变换（DFT）的快速计算方式，而做DFT有一个先验条件：分帧得到的数据块必须是整数周期的信号，也即是每次截断得到的信号要求是周期主值序列。
+
+但做分帧时，很难满足\lstinline{周期截断}，因此就会导致\lstinline{频谱泄露}。要解决非周期截断导致的频谱泄露是比较困难的，可以通过\lstinline{加窗}尽可能减少频谱泄露带来的影响。窗类型可以分为汉宁窗、汉明窗、平顶窗等。虽然加窗能够减少频谱泄露，但加窗衰减了每帧信号的能量，特别是边界处的能量，这时加一个合成窗，且overlap-add，便可以补回能量。参见：\href{https://zhuanlan.zhihu.com/p/339692933}{频谱泄露和加窗}。
+
+\subsection{频率分辨率}
+频率分辨率是指将两个相邻谱峰分开的能力，在实际应用中是指分辨两个不同频率信号的最小间隔。
+
+
+\chapter{语音特征提取}
+原始信号是不定长的时序信号，不适合作为机器学习的输入。因此一般需要将原始波形转换为特定的特征向量表示，该过程称为语音特征提取。
+
+\section{预处理}
+包括预加重、分帧和加窗。
+
+\subsection{预加重}
+语音经过说话人的口唇辐射发出，受到唇端辐射抑制，高频能量明显降低。一般来说，当语音信号的频率提高两倍时，其功率谱的幅度下降约6dB，即语音信号的高频部分受到的抑制影响较大。在进行语音信号的分析和处理时，可采用预加重（pre-emphasis）的方法补偿语音信号高频部分的振幅，本质是施加低通滤波器。假设输入信号第 $n$ 个采样点为 $x[n]$ ，则预加重公式如下：
+
+\begin{equation}
+  x'[n]=x[n]-a\times x[n-1]
+\end{equation}
+
+其中， $a$ 是预加重系数，一般取 $a=0.97$。
+
+\subsection{分帧}
+语音信号是非平稳信号，考虑到发浊音时声带有规律振动，即基音频率在短时范围内时相对固定的，因此可以认为语音信号具有短时平稳特性，一般认为10ms~50ms的语音信号片段是一个准稳态过程。短时分析采用分帧方式，一般每帧帧长为20ms或50ms。假设语音采样率为16kHz，帧长为20ms，则一帧有 $16000\times 0.02=320$ 个样本点。
+
+相邻两帧之间的基音有可能发生变化，如两个音节之间，或者声母向韵母过渡。为确保声学特征参数的平滑性，一般采用重叠取帧的方式，即相邻帧之间存在重叠部分。一般来说，帧长和帧移的比例为 $1:4$ 或 $1:5$ 。
+
+\subsection{加窗}
+分帧相当于对语音信号加矩形窗，矩形窗在时域上对信号进行截断，在边界处存在多个旁瓣，会发生频谱泄露。为了减少频谱泄露，通常对分帧之后的信号进行其它形式的加窗操作。常用的窗函数有：汉明（Hamming）窗、汉宁（Hanning）窗和布莱克曼（Blackman）窗等。
+
+汉明窗的窗函数为：
+
+\begin{equation}
+  W_{ham}[n]=0.54-0.46\mathop{cos}(\frac{2\pi n}{N}-1)
+\end{equation}
+
+其中， $0\leq n\leq N-1$ ，$N$ 是窗的长度。
+
+汉宁窗的窗函数为：
+
+\begin{equation}
+  W_{han}[n]=0.5[1-\mathop{cos}(\frac{2\pi n}{N}-1)]
+\end{equation}
+
+其中， $0\leq n\leq N-1$ ， $N$ 是窗的长度。
+
+\section{短时傅里叶变换}
+
+人类听觉系统与频谱分析紧密相关，对语音信号进行频谱分析，是认识和处理语音信号的重要方法。声音从频率上可以分为纯音和复合音，纯音只包含一种频率的声音（基音），而没有倍音。复合音是除了基音之外，还包含多种倍音的声音。大部分语音都是复合音，涉及多个频率段，可以通过傅里叶变换进行频谱分析。
+
+每个频率的信号可以用正弦波表示，采用正弦函数建模。基于欧拉公式，可以将正弦函数对应到统一的指数形式：
+
+\begin{equation}
+  e^{jwn}=\mathop{cos}(wn)+j\mathop{sin}(wn)
+\end{equation}
+
+正弦函数具有正交性，即任意两个不同频率的正弦波乘积，在两者的公共周期内积分等于零。正交性用复指数运算表示如下：
+
+\begin{equation}
+  \int_{-\infty}^{+\infty}e^{j\alpha t}e^{-j\beta t}dt=0,\quad if\ \alpha\neq \beta
+\end{equation}
+
+基于正弦函数的正交性，通过相关处理可以从语音信号分离出对应不同频率的正弦信号。对于离散采样的语音信号，可以采用离散傅里叶变换（DFT）。DFT的第 $k$ 个点计算如下：
+
+\begin{equation}
+  X[k]=\sum_{n=0}^{N-1} x[n]e^{-\frac{j2\pi kn}{K}},\quad k=0,1,...,K-1
+\end{equation}
+
+其中， $x[n]$ 是时域波形第 $n$ 个采样点值， $X[k]$ 是第 $k$ 个傅里叶频谱值， $N$ 是采样点序列的点数， $K$ 是频谱系数的点数，且 $K\geq N$ 。利用DFT获得的频谱值通常是复数形式，这是因为上式中，
+
+\begin{equation}
+  e^{-\frac{j2\pi kn}{K}}=\mathop{cos}(\frac{2\pi kn}{K})-j\mathop{sin}(\frac{2\pi kn}{K})
+\end{equation}
+
+则
+
+\begin{equation}
+  X[k]=X_{real}[k]-jX_{imag}[k]
+\end{equation}
+
+其中，
+
+\begin{equation}
+  X_{real}[k]=\sum_{n=0}^{N-1}x[n]\mathop{cos}(\frac{2\pi kn}{K})
+\end{equation}
+
+\begin{equation}
+  X_{imag}[k]=\sum_{n=0}^{N-1}x[n]\mathop{sin}(\frac{2\pi kn}{K})
+\end{equation}
+
+$N$ 个采样点序列组成的时域信号经过DFT之后，对应 $K$ 个频率点。经DFT变换得到信号的频谱表示，其频谱幅值和相位随着频率变化而变化。
+
+在语音信号处理中主要关注信号的频谱幅值，也称为振幅频谱/振幅谱：
+
+\begin{equation}
+  X_{magnitude}[k]=\sqrt{X_{real}[k]^2+X_{imag}[k]^2}
+\end{equation}
+
+能量频谱/能量谱是振幅频谱的平方：
+
+\begin{equation}
+  X_{power}[k]=X_{real}[k]^2+X_{imag}[k]^2
+\end{equation}
+
+各种声源发出的声音大多由许多不同强度、不同频率的声音组成复合音，在复合音中，不同频率成分与能量分布的关系称为声音的频谱，利用频谱图表示各频率成分与能量分布之间的关系，频谱图横轴是频率（Hz），纵轴是幅度（dB）。
+
+通过对频域信号进行逆傅里叶变换（IDFT），可以恢复时域信号：
+
+\begin{equation}
+  x[n]=\frac{1}{K}\sum_{k=0}^{K-1}X[k]e^{\frac{j2\pi kn}{N}},\quad n=0,1,...,N-1
+\end{equation}
+
+离散傅里叶变换（DFT）的计算复杂度为 $O(N^2)$ ，可以采用快速傅里叶变换（FFT），简化计算复杂度，在 $O(N\mathop{log}_2 N)$ 的时间内计算出DFT。在实际应用中，对语音信号进行分帧加窗处理，将其分割成一帧帧的离散序列，可视为短时傅里叶变换（STFT）：
+
+\begin{equation}
+  X[k,l]=\sum_{n=0}^{N-1} x_l[n]e^{-\frac{j2\pi nk}{K}}=\sum_{n=0}^{N-1} w[n]x[n+lL]e^{-\frac{j2\pi nk}{K}}
+\end{equation}
+
+其中， $K$ 是DFT后的频率点个数， $k$ 是频率索引， $0\leq k< K$ 。$X[k,l]$ 建立起索引为 $lL$ 的时域信号，与索引为 $k$ 的频域信号之间的关系。
+
+\section{听觉特性}
+
+\subsection{梅尔滤波}
+
+人类对不同频率的语音有不同的感知能力：
+
+\begin{enumerate}
+  \item 1kHz以下，人耳感知与频率成线性关系。
+  \item 1kHz以上，人耳感知与频率成对数关系。
+\end{enumerate}
+
+因此，人耳对低频信号比高频信号更为敏感。因此根据人耳的特性提出了一种mel刻度，即定义1个mel刻度相当于人对1kHz音频感知程度的千分之一，mel刻度表达的是，从线性频率到“感知频率”的转换关系：
+
+\begin{equation}
+  mel(f)=2595\mathop{lg}(1+\frac{f}{700})
+\end{equation}
+
+\begin{lstlisting}
+  from matplotlib import pyplot as plt
+  import numpy as np
+
+  x = np.linspace(0, 5000, 50000)
+  y = 2595*np.log10(1+x/700)
+  x0 = 1000
+  y0 = 2595*np.log10(1+x0/700)
+  plt.plot(x, y)
+  plt.scatter(x0, y0)
+  plt.plot([x0, x0], [0, y0], 'k--')
+  plt.plot([0, x0], [x0, y0], 'k--')
+  plt.xlabel('f (Hz)')
+  plt.ylabel('Mel(f)')
+  plt.title('relationship between linear and mel scale')
+  plt.xlim(0, x[-1])
+  plt.ylim(0, y[-1])
+  plt.savefig('mel_vs_f.png')
+  plt.show()
+\end{lstlisting}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.6\textwidth]{mel_vs_f.png}
+  \caption{mel刻度和频率之间的关系 \label{fig:mel_vs_f}}
+\end{figure}
+
+人们根据一系列心理声学实验得到了类似耳蜗作用的滤波器组，用于模拟人耳不同频段声音的感知能力，也就是多个三角滤波器组成的mel频率滤波器组。每个滤波器带宽不等，线性频率小于1000Hz的部分为线性间隔，而线性频率大于1000Hz的部分为对数间隔。同样地，将梅尔频率转换到线性频率的公式为：
+
+\begin{equation}
+  f_{mel}^{-1}=700\cdot (10^{\frac{f_{mel}}{2595}}-1)
+\end{equation}
+
+\subsection{Bark滤波}
+
+声音的响度，反映人对不同频率成分声强/声音强弱的主观感受。响度与声强、频率的关系可以用\lstinline{等响度轮廓曲线}表示。
+
+人耳对响度的感知有一个范围，当声音低于某个响度时，人耳是无法感知到的，这个响度值称为听觉阈值，或称听阈。在实际环境中，但一个较强信号（掩蔽音）存在时，听阈就不等于安静时的阈值，而是有所提高。这意味着，邻近频率的两个声音信号，弱响度的声音信号会被强响度的声音信号所掩蔽（Mask），这就是\lstinline{频域掩蔽}。
+
+根据听觉频域分辨率和频域掩蔽的特点，定义能够引起听觉主观变化的频率带宽为一个\lstinline{临界频带}。一个临界频带的宽度被称为一个Bark，Bark频率 $Z(f)$ 和线性频率 $f$ 的对应关系定义如下：
+
+\begin{equation}
+  Z(f)=6\mathop{ln}(\frac{f}{600}+((\frac{f}{600})^2+1)^{\frac{1}{2}})
+\end{equation}
+
+其中，线性频率 $f$ 的单位为Hz，临界频带 $Z(f)$ 的单位为Bark。
+
+\section{倒谱分析}
+
+语音信号的产生模型包括发生源（Source）和滤波器（Filter）。人在发声时，肺部空气受到挤压形成气流，气流通过声门（声带）振动产生声门源激励 $e[n]$ 。对于浊音，激励 $e[n]$ 是以基音周期重复的单位冲激；对于清音， $e[n]$ 是平稳白噪声。该激励信号 $e[n]$ 经过咽喉、口腔形成声道的共振和调制，特别是舌头能够改变声道的容积，从而改变发音，形成不同频率的声音。气流、声门可以等效为一个激励源，声道等效为一个时变滤波器，语音信号 $x[n]$ 可以被看成激励信号 $e[n]$ 与时变滤波器的单位响应 $v[n]$ 的卷积：
+
+\begin{equation}
+  x[n]=e[n]*v[n]
+\end{equation}
+
+已知语音信号 $x[n]$ ，待求出上式中参与卷积的各个信号分量，也就是解卷积处理。除了线性预测方法外，还可以采用\lstinline{倒谱分析}实现解卷积处理。倒谱分析，又称为\lstinline{同态滤波}，采用时频变换，得到对数功率谱，再进行逆变换，分析出倒谱域的倒谱系数。
+
+同态滤波的处理过程如下：
+
+\begin{enumerate}
+  \item 傅里叶变换。将时域的卷积信号转换为频域的乘积信号：
+  \begin{equation}
+    {\rm DFT}(x[n])=X[z]=E[z]V[z]
+  \end{equation}
+  \item 对数运算。将乘积信号转换为加性信号：
+  \begin{equation}
+    {\rm log} X[z]={\rm log}E[z]+{\rm log}V[z]=\hat{E}[z]+\hat{V}[z]=\hat{X}[z]
+  \end{equation}
+  \item 傅里叶反变换。得到时域的语音信号\lstinline{倒谱}。
+  \begin{equation}
+    Z^{-1}(\hat{X}[z])=Z^{-1}(\hat{E}[z]+\hat{V}[z])=\hat{e}[n]+\hat{v}[z]\approx \hat{x}[n]
+  \end{equation}
+\end{enumerate}
+
+在实际应用中，考虑到离散余弦变换（DCT）具有最优的去相关性能，能够将信号能量集中到极少数的变换系数上，特别是能够将大多数的自然信号（包括声音和图像）的能量都集中在离散余弦变换后的低频部分。一般采用DCT反变换代替傅里叶反变换，上式可以改写成：
+
+\begin{equation}
+  \hat{c}[m]=\sum_{k=1}^N{\rm log}X[k]{\rm cos}(\frac{\pi (k-0.5)m}{N}),\quad m=1,2,...,M
+\end{equation}
+
+其中，$X[k]$是DFT变换系数， $N$ 是DFT系数的个数， $M$ 是DCT变换的个数。
+
+此时， $\hat{x}[n]$ 是复倒谱信号，可采用逆运算，恢复出语音信号，但DCT不可逆，从倒谱信号 $\hat{c}[m]$ 不可还原出语音 $x[n]$ 。
+
+\section{常见的声学特征}
+
+在语音合成中，常用的声学特征有梅尔频谱（Mel-Spectrogram）/滤波器组（Filter-bank，Fank），梅尔频率倒谱系数（Mel-Frequency Cepstral Coefficient，MFCC）等。
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.6\textwidth]{text_to_speech_acoustic_feature.png}
+  \caption{常用的声学特征 \label{fig:acoustic_feature}}
+\end{figure}
+
+接下来重点介绍FBank和MFCC的计算过程。
+
+\subsection{FBank}
+
+FBank的特征提取过程如下：
+
+\begin{enumerate}
+  \item 将信号进行预加重、分帧、加窗，然后进行短时傅里叶变换（STFT）获得对应的\lstinline{频谱}。
+  \item 求频谱的平方，即\lstinline{能量谱}。进行梅尔滤波，即将每个滤波频带内的能量进行叠加，第 $k$ 个滤波器输出功率谱为 $X[k]$ 。
+  \item 将每个滤波器的输出取对数，得到相应频带的对数功率谱。
+  
+  \begin{equation}
+    Y_{\rm FBank}[k]={\rm log}X[k]
+  \end{equation}
+\end{enumerate}
+
+FBank特征本质上是对数功率谱，包括低频和高频信息。相比于语谱图，FBank经过了梅尔滤波，依据人耳听觉特性进行了压缩，抑制了一部分人耳无法感知的冗余信息。
+
+\subsection{MFCC}
+
+MFCC和FBank唯一的不同就在于，获得FBank特征之后，再经过反离散余弦变换，就得到 $L$ 个MFCC系数。在实际操作中，得到的 $L$ 个MFCC特征值可以作为\lstinline{静态特征}，再对这些静态特征做一阶和二阶差分，得到相应的静态特征。
+
+\section{具体操作}
+
+\subsection{利用librosa读取音频}
+
+\begin{lstlisting}
+  from matplotlib import pyplot as plt
+  import numpy as np
+  import librosa
+
+  # 利用librosa读取音频
+  input_wav_path = r'test.wav'
+  y, sr = librosa.load(input_wav_path)
+  y_num = np.arange(len(y))
+  
+  # 截取前0.3s的音频
+  sample_signal = y[0:int(sr*0.3)]
+  sample_num = np.arange(len(sample_signal))
+  
+  plt.figure(figsize=(11, 7), dpi=500)
+  plt.subplot(211)
+  plt.plot(y_num/sr, y, color='black')
+  plt.plot(sample_num/sr, sample_signal, color='blue')
+  plt.xlabel('Time (sec)')
+  plt.ylabel('Amplitude')
+  plt.title('Waveform')
+  
+  plt.subplot(212)
+  plt.plot(sample_num/sr, sample_signal, color='blue')
+  plt.xlabel('Time (sec)')
+  plt.ylabel('Amplitude')
+  plt.title('0~0.3s waveform')
+  plt.tight_layout()
+  plt.savefig('waveform.png', dpi=500)
+  plt.show()
+\end{lstlisting}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.6\textwidth]{waveform.png}
+  \caption{波形图 \label{fig:waveform}}
+\end{figure}
+
+
+音频有不同的编码类型，librosa默认采取浮点格式读取，即读取的样本点均是 $[-1,-1]$ 之间的浮点值。更详细的文档参见\href{http://sox.sourceforge.net/sox.html}{SoX}的\lstinline{Input & Output File Format Options}部分。
+
+\begin{table}[htbp]
+  \centering
+  \caption{SoX音频个数}
+    \begin{tabular}{llll}
+    \toprule
+    选项 & 描述 & 常见可选项 \\
+    \midrule
+    b & 每个编码样本所占的数据位数（位深） & 8/16/32 \\
+    c & 音频文件包含的通道数 & 1/2 \\
+    e & 音频文件的编码类型 & signed-integer/unsigned-integer/floating-point \\
+    r & 音频文件的采样率 & 16k/16000/22050 \\
+    t & 音频文件的文件类型 & raw/mp3 \\
+    \bottomrule
+    \end{tabular}%
+\end{table}%
+
+\subsection{获取梅尔频谱}
+
+\begin{lstlisting}
+  sample_rate = 16000
+  preemphasis = 0.97
+  n_fft = 1024
+  frame_length = 0.05  # ms
+  frame_shift = 0.01  # ms
+  fmin = 0
+  fmax = sample_rate/2
+  eps = 1e-10
+  n_mel = 80
+  win_length = int(sample_rate*frame_length)
+  hop_length = int(sample_rate*frame_shift)
+  mel_basis = librosa.filters.mel(
+      sample_rate, n_fft, n_mel, fmin=fmin, fmax=fmax)
+  
+  
+  def get_spectrogram(input_wav_path):
+      y, sr = librosa.load(input_wav_path)
+      y = np.append(y[0], y[1:]-preemphasis*y[:-1])
+      linear = librosa.stft(
+          y=y, n_fft=n_fft, hop_length=hop_length, win_length=win_length)
+      mag = np.abs(linear)
+      mel = np.dot(mel_basis, mag)
+      mel = np.log10(np.maximum(eps, mel))
+      mel = mel.T.astype(np.float32)  # (T,n_mels)
+      return mel
+  
+  # plt.switch_backend('agg')
+  
+  
+  def plot_spectrogram(spectrogram):
+      spectrogram = spectrogram.T
+      fig = plt.figure(figsize=(16, 9))
+      plt.imshow(spectrogram, aspect='auto', origin='lower')
+      plt.colorbar()
+      plt.xlabel('frames')
+      plt.tight_layout()
+      plt.savefig('mel_spectrogram.png', dpi=500)
+      plt.show()
+  
+  
+  mel_spec = get_spectrogram(input_wav_path)
+  plot_spectrogram(mel_spec)
+\end{lstlisting}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.6\textwidth]{mel_spectrogram.png}
+  \caption{梅尔频谱 \label{fig:mel_spectrogram}}
+\end{figure}
+
+
+
+
+
+
+
+
+
+
+
+
+\section{ElegantBook 更新说明}
+
+此次为 4.x 第一个版本，在 3.x 基础上，主要更新了定理以及参考文献的支持方式，具体内容有：
+
+\begin{enumerate}
+  \item \textbf{重要改动}：由原先的 \hologo{BibTeX} 改为 biblatex 编译方式（后端为 \lstinline{biber}），请注意两者之间的差异；
+  \item \textbf{重要改进}：修改对于定理写法兼容方式，提高数学公式代码的兼容性；
+  \item 页面设置改动，默认页面更宽；方便书写和阅读；
+  \item 支持目录文字以及页码跳转；
+  \item 不再维护 \hologo{pdfLaTeX} 中文支持方式，请务必使用 \hologo{XeLaTeX} 编译中文文稿。
+  \item 增加多语言选项，法语 \lstinline{lang=fr}、德语 \lstinline{lang=de}、荷兰语 \lstinline{lang=nl}、匈牙利语 \lstinline{lang=hu}、西班牙语 \lstinline{lang=es}、蒙古语 \lstinline{lang=mn} 等。
+\end{enumerate}
+
+\begin{note}
+如果你使用旧版本切换到新版本时，遇到问题时，请核对文档中是否有 \lstinline{pageanchor} 字样。如果有，请删除文档中的 \lstinline|\hypersetup{pageanchor=true}|，并且在 \lstinline{\maketitle} 和 \lstinline{\tableofcontents} 之间添加 \lstinline{\frontmatter}。2.x 版本的用户请仔细查看\href{https://github.com/ElegantLaTeX/ElegantBook/wiki/convert}{跨版本转换}。
+\end{note}
+
+\section{模板安装与更新}
+
+你可以通过免安装的方式使用本模板，包括在线使用和本地（文件夹内）使用两种方式，也可以通过 \TeX{} 发行版安装使用。
+
+\subsection{在线使用模板}
+
+我们把三套模板全部上传到 \href{https://www.overleaf.com/}{Overleaf} 上了，网络便利的用户可以直接通过 Overleaf 在线使用我们的模板。使用 Overleaf 的好处是无需安装 \TeX{} Live 2020，可以随时随地访问自己的文件。查找模板，请在 Overleaf 模板库里面搜索 \lstinline{elegantlatex} 即可，你也可以直接访问\href{https://www.overleaf.com/latex/templates?addsearch=elegantlatex}{搜索结果}。选择适当的模板之后，将其 \lstinline{Open as Template}，即可把模板存到自己账户下，然后可以自由编辑以及与别人一起协作。更多关于 Overleaf 的介绍和使用，请参考 Overleaf 的\href{https://www.overleaf.com/learn}{官方文档}。
+
+\begin{remark}
+Overleaf 上，中文需要使用 \hologo{XeLaTeX} 进行编译，英文建议使用 \hologo{pdfLaTeX} 编译。
+\end{remark}
+
+\subsection{本地免安装使用}
+
+\textbf{免安装}使用方法如下，从 GitHub 或者 CTAN 下载最新版，严格意义上只需要类文件 \lstinline{elegantbook.cls}。然后将模板文件放在你的工作目录下即可使用。这样使用的好处是，无需安装，简便；缺点是，当模板更新之后，你需要手动替换 \lstinline{cls} 文件。
+
+\subsection{发行版安装使用}
+
+本模板测试环境为 Win10 和 TeX Live 2021，如果你刚安装 \TeX{} Live 2021 用户，安装后建议升级全部宏包，升级方法：使用 cmd 运行 \lstinline{tlmgr update --all}，如果 tlmgr 需要更新，请使用 cmd 运行 \lstinline{tlmgr update --self}，如果更新过程中出现了中断，请改用 \lstinline{tlmgr update --self --all --reinstall-forcibly-removed} 更新。
+
+\subsection{更新问题}
+
+如果使用 \lstinline{tlshell} 无法更新模板，请使用命令行全部更新全部宏包或者使用免安装的方法使用本模板。
+
+通过命令行（管理员权限）输入下面的命令对 tlmgr 自身和全部宏包进行更新。
+
+\begin{lstlisting}
+  tlmgr update --self 
+  tlmgr update --all
+\end{lstlisting}
+
+更多的内容请参考 \href{https://tex.stackexchange.com/questions/55437/how-do-i-update-my-tex-distribution}{How do I update my \TeX{} distribution?}
+
+\subsection{其他发行版本}
+
+由于宏包版本问题，本模板不支持 C\TeX{} 套装，请务必安装 TeX Live。更多关于 \TeX{} Live 的安装使用以及 C\TeX{} 与 \TeX{} Live 的兼容、系统路径问题，请参考官方文档以及啸行的\href{https://github.com/OsbertWang/install_latex/releases}{一份简短的安装 \LaTeX{} 的介绍}。
+
+
+\section{关于提交}
+
+出于某些因素的考虑，Elegant\LaTeX{} 项目自 2019 年 5 月 20 日开始，\textbf{不再接受任何非作者预约性质的提交}（pull request)！如果你想改进模板，你可以给我们提交 issues，或者可以在遵循协议（LPPL-1.3c）的情况下，克隆到自己仓库下进行修改。
+
+
+\chapter{ElegantBook 设置说明}
+
+本模板基于基础的 book 文类，所以 book 的选项对于本模板也是有效的（纸张无效，因为模板有设备选项）。默认编码为 UTF-8，推荐使用 \TeX{} Live 编译。本文编写环境为 Win10 (64bit) + \TeX{} Live 2021，英文支持 \hologo{pdfLaTeX}，中文仅支持 \hologo{XeLaTeX} 编译。
+
+\section{语言模式}
+本模板内含两套基础语言环境 \lstinline{lang=cn}、\lstinline{lang=en}。改变语言环境会改变图表标题的引导词（图，表），文章结构词（比如目录，参考文献等），以及定理环境中的引导词（比如定理，引理等）。不同语言模式的启用如下：
+\begin{lstlisting}
+\documentclass[cn]{elegantbook} 
+\documentclass[lang=cn]{elegantbook}
+\end{lstlisting}
+
+除模板自带的两套语言设定之外，由网友提供的其他语言环境设置如下：
+\begin{itemize}
+  \item 由 \href{https://github.com/VincentMVV}{VincentMVV} 提供的意大利语翻译 \lstinline{lang=it}，相关讨论见 \href{https://github.com/ElegantLaTeX/ElegantBook/issues/85}{Italian translation}；
+  \item 由 \href{https://github.com/abfek66}{abfek66} 提供的法语翻译 \lstinline{lang=fr}，相关讨论见 \href{https://github.com/ElegantLaTeX/ElegantBook/issues/85}{Italian translation}；
+  % \item 由 \href{https://github.com/stultus}{stultus} 提供的马拉雅拉姆语翻译 \lstinline{lang=}，相关讨论见 \href{https://github.com/ElegantLaTeX/ElegantBook/issues/90}{Malayalam translation}；
+  \item 由 \href{https://github.com/inktvis75}{inktvis75} 提供的荷兰语翻译 \lstinline{lang=nl}，相关讨论见 \href{https://github.com/ElegantLaTeX/ElegantBook/issues/108}{Dutch Translation}；
+  \item 由 \href{https://github.com/palkotamas}{palkotamas} 提供的匈牙利语翻译 \lstinline{lang=hu}，相关讨论见 \href{https://github.com/ElegantLaTeX/ElegantBook/issues/111}{Hungarian translation}；
+  \item 由 Lisa 提供的德语翻译 \lstinline{lang=de}，相关讨论见 \href{https://github.com/ElegantLaTeX/ElegantBook/issues/113}{Deutsch translation}；
+  \item 由 Gustavo A. Corradi 提供的西班牙语的翻译 \lstinline{lang=es}，相关讨论见 \href{https://github.com/ElegantLaTeX/ElegantBook/issues/133}{Spanish translation}；
+  \item 由 \href{https://github.com/Altantsooj}{Altantsooj} 提供的蒙古语的翻译 \lstinline{lang=mn}，相关讨论见 \href{https://github.com/ElegantLaTeX/ElegantBook/issues/137}{Mongolian translation}。
+\end{itemize}
+
+
+
+\begin{remark}
+以上各个语言的设定均为网友设定，我们未对上述翻译进行过校对，如果有问题，请在对应的 issue 下评论。并且，只有中文环境（\lstinline{lang=cn}）才可以输入中文。
+\end{remark}
+
+\section{设备选项}
+最早我们在 ElegantNote 模板中加入了设备选项（\lstinline{device}），后来，我们觉得这个设备选项的设置可以应用到 ElegantBook 中\footnote{不过因为 ElegantBook 模板封面图片的存在，在修改页面设计时，需要对图片进行裁剪。}，而且 Book 一般内容比较多，如果在 iPad 上看无需切边，放大，那用户的阅读体验将会得到巨大提升。你可以使用下面的选项将版面设置为 iPad 设备模式\footnote{默认为 normal 模式，也即 A4 纸张大小。}
+\begin{lstlisting}
+\documentclass[pad]{elegantbook} %or
+\documentclass[device=pad]{elegantbook}
+\end{lstlisting}
+
+\section{颜色主题}
+
+本模板内置 5 组颜色主题，分别为 \textcolor{structure1}{\lstinline{green}}\footnote{为原先默认主题。}、\textcolor{structure2}{\lstinline{cyan}}、\textcolor{structure3}{\lstinline{blue}}（默认）、\textcolor{structure4}{\lstinline{gray}}、\textcolor{structure5}{\lstinline{black}}。另外还有一个自定义的选项  \lstinline{nocolor}。调用颜色主题 \lstinline{green} 的方法为 
+\begin{lstlisting}
+\documentclass[green]{elegantbook} %or
+\documentclass[color=green]{elegantbook}
+\end{lstlisting}
+
+\begin{table}[htbp]
+  \caption{ElegantBook 模板中的颜色主题\label{tab:color thm}}
+  \centering
+  \begin{tabular}{ccccccc}
+  \toprule
+    & \textcolor{structure1}{green} 
+    & \textcolor{structure2}{cyan} 
+    & \textcolor{structure3}{blue}
+    & \textcolor{structure4}{gray} 
+    & \textcolor{structure5}{black} 
+    & 主要使用的环境\\
+  \midrule
+    structure & \ccr{structure1}
+    & \ccr{structure2}
+    & \ccr{structure3} 
+    & \ccr{structure4} 
+    & \ccr{structure5} 
+    & chapter \ section \ subsection \\
+    main      & \ccr{main1}
+    & \ccr{main2}
+    & \ccr{main3}
+    & \ccr{main4}
+    & \ccr{main5}
+    & definition \ exercise \ problem \\
+    second    & \ccr{second1}
+    & \ccr{second2}
+    & \ccr{second3}
+    & \ccr{second4}
+    & \ccr{second5}
+    & theorem \ lemma \ corollary\\
+    third     & \ccr{third1}
+    & \ccr{third2}
+    & \ccr{third3}
+    & \ccr{third4}
+    & \ccr{third5}
+    & proposition\\
+  \bottomrule
+  \end{tabular}
+\end{table}
+
+如果需要自定义颜色的话请选择 \lstinline{nocolor} 选项或者使用 \lstinline{color=none}，然后在导言区定义 structurecolor、main、second、third 颜色，具体方法如下：
+\begin{lstlisting}[tabsize=4]]
+\definecolor{structurecolor}{RGB}{0,0,0}
+\definecolor{main}{RGB}{70,70,70}    
+\definecolor{second}{RGB}{115,45,2}    
+\definecolor{third}{RGB}{0,80,80}
+\end{lstlisting}
+
+\section{封面}
+
+\subsection{封面个性化}
+
+从 3.10 版本开始，封面更加弹性化，用户可以自行选择输出的内容，包括 \lstinline{\title} 在内的所有封面元素都可为空。目前封面的元素有
+
+\begin{table}[htbp]
+  \centering
+  \caption{封面元素信息}
+  \begin{tabular}{p{0.07\textwidth}p{0.15\textwidth}|p{0.07\textwidth}p{0.15\textwidth}|p{0.07\textwidth}p{0.15\textwidth}}
+    \toprule
+    信息 & 命令 & 信息 & 命令 & 信息 & 命令 \\
+    \midrule
+    标题 & \lstinline|\title| & 副标题 & \lstinline|\subtitle| & 作者 & \lstinline|\author| \\
+    机构 & \lstinline|\institute| & 日期 &  \lstinline|\date| & 版本 & \lstinline|\version| \\
+    箴言 & \lstinline|\extrainfo| & 封面图 & \lstinline|\cover| & 徽标 & \lstinline|\logo| \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+另外，额外增加一个 \lstinline{\bioinfo} 命令，有两个选项，分别是信息标题以及信息内容。比如需要显示{\kaishu User Name：111520}，则可以使用 
+\begin{lstlisting}
+\bioinfo{User Name}{115520}
+\end{lstlisting}
+
+封面中间位置的色块的颜色可以使用下面命令进行修改：
+\begin{lstlisting}
+  \definecolor{customcolor}{RGB}{32,178,170}
+  \colorlet{coverlinecolor}{customcolor}
+\end{lstlisting}
+
+\subsection{封面图}
+
+本模板使用的封面图片来源于 \href{https://pixabay.com/en/tea-time-poetry-coffee-reading-3240766/}{pixabay.com}\footnote{感谢 China\TeX{} 提供免费图源网站，另外还推荐 \href{https://www.pexels.com/}{pexels.com}。}，图片完全免费，可用于任何场景。封面图片的尺寸为 $1280 \times 1024$, 更换图片的时候请\textbf{严格}按照封面图片尺寸进行裁剪。推荐一个免费的在线图片裁剪网站 \href{https://www.fotor.com/cn}{fotor.com}。用户 QQ 群内有一些合适尺寸的封面，欢迎取用。
+
+\subsection{徽标}
+
+本文用到的 Logo 比例为 1:1，也即正方形图片，在更换图片的时候请选择合适的图片进行替换。
+
+\subsection{自定义封面}
+
+另外，如果使用自定义的封面，比如 Adobe illustrator 或者其他软件制作的 A4 PDF 文档，请把 \lstinline{\maketitle} 注释掉，然后借助 \lstinline{pdfpages} 宏包将自制封面插入即可。如果使用 \lstinline{titlepage} 环境，也是类似。如果需要 2.x 版本的封面，请参考 \href{https://github.com/EthanDeng/etitlepage}{etitlepage}。
+
+\section{章标标题}
+
+本模板内置 2 套\textit{章标题显示风格}，包含 \lstinline{hang}（默认）与 \lstinline{display} 两种风格，区别在于章标题单行显示（\lstinline{hang}）与双行显示（\lstinline{display}），本说明使用了 \lstinline{hang}。调用方式为
+\begin{lstlisting}
+\documentclass[hang]{elegantbook} %or
+\documentclass[titlestyle=hang]{elegantbook}
+\end{lstlisting}
+
+在章标题内，章节编号默认是以数字显示，也即{\kaishu 第 1 章}，{\kaishu 第 2 章}等等，如果想要把数字改为中文，可以使用
+\begin{lstlisting}
+\documentclass[chinese]{elegantbook} %or
+\documentclass[scheme=chinese]{elegantbook}
+\end{lstlisting}
+
+\section{数学环境简介}
+
+在我们这个模板中，我们定义了两种不同的定理模式 \lstinline{mode}，包括简单模式（\lstinline{simple}）和炫彩模式（\lstinline{fancy}），默认为 \lstinline{fancy} 模式，不同模式的选择为
+\begin{lstlisting}
+\documentclass[simple]{elegantbook} %or
+\documentclass[mode=simple]{elegantbook}
+\end{lstlisting}
+
+本模板定义了四大类环境
+
+\begin{itemize}
+  \item \textit{定理类环境}，包含标题和内容两部分，全部定理类环境的编号均以章节编号。根据格式的不同分为 3 种
+    \begin{itemize}
+      \item \textcolor{main}{\textbf{definition}} 环境，颜色为 \textcolor{main}{main}；
+      \item \textcolor{second}{\textbf{theorem、lemma、corollary}} 环境，颜色为 \textcolor{second} {second}；
+      \item \textcolor{third}{\textbf{proposition}} 环境，颜色为 \textcolor{third}{third}。
+    \end{itemize}
+  \item \textit{示例类环境}，有 \textbf{example、problem、exercise} 环境（对应于例、例题、练习），自动编号，编号以章节为单位，其中 \textbf{exercise} 有提示符。
+  \item \textit{提示类环境}，有 \textbf{note} 环境，特点是：无编号，有引导符。
+  \item \textit{结论类环境}，有 \textbf{conclusion、assumption、property、remark、solution} 环境\footnote{本模板还添加了一个 result 选项，用于隐藏 \lstinline{solution} 和 \lstinline{proof} 环境，默认为显示（\lstinline{result=answer}），隐藏使用 \lstinline{result=noanswer}。}，三者均以粗体的引导词为开头，和普通段落格式一致。
+\end{itemize}
+
+\subsection{定理类环境的使用}
+
+由于本模板使用了 \lstinline{tcolorbox} 宏包来定制定理类环境，所以和普通的定理环境的使用有些许区别，定理的使用方法如下：
+\begin{lstlisting}
+\begin{theorem}{theorem name}{label}
+  The content of theorem.
+\end{theorem}
+\end{lstlisting}
+
+第一个必选项 \lstinline{theorem name} 是定理的名字，第二个必选项 \lstinline{label} 是交叉引用时所用到的标签，交叉引用的方法为 \verb|\ref{thm:label}|。请注意，交叉引用时必须加上前缀 \lstinline{thm:}。
+
+在用户多次反馈下，4.x 之后，引入了原生定理的支持方式，也就是使用可选项方式：
+
+\begin{lstlisting}
+\begin{theorem}[theorem name] \label{thm:theorem-label}
+  The content of theorem.
+\end{theorem}
+% or 
+\begin{theorem} \label{thm:theorem-withou-name}
+  The content of theorem without name.
+\end{theorem}
+\end{lstlisting}
+
+其他相同用法的定理类环境有：
+
+\begin{table}[htbp]
+   \centering
+   \caption{定理类环境}
+     \begin{tabular}{llll}
+     \toprule
+     环境名 & 标签名 & 前缀 & 交叉引用 \\
+     \midrule
+     definition & label & def   & \lstinline|\ref{def:label}| \\
+     theorem & label & thm   & \lstinline|\ref{thm:label}| \\
+     lemma & label & lem   & \lstinline|\ref{lem:label}| \\
+     corollary & label & cor   & \lstinline|\ref{cor:label}| \\
+     proposition & label & pro   & \lstinline|\ref{pro:label}| \\
+     \bottomrule
+     \end{tabular}%
+   \label{tab:theorem-class}%
+ \end{table}%
+ 
+% \subsection{算法环境}
+
+ 
+% \begin{algorithm}\label{alg:test}
+%   \Input{A bitmap $I$ of size $w \times l$}
+%   \Output{A partition of the bitmap}
+%   \BlankLine
+%   \emph{special treatment of the first line}\;
+%   \For{$i \leftarrow 2$ \KwTo $l$}{
+%     \emph{special treatment of the first element of line $i$}\;
+%     \For{$j \leftarrow 2$ \KwTo $w$}{\label{forins}
+%       $\Left \leftarrow \FindCompress{$I[i,j-1]$}$\;
+%       $\Up \leftarrow \FindCompress{$I[i-1,]$}$\;
+%       $\This \leftarrow \FindCompress{$I[i,j]$}$\;
+%       \If(\tcp*[h]{O(\Left,\This)==1}){\Left compatible with \This}{\label{lt}
+%         \lIf{$\Left < \This$}{$\Union{\Left,\This}$}
+%         \lElse{$\Union{\This,\Left}$}
+%       }
+%       \If(\tcp*[f]{O(\Up,\This)==1}){\Up compatible with \This}{\label{ut}
+%         \lIf{$\Up < \This$}{$\Union{\Up,\This}$}
+%         \tcp{\This is put under \Up to keep tree as flat as possible}\label{cmt}
+%         \lElse{$\Union{\This,\Up}$}\tcp*[r]{\This{} linked to \Up}\label{lelse}
+%       }
+%     }
+%     \lForEach{element $e$ of the line $i$}{\FindCompress{p}}
+%   }
+%   \caption{disjoint decomposition}\label{algo_disjdecomp}
+% \end{algorithm}
+
+\subsection{其他环境的使用}
+
+其他三种环境没有选项，可以直接使用，比如 \lstinline{example} 环境的使用方法与效果：
+\begin{lstlisting}
+\begin{example}
+   This is the content of example environment.
+\end{example}
+\end{lstlisting}
+
+这几个都是同一类环境，区别在于
+
+\begin{itemize}
+  \item 示例环境（example）、练习（exercise）与例题（problem）章节自动编号；
+  \item 注意（note），练习（exercise）环境有提醒引导符；
+  \item 结论（conclusion）等环境都是普通段落环境，引导词加粗。
+\end{itemize}
+
+\section{列表环境}
+本模板借助于 \lstinline{tikz} 定制了 \lstinline{itemize} 和 \lstinline{enumerate} 环境，其中 \lstinline{itemize} 环境修改了 3 层嵌套，而 \lstinline{enumerate} 环境修改了 4 层嵌套（仅改变颜色）。示例如下\\[2ex]
+\begin{minipage}[b]{0.49\textwidth}
+  \begin{itemize}
+    \item first item of nesti;
+    \item second item of nesti;
+      \begin{itemize}
+        \item first item of nestii;
+        \item second item of nestii;
+        \begin{itemize}
+          \item first item of nestiii;
+          \item second item of nestiii.
+        \end{itemize}   
+      \end{itemize}
+  \end{itemize}
+\end{minipage}
+\begin{minipage}[b]{0.49\textwidth}
+  \begin{enumerate}
+    \item first item of nesti;
+    \item second item of nesti;
+      \begin{enumerate}
+        \item first item of nestii;
+        \item second item of nestii;
+        \begin{enumerate}
+          \item first item of nestiii;
+          \item second item of nestiii.
+        \end{enumerate}   
+      \end{enumerate}
+  \end{enumerate}
+\end{minipage}
+
+\section{参考文献}
+
+此模板使用了 \hologo{biber} 来生成参考文献，也即使用 \lstinline{biblatex} 宏包，在中文示例中，使用了 \lstinline{gbt7714} 宏包。参考文献示例：\cite{cn1,en2,en3} 使用了中国一个大型的 P2P 平台（人人贷）的数据来检验男性投资者和女性投资者在投资表现上是否有显著差异。
+
+你可以在谷歌学术，Mendeley，Endnote 中获得文献条目（bib item），然后把它们添加到 \lstinline{reference.bib} 中。在文中引用的时候，引用它们的键值（bib key）即可。注意需要在编译的过程中添加 \hologo{biber} 编译。
+
+为了方便文献样式修改，模板引入了 \lstinline{bibstyle} 和 \lstinline{citestyle} 选项，默认均为数字格式（numeric），如果需要设置为国标 GB7714-2015，需要使用：
+\begin{lstlisting}
+  \documentclass[citestyle=gb7714-2015, bibstyle=gb7714-2015]{elegantbook} 
+\end{lstlisting}
+
+如果需要添加排序方式，可以在导言区加入
+\begin{lstlisting}
+  \ExecuteBibliographyOptions{sorting=ynt}
+\end{lstlisting}
+
+启用国标之后，可以加入 \lstinline{sorting=gb7714-2015}。
+
+\section{添加序章}
+
+如果你想在第一章前面添序章，不改变原本章节序号，可以在第一章内容前面使用 
+\begin{lstlisting}
+\chapter*{Introduction}
+\markboth{Introduction}{Introduction}
+The content of introduction.
+\end{lstlisting}
+
+\section{目录选项与深度}
+本模板添加了一个目录选项 \lstinline{toc}，可以设置目录为单栏（\lstinline{onecol}）和双栏（\lstinline{twocol}）显示，比如双栏显示可以使用
+\begin{lstlisting}
+\documentclass[twocol]{elegantbook}
+\documentclass[toc=twocol]{elegantbook}
+\end{lstlisting}
+
+默认本模板目录深度为 1，你可以在导言区使用
+\begin{lstlisting}
+\setcounter{tocdepth}{2}
+\end{lstlisting}
+将其修改为 2 级目录（章与节）显示。
+
+
+\section{章节摘要}
+模板新增了一个章节摘要环境（introduction），使用示例
+\begin{lstlisting}
+\begin{introduction}
+  \item Definition of Theorem
+  \item Ask for help
+  \item Optimization Problem
+  \item Property of Cauchy Series
+  \item Angle of Corner
+\end{introduction}
+\end{lstlisting}
+效果如下：
+\begin{introduction}
+  \item Definition of Theorem
+  \item Ask for help
+  \item Optimization Problem
+  \item Property of Cauchy Series
+  \item Angle of Corner
+\end{introduction}
+
+环境的标题文字可以通过这个环境的可选参数进行修改，修改方法为：
+\begin{lstlisting}
+\begin{introduction}[Brief Introduction]
+...
+\end{introduction}
+\end{lstlisting}
+
+\section{章后习题}
+前面我们介绍了例题和练习两个环境，这里我们再加一个，章后习题（\lstinline{problemset}）环境，用于在每一章结尾，显示本章的练习。使用方法如下
+
+\begin{lstlisting}
+\begin{problemset}
+  \item exercise 1
+  \item exercise 2
+  \item exercise 3
+\end{problemset}
+\end{lstlisting}
+
+
+效果如下：
+\begin{problemset}
+  \item exercise 1
+  \item exercise 2
+  \item exercise 3
+  \item 测试数学公式
+  \begin{equation}
+    a^2+b^2=c_{2_{i}} (1,2) [1,23]
+  \end{equation}
+\end{problemset}
+
+\begin{remark}
+如果你想把 \lstinline{problemset} 环境的标题改为其他文字，你可以类似于 introduction 环境修改 problemset 的可选参数。另外，目前这个环境会自动出现在目录中，但是不会出现在页眉页脚信息中（待解决）。
+\end{remark}
+
+\begin{solution}
+如果你想把 \lstinline{problemset} 环境的标题改为其他文字，你可以类似于 introduction 环境修改 problemset 的可选参数。另外，目前这个环境会自动出现在目录中，但是不会出现在页眉页脚信息中（待解决）。
+\end{solution}
+
+\section{旁注}
+
+在 3.08 版本中，我们引入了 旁注设置选项 \lstinline{marginpar=margintrue} 以及测试命令 \lstinline{\elegantpar} ，但是由此带来一堆问题。我们决定在 3.09 版本中将其删除，并且，在旁注命令得到大幅度优化之前，不会将此命令再次引入书籍模板中。对此造成各位用户的不方便，非常抱歉！不过我们保留了 \lstinline{marginpar} 这个选项，你可以使用 \lstinline{marginpar=margintrue} 获得保留右侧旁注的版面设计。然后使用系统自带的 \lstinline{\marginpar} 或者 \lstinline{marginnote} 宏包的 \lstinline{\marginnote} 命令。
+
+\begin{remark}
+在使用旁注的时候，需要注意的是，文本和公式可以直接在旁注中使用。
+
+\begin{lstlisting}
+% text
+\marginpar{margin paragraph text}
+
+% equation
+\marginpar{
+  \begin{equation}
+    a^2 + b^2 = c^2
+  \end{equation}
+}
+\end{lstlisting}
+
+但是浮动体（表格、图片）需要注意，不能用浮动体环境，需要使用直接插图命令或者表格命令环境。然后使用 \lstinline{\captionof} 为其设置标题。为了得到居中的图表，可以使用 \lstinline{\centerline} 命令或者 \lstinline{center} 环境。更多详情请参考：\href{https://tex.stackexchange.com/questions/5583/caption-of-figure-in-marginpar-and-caption-of-wrapfigure-in-margin}{Caption of Figure in Marginpar}。
+
+\begin{lstlisting}
+% graph with centerline command
+\marginpar{
+  \centerline{
+    \includegraphics[width=0.2\textwidth]{logo.png}
+  }
+  \captionof{figure}{your figure caption}
+}
+
+% graph with center environment
+\marginpar{
+  \begin{center}
+    \includegraphics[width=0.2\textwidth]{logo.png}
+    \captionof{figure}{your figure caption}
+  \end{center}
+}
+\end{lstlisting}
+
+\end{remark}
+
+\chapter{字体选项}
+字体选项独立成章的原因是，我们希望本模板的用户关心模板使用的字体，知晓自己使用的字体以及遇到字体相关的问题能更加便捷地找到答案。
+
+\textcolor{red}{\bfseries 重要提示}：从 3.10 版本更新之后，沿用至今的 newtx 系列字体被重新更改为 cm 字体。并且新增中文字体（\lstinline{chinesefont}）选项。
+
+\section{数学字体选项}
+
+本模板定义了一个数学字体选项（\lstinline{math}），可选项有三个：
+\begin{enumerate}
+  \item \lstinline{math=cm}（默认），使用 \LaTeX{} 默认数学字体（推荐，无需声明）；
+  \item \lstinline{math=newtx}，使用 \lstinline{newtxmath} 设置数学字体（潜在问题比较多）。
+  \item \lstinline{math=mtpro2}，使用 \lstinline{mtpro2} 宏包设置数学字体，要求用户已经成功安装此宏包。
+\end{enumerate}
+
+\section{使用 newtx 系列字体}
+
+如果需要使用原先版本的 \lstinline{newtx} 系列字体，可以通过显示声明数学字体：
+
+\begin{lstlisting}
+\documentclass[math=newtx]{elegantbook}
+\end{lstlisting}
+
+\subsection{连字符}
+
+如果使用 \lstinline{newtx} 系列字体宏包，需要注意下连字符的问题。
+\begin{equation}
+  \int_{R^q} f(x,y) dy.\emph{of\kern0pt f}
+\end{equation}
+的代码为
+\begin{lstlisting}
+\begin{equation}
+  \int_{R^q} f(x,y) dy.\emph{of \kern0pt f}
+\end{equation}
+\end{lstlisting}
+
+\subsection{宏包冲突}
+
+另外在 3.08 版本中，有用户反馈模板在和 \lstinline{yhmath} 以及 \lstinline{esvect} 等宏包搭配使用的时候会出现报错：
+\begin{lstlisting}
+LaTeX Error:
+   Too many symbol fonts declared.
+\end{lstlisting}
+
+原因是在使用 \lstinline{newtxmath} 宏包时，重新定义了数学字体用于大型操作符，达到了 {\heiti 最多 16 个数学字体} 的上限，在调用其他宏包的时候，无法新增数学字体。为了减少调用非常用宏包，在此给出如何调用 \lstinline{yhmath} 以及 \lstinline{esvect} 宏包的方法。
+
+请在 \lstinline{elegantbook.cls} 内搜索 \lstinline{yhmath} 或者 \lstinline{esvect}，将你所需要的宏包加载语句\textit{取消注释}即可。
+\begin{lstlisting}
+%%% use yhmath pkg, uncomment following code
+% \let\oldwidering\widering
+% \let\widering\undefined
+% \RequirePackage{yhmath}
+% \let\widering\oldwidering
+
+%%% use esvect pkg, uncomment following code
+% \RequirePackage{esvect}
+\end{lstlisting}
+
+\section{中文字体选项}
+模板从 3.10 版本提供中文字体选项 \lstinline{chinesefont}，可选项有
+\begin{enumerate}
+\item \lstinline{ctexfont}：默认选项，使用 \lstinline{ctex} 宏包根据系统自行选择字体，可能存在字体缺失的问题，更多内容参考 \lstinline{ctex} 宏包\href{https://ctan.org/pkg/ctex}{官方文档}\footnote{可以使用命令提示符，输入 \lstinline{texdoc ctex} 调出本地 \lstinline{ctex} 宏包文档}。
+\item \lstinline{founder}：方正字体选项，调用 \lstinline{ctex} 宏包并且使用 \lstinline{fontset=none} 选项，然后设置字体为方正四款免费字体，方正字体下载注意事项见后文。
+\item \lstinline{nofont}：调用 \lstinline{ctex} 宏包并且使用 \lstinline{fontset=none} 选项，不设定中文字体，用户可以自行设置中文字体，具体见后文。
+\end{enumerate}
+
+\begin{remark}
+  使用 \lstinline{founder} 选项或者 \lstinline{nofont} 时，必须使用 \hologo{XeLaTeX} 进行编译。
+\end{remark}
+
+\subsection{方正字体选项}
+由于使用 \lstinline{ctex} 宏包默认调用系统已有的字体，部分系统字体缺失严重，因此，用户希望能够使用其它字体，我们推荐使用方正字体。方正的{\songti 方正书宋}、{\heiti 方正黑体}、{\kaishu 方正楷体}、{\fangsong 方正仿宋}四款字体均可免费试用，且可用于商业用途。用户可以自行从\href{http://www.foundertype.com/}{方正字体官网}下载此四款字体，在下载的时候请\textbf{务必}注意选择 GBK 字符集，也可以使用 \href{https://www.latexstudio.net/}{\LaTeX{} 工作室}提供的\href{https://pan.baidu.com/s/1BgbQM7LoinY7m8yeP25Y7Q}{方正字体，提取码为：njy9} 进行安装。安装时，{\kaishu Win 10 用户请右键选择为全部用户安装，否则会找不到字体。}
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=0.9\textwidth]{founder.png}
+\end{figure}
+
+\subsection{其他中文字体}
+如果你想完全自定义字体\footnote{这里仍然以方正字体为例。}，你可以选择 \lstinline{chinesefont=nofont}，然后在导言区设置
+\begin{lstlisting}
+\setCJKmainfont[BoldFont={FZHei-B01},ItalicFont={FZKai-Z03}]{FZShuSong-Z01}
+\setCJKsansfont[BoldFont={FZHei-B01},ItalicFont={FZHei-B01}]{FZHei-B01}
+\setCJKmonofont[BoldFont={FZHei-B01},ItalicFont={FZHei-B01}]{FZFangSong-Z02}
+\setCJKfamilyfont{zhsong}{FZShuSong-Z01}
+\setCJKfamilyfont{zhhei}{FZHei-B01}
+\setCJKfamilyfont{zhkai}{FZKai-Z03}
+\setCJKfamilyfont{zhfs}{FZFangSong-Z02}
+\newcommand*{\songti}{\CJKfamily{zhsong}}
+\newcommand*{\heiti}{\CJKfamily{zhhei}}
+\newcommand*{\kaishu}{\CJKfamily{zhkai}}
+\newcommand*{\fangsong}{\CJKfamily{zhfs}}
+\end{lstlisting}
+
+\chapter{ElegantBook 写作示例}
+
+\begin{introduction}
+  \item 积分定义~\ref{def:int}
+  \item Fubini 定理~\ref{thm:fubi}
+  \item 最优性原理~\ref{pro:max}
+  \item 柯西列性质~\ref{property:cauchy}
+  \item 韦达定理
+\end{introduction}
+
+\section{Lebesgue 积分}
+在前面各章做了必要的准备后，本章开始介绍新的积分。在 Lebesgue 测度理论的基础上建立了 Lebesgue 积分，其被积函数和积分域更一般，可以对有界函数和无界函数统一处理。正是由于 Lebesgue 积分的这些特点，使得 Lebesgue 积分比 Riemann 积分具有在更一般条件下的极限定理和累次积分交换积分顺序的定理，这使得 Lebesgue 积分不仅在理论上更完善，而且在计算上更灵活有效。
+
+Lebesgue 积分有几种不同的定义方式。我们将采用逐步定义非负简单函数，非负可测函数和一般可测函数积分的方式。
+
+由于现代数学的许多分支如概率论、泛函分析、调和分析等常常用到一般空间上的测度与积分理论，在本章最后一节将介绍一般的测度空间上的积分。
+
+\subsection{积分的定义}
+
+我们将通过三个步骤定义可测函数的积分。首先定义非负简单函数的积分。以下设 $E$ 是 $\mathcal{R}^n$ 中的可测集。
+
+\begin{definition}[可积性] \label{def:int} 
+设 $ f(x)=\sum\limits_{i=1}^{k} a_i \chi_{A_i}(x)$ 是 $E$ 上的非负简单函数，其中 $\{A_1,A_2,\ldots,A_k\}$ 是 $E$ 上的一个可测分割，$a_1,a_2,\ldots,a_k$ 是非负实数。定义 $f$ 在 $E$ 上的积分为 $\int_{a}^b f(x)$
+\begin{equation}
+   \label{inter}
+   \int_{E} f dx = \sum_{i=1}^k a_i m(A_i) \pi \alpha\beta\sigma\gamma\nu\xi\epsilon\varepsilon. \oint_{a}^b\ointop_{a}^b\prod_{i=1}^n
+\end{equation}
+一般情况下 $0 \leq \int_{E} f dx \leq \infty$。若 $\int_{E} f dx < \infty$，则称 $f$ 在 $E$ 上可积。
+\end{definition}
+
+一个自然的问题是，Lebesgue 积分与我们所熟悉的 Riemann 积分有什么联系和区别？在 4.4 在我们将详细讨论 Riemann 积分与 Lebesgue 积分的关系。这里只看一个简单的例子。设 $D(x)$ 是区间 $[0,1]$ 上的 Dirichlet 函数。即 $D(x)=\chi_{Q_0}(x)$，其中 $Q_0$ 表示 $[0,1]$ 中的有理数的全体。根据非负简单函数积分的定义，$D(x)$ 在 $[0,1]$ 上的 Lebesgue 积分为
+\begin{equation}
+   \label{inter2}
+   \int_0^1 D(x)dx = \int_0^1 \chi_{Q_0} (x) dx = m(Q_0) = 0
+\end{equation}
+即 $D(x)$ 在 $[0,1]$ 上是 Lebesgue 可积的并且积分值为零。但 $D(x)$ 在 $[0,1]$ 上不是 Riemann 可积的。
+
+
+有界变差函数是与单调函数有密切联系的一类函数。有界变差函数可以表示为两个单调递增函数之差。与单调函数一样，有界变差函数几乎处处可导。与单调函数不同，有界变差函数类对线性运算是封闭的，它们构成一线空间。练习题 \ref{exer:43} 是一个性质的证明。
+
+\begin{exercise}\label{exer:43}
+设 $f \notin\in L(\mathcal{R}^1)$，$g$ 是 $\mathcal{R}^1$ 上的有界可测函数。证明函数
+\begin{equation}
+   \label{ex:1}
+   I(t) = \int_{\mathcal{R}^1} f(x+t)g(x)dx \quad t \in \mathcal{R}^1
+\end{equation}
+是 $\mathcal{R}^1$ 上的连续函数。 
+\end{exercise}
+
+\begin{solution}
+即 $D(x)$ 在 $[0,1]$ 上是 Lebesgue 可积的并且积分值为零。但 $D(x)$ 在 $[0,1]$ 上不是 Riemann 可积的。
+\end{solution}
+
+\begin{proof}
+即 $D(x)$ 在 $[0,1]$ 上是 Lebesgue 可积的并且积分值为零。但 $D(x)$ 在 $[0,1]$ 上不是 Riemann 可积的。
+\end{proof}
+
+\begin{theorem}[Fubini 定理] \label{thm:fubi} 
+（1）若 $f(x,y)$ 是 $\mathcal{R}^p\times\mathcal{R}^q$ 上的非负可测函数，则对几乎处处的 $x\in \mathcal{R}^p$，$f(x,y)$ 作为 $y$ 的函数是 $\mathcal{R}^q$ 上的非负可测函数，$g(x)=\int_{\mathcal{R}^q}f(x,y) dy$ 是 $\mathcal{R}^p$ 上的非负可测函数。并且
+\begin{equation}
+   \label{eq:461}
+   \int_{\mathcal{R}^p\times\mathcal{R}^q} f(x,y) dxdy=\int_{\mathcal{R}^p}\left(\int_{\mathcal{R}^q}f(x,y)dy\right)dx.
+\end{equation}
+
+（2）若 $f(x,y)$ 是 $\mathcal{R}^p\times\mathcal{R}^q$ 上的可积函数，则对几乎处处的 $x\in\mathcal{R}^p$，$f(x,y)$ 作为 $y$ 的函数是 $\mathcal{R}^q$ 上的可积函数，并且 $g(x)=\int_{\mathcal{R}^q}f(x,y) dy$ 是 $\mathcal{R}^p$ 上的可积函数。而且~\ref{eq:461} 成立。
+\end{theorem}
+
+\ref{thm:fubi}
+
+\begin{note}
+在本模板中，引理（lemma），推论（corollary）的样式和定理~\ref{thm:fubi} 的样式一致，包括颜色，仅仅只有计数器的设置不一样。
+\end{note}
+
+我们说一个实变或者复变量的实值或者复值函数是在区间上平方可积的，如果其绝对值的平方在该区间上的积分是有限的。所有在勒贝格积分意义下平方可积的可测函数构成一个希尔伯特空间，也就是所谓的 $L^2$ 空间，几乎处处相等的函数归为同一等价类。形式上，$L^2$ 是平方可积函数的空间和几乎处处为 0 的函数空间的商空间。
+
+\begin{proposition}[最优性原理] \label{pro:max}
+如果 $u^*$ 在 $[s,T]$ 上为最优解，则 $u^*$ 在 $[s, T]$ 任意子区间都是最优解，假设区间为 $[t_0, t_1]$ 的最优解为 $u^*$ ，则 $u(t_0)=u^{*}(t_0)$，即初始条件必须还是在 $u^*$ 上。
+\end{proposition}
+
+我们知道最小二乘法可以用来处理一组数据，可以从一组测定的数据中寻求变量之间的依赖关系，这种函数关系称为经验公式。本课题将介绍最小二乘法的精确定义及如何寻求点与点之间近似成线性关系时的经验公式。假定实验测得变量之间的 $n$ 个数据，则在平面上，可以得到 $n$ 个点，这种图形称为 “散点图”，从图中可以粗略看出这些点大致散落在某直线近旁, 我们认为其近似为一线性函数，下面介绍求解步骤。
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.6\textwidth]{scatter.jpg}
+  \caption{散点图示例 $\hat{y}=a+bx$ \label{fig:scatter}}
+\end{figure}
+
+以最简单的一元线性模型来解释最小二乘法。什么是一元线性模型呢？监督学习中，如果预测的变量是离散的，我们称其为分类（如决策树，支持向量机等），如果预测的变量是连续的，我们称其为回归。回归分析中，如果只包括一个自变量和一个因变量，且二者的关系可用一条直线近似表示，这种回归分析称为一元线性回归分析。如果回归分析中包括两个或两个以上的自变量，且因变量和自变量之间是线性关系，则称为多元线性回归分析。对于二维空间线性是一条直线；对于三维空间线性是一个平面，对于多维空间线性是一个超平面。
+
+\begin{property}\label{property:cauchy}
+柯西列的性质
+\begin{enumerate}
+\item $\{x_k\}$ 是柯西列，则其子列 $\{x_k^i\}$ 也是柯西列。
+\item $x_k\in \mathcal{R}^n$，$\rho(x,y)$ 是欧几里得空间，则柯西列收敛，$(\mathcal{R}^n,\rho)$ 空间是完备的。
+\end{enumerate}
+\end{property}
+
+\begin{conclusion}
+回归分析（regression analysis) 是确定两种或两种以上变量间相互依赖的定量关系的一种统计分析方法。运用十分广泛，回归分析按照涉及的变量的多少，分为一元回归和多元回归分析；按照因变量的多少，可分为简单回归分析和多重回归分析；按照自变量和因变量之间的关系类型，可分为线性回归分析和非线性回归分析。
+\end{conclusion}
+
+\begin{problemset}
+\item 设 $A$ 为数域 $K$ 上的 $n$ 级矩阵。证明：如果 $K^n$ 中任意非零列向量都是 $A$ 的特征向量，则 $A$ 一定是数量矩阵。
+\item 证明：不为零矩阵的幂零矩阵不能对角化。
+\item 设 $A = (a_{ij})$ 是数域 $K$ 上的一个 $n$ 级上三角矩阵，证明：如果 $a_{11} = a_{22} = \cdots = a_{nn}$，并且至少有一个 $a_{kl} \not = 0 (k < l)$，则 $A$ 一定不能对角化。
+\end{problemset}
+
+\chapter{常见问题集}
+
+我们根据用户社区反馈整理了下面一些常见的问题，用户在遇到问题时，应当首先查阅本手册和本部分的常见的问题。
+
+\begin{enumerate}[itemsep=1.5ex]
+  \item \question{有没有办法章节用“第一章，第一节，（一）”这种？}
+    见前文介绍，可以使用 \lstinline{scheme=chinese} 设置。
+  \item \question{大佬，我想把正文字体改为亮色，背景色改为黑灰色。}
+    页面颜色可以使用 \lstinline{\pagecolor} 命令设置，文本命令可以参考\href{https://tex.stackexchange.com/questions/278544/xcolor-what-is-the-equivalent-of-default-text-color}{这里}进行设置。
+  \item \question{\lstinline[breaklines]{Package ctex Error: CTeX fontset `Mac' is unavailable.}}
+    在 Mac 系统下，中文编译请使用 \hologo{XeLaTeX}。
+  \item \question{\lstinline{! LaTeX Error: Unknown option `scheme=plain' for package `ctex'.}}
+    你用的 C\TeX{} 套装吧？这个里面的 \lstinline{ctex} 宏包已经是已经是 10 年前的了，与本模板使用的 \lstinline{ctex} 宏集有很大区别。不建议 C\TeX{} 套装了，请卸载并安装 \TeX{} Live 2021。
+  \item \question{我该使用什么版本？}
+    请务必使用\href{https://github.com/ElegantLaTeX/ElegantBook/releases}{最新正式发行版}，发行版间不定期可能会有更新（修复 bug 或者改进之类），如果你在使用过程中没有遇到问题，不需要每次更新\href{https://github.com/ElegantLaTeX/ElegantBook/archive/master.zip}{最新版}，但是在发行版更新之后，请尽可能使用最新版（发行版）！最新发行版可以在 GitHub 或者 \TeX{} Live 2021 内获取。
+  \item \question{我该使用什么编辑器？}
+    你可以使用 \TeX{} Live 2021 自带的编辑器 \TeX{}works 或者使用 \TeX{}studio，\TeX works 的自动补全，你可以参考我们的总结 \href{https://github.com/EthanDeng/texworks-autocomplete}{\TeX works 自动补全}。推荐使用 \TeX{} Live 2021 + \TeX{}studio。我自己用 VS Code 和 Sublime Text，相关的配置说明，请参考 \href{https://github.com/EthanDeng/vscode-latex}{\LaTeX{} 编译环境配置：Visual Studio Code 配置简介} 和 \href{https://github.com/EthanDeng/sublime-text-latex}{Sublime Text 搭建 \LaTeX{} 编写环境}。
+  \item \question{您好，我们想用您的 ElegantBook 模板写一本书。关于机器学习的教材，希望获得您的授权，谢谢您的宝贵时间。}
+    模板的使用修改都是自由的，你们声明模板来源以及模板地址（GitHub 地址）即可，其他未尽事宜按照开源协议 LPPL-1.3c。做好之后，如果方便的话，可以给我们一个链接，我把你们的教材放在 Elegant\LaTeX{} 用户作品集里。
+  \item \question{请问交叉引用是什么？}
+    本群和本模板适合有一定 \LaTeX{} 基础的用户使用，新手请先学习 \LaTeX{} 的基础，理解各种概念，否则你将寸步难行。
+  \item \question{定义等环境中无法使用加粗命令么？}
+    是这样的，默认中文并没加粗命令，如果你想在定义等环境中使用加粗命令，请使用 \lstinline{\heiti} 等字体命令，而不要使用 \lstinline{\textbf}。或者，你可以将 \lstinline|\textbf| 重新定义为 \lstinline|\heiti|。英文模式不存在这个问题。
+  \item \question{代码高亮环境能用其他语言吗？}
+    可以的，ElegantBook 模板用的是 \lstinline{listings} 宏包，你可以在环境（\lstinline{lstlisting}）之后加上语言（比如 Python 使用 \lstinline{language=Python} 选项），全局语言修改请使用 \lstinline{lsset} 命令，更多信息请参考宏包文档。
+  \item \question{群主，什么时候出 Beamer 的模板（主题），ElegantSlide 或者 ElegantBeamer？}
+    由于 Beamer 中有一个很优秀的主题 \href{https://github.com/matze/mtheme}{Metropolis}。后续确定不会再出任何主题/模板，请大家根据需要修改已有主题。
+\end{enumerate}
+
+\chapter{版本更新历史}
+
+根据用户的反馈，我们不断修正和完善模板。截止到此次更新，ElegantBook 模板在 GitHub 上有将近 100 次提交，正式发行版本（release）有 17 次。由于 3.00 之前版本与现在版本差异非常大，在此不列出 3.00 之前的更新内容。
+
+
+\datechange{2021/05/02}{版本 4.1 正式发布。}
+
+\begin{change}
+  \item \textbf{重要改动}：由原先的 \hologo{BibTeX} 改为 biblatex 编译方式（后端为 \lstinline{biber}），请注意两者之间的差异；
+  \item \textbf{重要改进}：修改对于定理写法兼容方式，提高数学公式代码的兼容性；
+  \item 页面设置改动，默认页面更宽；方便书写和阅读；
+  \item 支持目录文字以及页码跳转；
+  \item 不再维护 \hologo{pdfLaTeX} 中文支持方式，请务必使用 \hologo{XeLaTeX} 编译中文文稿。
+  \item 增加多个语言选项，法语 \lstinline{lang=fr}、荷兰语 \lstinline{lang=nl}、匈牙利语 \lstinline{lang=hu}、西班牙语 \lstinline{lang=es}、蒙古语 \lstinline{lang=mn} 等。
+\end{change}
+
+
+\datechange{2020/04/12}{版本 3.11 正式发布，\textcolor{red}{此版本为 3.x 最后版本。}}
+
+\begin{change}
+  \item \textbf{重要修正}：修复因为 \lstinline{gbt7714} 宏包更新导致的 \lstinline{natbib option clash} 错误；
+  \item 由于 \lstinline{pgfornament} 宏包未被 \TeX{} Live 2020 收录，因此删除 base 相关的内容；
+  \item 修复部分环境的空格问题；
+  \item 增加了意大利语言选项 \lstinline{lang=it}。
+\end{change}
+
+
+\datechange{2020/02/10}{版本 3.10 正式发布}
+
+\begin{change}
+  \item 增加数学字体选项 \lstinline{math}，可选项为 \lstinline{newtx} 和 \lstinline{cm}。\\
+  \textbf{重要提示}：原先通过 \lstinline{newtxmath} 宏包设置的数学字体改为 \LaTeX{} 默认数学字体，如果需要保持原来的字体，需要显式声明数学字体（\lstinline{math=newtx}）；
+  \item 新增中文字体选项 \lstinline{chinesefont}，可选项为 \lstinline{ctexfont}、\lstinline{founder} 和 \lstinline{nofont}。
+  \item 将封面作者信息设置为可选，并且增加自定义信息命令 \lstinline{\bioinfo}；
+  \item 在说明文档中增加版本历史，新增 \lstinline{\datechange} 命令和 \lstinline{change} 环境；
+  \item 增加汉化章节选项 \lstinline{scheme}，可选项为汉化 \lstinline{chinese}；
+  \item 由于 \lstinline{\lvert} 问题已经修复，重新调整 \lstinline{ctex} 宏包和 \lstinline{amsmath} 宏包位置。
+  \item 修改页眉设置，去除了 \lstinline{\lastpage} 以避免 page anchor 问题，加入 \lstinline{\frontmatter}。
+  \item 修改参考文献选项 \lstinline{cite}，可选项为数字 \lstinline{numbers}、 作者-年份 \lstinline{authoryear} 以及上标 \lstinline{super}。
+  \item 新增参考文献样式选项 \lstinline{bibstyle}，并将英文模式下参考文献样式 \lstinline{apalike} 设置为默认值，中文仍然使用 \lstinline{gbt7714} 宏包设置。
+\end{change}
+
+\datechange{2019/08/18}{版本 3.09 正式发布}
+
+\begin{change}
+  \item \lstinline{\elegantpar} 存在 bug，删除 \lstinline{\elegantpar} 命令，建议用户改用 \lstinline{\marginnote} 和 \lstinline{\marginpar} 旁注命令。
+  \item 积分操作符统一更改为 \lstinline{esint} 宏包设置；
+  \item 新增目录选项 \lstinline{toc}，可选项为单栏 \lstinline{onecol} 和双栏 \lstinline{twocol}；
+  \item 手动增加参考文献选项 \lstinline{cite}，可选项为上标形式 \lstinline{super}；
+  \item 修正章节习题（\lstinline{problemset}）环境。
+\end{change}
+
+\datechange{2019/05/28}{版本 3.08 正式发布}
+
+\begin{change}
+  \item 修复 \lstinline{\part} 命令。
+  \item 引入 Note 模板中的 \lstinline{pad} 选项 \lstinline{device=pad}。
+  \item 数学字体加入 \lstinline{mtpro2} 可选项 \lstinline{math=mtpro2}，使用免费的 \lstinline{lite} 子集。
+  \item 将参考文献默认显示方式 \lstinline{authoyear} 改为 \lstinline{numbers}。
+  \item 引入旁注命令 \lstinline{\marginpar}（测试）。
+  \item 新增章节摘要环境 \lstinline{introduction}。
+  \item 新增章节习题环境 \lstinline{problemset}。
+  \item 将 \lstinline{\equote} 重命名为 \lstinline{\extrainfo}。
+  \item 完善说明文档，增加致谢部分。
+\end{change}
+
+\datechange{2019/04/15}{版本 3.07 正式发布}
+
+\begin{change}
+  \item 删除中英文自定义字体总设置。
+  \item 新增颜色主题，并将原绿色默认主题设置为蓝色 \lstinline{color=blue}。
+  \item 引入隐藏装饰图案选项 \lstinline{base}，可选项有显示 \lstinline{show} 和隐藏 \lstinline{hide}。
+  \item 新增定理模式 \lstinline{mode}，可选项有简单模式 \lstinline{simple} 和炫彩模式 \lstinline{fancy}。
+  \item 新增隐藏证明、答案等环境的选项 \lstinline{result=noanswer}。
+\end{change}
+
+\datechange{2019/02/25}{版本 3.06 正式发布}
+
+\begin{change}
+  \item 删除水印。
+  \item 新封面，新装饰图案。
+  \item 添加引言使用说明。
+  \item 修复双面 \lstinline{twoside}。
+  \item 美化列表环境。
+  \item 增加 \lstinline{\subsubsection} 的设置。
+  \item 将模板拆分成中英文语言模式。
+  \item 使用 \lstinline{lstlisting} 添加代码高亮。
+  \item 增加定理类环境使用说明。
+\end{change}
+
+\datechange{2019/01/22}{版本 3.05 正式发布}
+
+\begin{change}
+  \item 添加 \lstinline{xeCJK} 宏包中文支持方案。
+  \item 修复模板之前对 Ti\textit{k}Z 单位的改动。
+  \item 更新 logo 图。
+\end{change}
+
+\datechange{2019/01/15}{版本 3.04 正式发布}
+
+\begin{change}
+  \item 格式化模板代码。
+  \item 增加 \lstinline{\equote} 命令。
+  \item 修改 \lstinline{\date}。
+\end{change}
+
+\datechange{2019/01/08}{版本 3.03 正式发布}
+
+\begin{change}
+  \item 修复附录章节显示问题。
+  \item 小幅优化封面代码。
+\end{change}
+
+\datechange{2018/12/31}{版本 3.02 正式发布}
+
+\begin{change}
+  \item 修复名字系列命令自定义格式时出现的空格问题，比如 \lstinline{\listfigurename}。
+  \item 英文定理类名字改为中文名。
+  \item 英文结构名改为中文。
+\end{change}
+
+\datechange{2018/12/16}{版本 3.01 正式发布}
+
+\begin{change}
+  \item 调整 \lstinline{ctex} 宏包。
+  \item 说明文档增加更新内容。
+\end{change}
+
+\datechange{2018/12/06}{版本 3.00 正式发布}
+
+\begin{change}
+  \item 删除 \lstinline{mathpazo} 数学字体选项。
+  \item 添加邮箱命令 \lstinline{\mailto}。
+  \item 修改英文字体为 \lstinline{newtx} 系列，另外大型操作符号维持 cm 字体。
+  \item 中文字体改用 \lstinline{ctex} 宏包自动设置。
+  \item 删除 \lstinline{xeCJK} 字体设置，原因是不同系统字体不方便统一。
+  \item 定理换用 \lstinline{tcolobox} 宏包定义，并基本维持原有的定理样式，优化显示效果，支持跨页；定理类名字重命名，如 etheorem 改为 theorem 等等。
+  \item 删去自定义的缩进命令 \lstinline{\Eindent}。
+  \item 添加参考文献宏包 \lstinline{natbib}。
+  \item 颜色名字重命名。
+\end{change}
+
+\nocite{*} 
+\printbibliography
+\appendix
+
+\chapter{基本数学工具}
+
+
+本附录包括了计量经济学中用到的一些基本数学，我们扼要论述了求和算子的各种性质，研究了线性和某些非线性方程的性质，并复习了比例和百分数。我们还介绍了一些在应用计量经济学中常见的特殊函数，包括二次函数和自然对数，前 4 节只要求基本的代数技巧，第 5 节则对微分学进行了简要回顾；虽然要理解本书的大部分内容，微积分并非必需，但在一些章末附录和第 3 篇某些高深专题中，我们还是用到了微积分。
+
+\section{求和算子与描述统计量}
+
+\textbf{求和算子} 是用以表达多个数求和运算的一个缩略符号，它在统计学和计量经济学分析中扮演着重要作用。如果 $\{x_i: i=1, 2, \ldots, n\}$ 表示 $n$ 个数的一个序列，那么我们就把这 $n$ 个数的和写为：
+
+\begin{equation}
+\sum_{i=1}^n x_i \equiv x_1 + x_2 +\cdots + x_n
+\end{equation}
+
+
+
+\end{document}
