@@ -301,6 +301,10 @@ Elegant\LaTeX{} 项目组致力于打造一系列美观、优雅、简便的模�
   \item 音素（phoneme）：声音的最小单位，同一音素由不同人/环境阅读，可以形成不同的发音。
   \item 字素（grapheme）：音素对应的文本。具体的区别参见：\href{https://www.youtube.com/watch?v=25r1fyoorko}{Phonemes, Graphemes, and Morphemes!}
   \item phone: 某个音素的具体发音。
+  \item 过零率
+  \item 短时能量
+  \item LPC
+  \item LPCC。LPCC假定信号
 \end{enumerate}
 
 对于一段1秒的波形，假设采样率16kHz，采样位深16bit，则包含样本点 $1\times 16000=16000$ 个，所占容量 $1\times 16000\times 16 /8=32000$ 字节（B）。
@@ -724,7 +728,14 @@ MFCC和FBank唯一的不同就在于，获得FBank特征之后，再经过反离
 
 \section{Tacotron}
 
-以经常使用的Tacotron-2声学模型为例。
+以经常使用的Tacotron-2声学模型为例。原始论文参见：
+
+\begin{enumerate}
+  \item \href{https://arxiv.org/abs/1703.10135}{Tacotron: Towards End-to-End Speech Synthesis}
+  \item \href{https://arxiv.org/abs/1712.05884}{Natural TTS Synthesis by Conditioning WaveNet on Mel Spectrogram Predictions}
+\end{enumerate}
+
+此外，谷歌在语音合成领域，特别是端到端语音合成领域做出了开创性的共享，该组会将最新的论文汇总在\href{https://google.github.io/tacotron/}{Tacotron (/täkōˌträn/): An end-to-end speech synthesis system by Google}.
 
 \begin{figure}[htbp]
   \centering
@@ -786,12 +797,136 @@ Tacotron2的损失函数主要包括以下4个方面：
   \end{equation}
   其中， $K$ 为参数总数， $w_k$ 为模型中的参数，这里排除偏置值、RNN以及线性映射中的参数。最终的损失函数为上述4个部分的损失之和，如下式：
   \begin{equation}
-    Loss=MelLoss+LinearLoss+StopTokenLoss+RegulationLoss
+    {\rm Loss}={\rm MelLoss}+{\rm LinearLoss}+{\rm StopTokenLoss}+{\rm RegulationLoss}
   \end{equation}
 \end{enumerate}
 
+\section{FastSpeech}
 
+FastSpeech是基于Transformer显式时长建模的声学模型，由微软和浙大提出。原始论文参见：
 
+\begin{enumerate}
+  \item \href{https://arxiv.org/abs/1905.09263}{FastSpeech: Fast, Robust and Controllable Text to Speech}
+  \item \href{https://arxiv.org/abs/2006.04558}{FastSpeech 2: Fast and High-Quality End-to-End Text to Speech}
+\end{enumerate}
+
+相对应地，微软在语音合成领域的论文常常发布在\href{https://speechresearch.github.io/}{Microsoft-Speech Research}。
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.6\textwidth]{fastspeech_arch_paper.png}
+  \caption{FastSpeech 2整体结构 \label{fig:fastspeech_arch_paper}}
+\end{figure}
+
+FastSpeech 2和上代FastSpeech的编解码器均是采用FFT（feed-forward Transformer，前馈Transformer）块。编解码器的输入首先进行位置编码，之后进入FFT块。FFT块主要包括多头注意力模块和位置前馈网络，位置前馈网络可以由若干层Conv1d、LayerNorm和Dropout组成。
+
+论文中提到语音合成是典型的一对多问题，同样的文本可以合成无数种语音。上一代FastSpeech主要通过目标侧使用教师模型的合成频谱而非真实频谱，以简化数据偏差，减少语音中的多样性，从而降低训练难度；向模型提供额外的时长信息两个途径解决一对多的问题。在语音中，音素时长自不必说，直接影响发音长度和整体韵律；音调则是影响情感和韵律的另一个特征；能量则影响频谱的幅度，直接影响音频的音量。在FastSpeech 2中对这三个最重要的语音属性单独建模，从而缓解一对多带来的模型学习目标不确定的问题。
+
+在对时长、基频和能量单独建模时，所使用的网络结构实际是相似的，在论文中称这种语音属性建模网络为变量适配器（Variance Adaptor）。时长预测的输出也作为基频和能量预测的输入。最后，基频预测和能量预测的输出，以及依靠时长信息展开的编码器输入元素加起来，作为下游网络的输入。变量适配器主要是由2层卷积和1层线性映射层组成，每层卷积后加ReLU激活、LayerNorm和Dropout。代码摘抄自\href{https://github.com/ming024/FastSpeech2}{FastSpeech2}，添加了一些注释。
+
+\begin{lstlisting}
+class VariancePredictor(nn.Module):
+  """ Duration, Pitch and Energy Predictor """
+  def __init__(self):
+      super(VariancePredictor, self).__init__()
+
+      self.input_size = hp.encoder_hidden
+      self.filter_size = hp.variance_predictor_filter_size
+      self.kernel = hp.variance_predictor_kernel_size
+      self.conv_output_size = hp.variance_predictor_filter_size
+      self.dropout = hp.variance_predictor_dropout
+
+      self.conv_layer = nn.Sequential(OrderedDict([
+          ("conv1d_1", Conv(self.input_size,
+                            self.filter_size,
+                            kernel_size=self.kernel,
+                            padding=(self.kernel-1)//2)),
+          ("relu_1", nn.ReLU()),
+          ("layer_norm_1", nn.LayerNorm(self.filter_size)),
+          ("dropout_1", nn.Dropout(self.dropout)),
+          ("conv1d_2", Conv(self.filter_size,
+                            self.filter_size,
+                            kernel_size=self.kernel,
+                            padding=1)),
+          ("relu_2", nn.ReLU()),
+          ("layer_norm_2", nn.LayerNorm(self.filter_size)),
+          ("dropout_2", nn.Dropout(self.dropout))
+      ]))
+
+      self.linear_layer = nn.Linear(self.conv_output_size, 1)
+
+  def forward(self, encoder_output, mask):
+      '''
+      :param encoder_output: Output of encoder. [batch_size,seq_len,encoder_hidden]
+      :param mask: Mask for encoder. [batch_size,seq_len]
+      '''
+      out = self.conv_layer(encoder_output)
+      out = self.linear_layer(out)
+      out = out.squeeze(-1)
+
+      if mask is not None:
+          out = out.masked_fill(mask, 0.)
+
+      return out
+\end{lstlisting}
+
+利用该变量适配器对时长、基频和能量进行建模。
+
+\begin{lstlisting}
+class VarianceAdaptor(nn.Module):
+  """ Variance Adaptor """
+
+  def __init__(self):
+      super(VarianceAdaptor, self).__init__()
+      self.duration_predictor = VariancePredictor()
+      self.length_regulator = LengthRegulator()
+      self.pitch_predictor = VariancePredictor()
+      self.energy_predictor = VariancePredictor()
+
+      self.pitch_bins = nn.Parameter(torch.exp(torch.linspace(
+          np.log(hp.f0_min), np.log(hp.f0_max), hp.n_bins-1)), requires_grad=False)
+      self.energy_bins = nn.Parameter(torch.linspace(
+          hp.energy_min, hp.energy_max, hp.n_bins-1), requires_grad=False)
+      self.pitch_embedding = nn.Embedding(hp.n_bins, hp.encoder_hidden)
+      self.energy_embedding = nn.Embedding(hp.n_bins, hp.encoder_hidden)
+
+  def forward(self, x, src_mask, mel_mask=None, duration_target=None, pitch_target=None, energy_target=None, max_len=None, d_control=1.0, p_control=1.0, e_control=1.0):
+      '''
+      :param x: Output of encoder. [batch_size,seq_len,encoder_hidden]
+      :param src_mask: Mask of encoder, can get src_mask form input_lengths. [batch_size,seq_len]
+      :param duration_target, pitch_target, energy_target: Ground-truth when training, None when synthesis. [batch_size,seq_len]
+      '''
+      log_duration_prediction = self.duration_predictor(x, src_mask)
+      if duration_target is not None:
+          x, mel_len = self.length_regulator(x, duration_target, max_len)
+      else:
+          duration_rounded = torch.clamp(
+              (torch.round(torch.exp(log_duration_prediction)-hp.log_offset)*d_control), min=0)
+          x, mel_len = self.length_regulator(x, duration_rounded, max_len)
+          mel_mask = utils.get_mask_from_lengths(mel_len)
+
+      pitch_prediction = self.pitch_predictor(x, mel_mask)
+      if pitch_target is not None:
+          pitch_embedding = self.pitch_embedding(
+              torch.bucketize(pitch_target, self.pitch_bins))
+      else:
+          pitch_prediction = pitch_prediction*p_control
+          pitch_embedding = self.pitch_embedding(
+              torch.bucketize(pitch_prediction, self.pitch_bins))
+
+      energy_prediction = self.energy_predictor(x, mel_mask)
+      if energy_target is not None:
+          energy_embedding = self.energy_embedding(
+              torch.bucketize(energy_target, self.energy_bins))
+      else:
+          energy_prediction = energy_prediction*e_control
+          energy_embedding = self.energy_embedding(
+              torch.bucketize(energy_prediction, self.energy_bins))
+
+      x = x + pitch_embedding + energy_embedding
+
+      return x, log_duration_prediction, pitch_prediction, energy_prediction, mel_len, mel_mask
+\end{lstlisting}
 
 
 
