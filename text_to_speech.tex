@@ -303,8 +303,19 @@ Elegant\LaTeX{} 项目组致力于打造一系列美观、优雅、简便的模�
   \item phone: 某个音素的具体发音。
   \item 过零率
   \item 短时能量
-  \item LPC
-  \item LPCC。LPCC假定信号
+  \item LPC。线性预测系数。LPC的基本思想是，当前时刻的信号可以用若干历史时刻信号的线性组合来估计，通过使实际语音的采样值和线性预测的采样值之间达到均方差最小，即可得到一组线性预测系数。求解LPC系数可以采用自相关法、协方差法、格型法等快速算法。
+  \begin{note}
+    语音信号的数字表示可以分为两类：\lstinline{波形表示}和\lstinline{参数表示}，波形表示仅通过采样和量化保存模拟信号的波形；而参数表示将语音信号表示为某种语音产生模型的输出，是对数字化语音进行分析和处理之后得到的。
+  \end{note}
+
+  \begin{note}
+    利用同态处理方法，对语音信号求离散傅里叶变换之后取对数，再求反变换就可以得到倒谱系数。其中，LPC倒谱（LPCCEP）是建立在LPC谱上的，而梅尔倒谱系数（Mel Frequency Cepstrum Coefficient，MFCC）则是基于梅尔频谱的。
+  \end{note}
+
+  \item LPCC。LPCC特征假定信号存在一种线性预测的结构，这对于周期特性的浊音描述比较准确，而对于辅音则相当于强加了一种错误的结构。MFCC相邻帧特征近乎独立，所以能够比较好地描述辅音，但忽略了信号可能的内在结构，如相邻帧之间的关联，经验表明MFCC更好用，并且经常会加入差分特征以减弱其独立性。
+  \begin{note}
+    线性预测倒谱系数（LPCC）是根据声管模型建立的特征参数，是对声道响应的特征表征。梅尔频谱倒谱系数（MFCC）是基于人类听觉机理提取出的特征参数，是对人耳听觉的特征表征。
+  \end{note}
 \end{enumerate}
 
 对于一段1秒的波形，假设采样率16kHz，采样位深16bit，则包含样本点 $1\times 16000=16000$ 个，所占容量 $1\times 16000\times 16 /8=32000$ 字节（B）。
@@ -818,6 +829,8 @@ FastSpeech是基于Transformer显式时长建模的声学模型，由微软和�
   \caption{FastSpeech 2整体结构 \label{fig:fastspeech_arch_paper}}
 \end{figure}
 
+\subsection{模型结构}
+
 FastSpeech 2和上代FastSpeech的编解码器均是采用FFT（feed-forward Transformer，前馈Transformer）块。编解码器的输入首先进行位置编码，之后进入FFT块。FFT块主要包括多头注意力模块和位置前馈网络，位置前馈网络可以由若干层Conv1d、LayerNorm和Dropout组成。
 
 论文中提到语音合成是典型的一对多问题，同样的文本可以合成无数种语音。上一代FastSpeech主要通过目标侧使用教师模型的合成频谱而非真实频谱，以简化数据偏差，减少语音中的多样性，从而降低训练难度；向模型提供额外的时长信息两个途径解决一对多的问题。在语音中，音素时长自不必说，直接影响发音长度和整体韵律；音调则是影响情感和韵律的另一个特征；能量则影响频谱的幅度，直接影响音频的音量。在FastSpeech 2中对这三个最重要的语音属性单独建模，从而缓解一对多带来的模型学习目标不确定的问题。
@@ -927,6 +940,176 @@ class VarianceAdaptor(nn.Module):
 
       return x, log_duration_prediction, pitch_prediction, energy_prediction, mel_len, mel_mask
 \end{lstlisting}
+
+同样是通过长度调节器（Length Regulator），利用时长信息将编码器输出长度扩展到频谱长度。具体实现就是根据duration的具体值，直接上采样。一个音素时长为2，就将编码器输出复制2份，给3就直接复制3份，拼接之后作为最终的输出。实现代码：
+
+\begin{lstlisting}
+class LengthRegulator(nn.Module):
+  """ Length Regulator """
+
+  def __init__(self):
+      super(LengthRegulator, self).__init__()
+
+  def LR(self, x, duration, max_len):
+      '''
+      :param x: Output of encoder. [batch_size,phoneme_seq_len,encoder_hidden]
+      :param duration: Duration for phonemes. [batch_size,phoneme_seq_len]
+      :param max_len: Max length for mel-frames. scaler
+
+      Return:
+      output: Expanded output of encoder. [batch_size,mel_len,encoder_hidden]
+      '''
+      output = list()
+      mel_len = list()
+      for batch, expand_target in zip(x, duration):
+          # batch: [seq_len,encoder_hidden]
+          # expand_target: [seq_len]
+          expanded = self.expand(batch, expand_target)
+          output.append(expanded)
+          mel_len.append(expanded.shape[0])
+
+      if max_len is not None:
+          output = utils.pad(output, max_len)
+      else:
+          output = utils.pad(output)
+
+      return output, torch.LongTensor(mel_len).to(device)
+
+  def expand(self, batch, predicted):
+      out = list()
+
+      for i, vec in enumerate(batch):
+          # expand_size: scaler
+          expand_size = predicted[i].item()
+          # Passing -1 as the size for a dimension means not changing the size of that dimension.
+          out.append(vec.expand(int(expand_size), -1))
+      out = torch.cat(out, 0)
+
+      return out
+
+  def forward(self, x, duration, max_len):
+      output, mel_len = self.LR(x, duration, max_len)
+      return output, mel_len
+\end{lstlisting}
+
+对于音高和能量的预测，模块的主干网络相似，但使用方法有所不同。以音高为例，能量的使用方式相似。首先对预测出的实数域音高值进行分桶，映射为一定范围内的自然数集，然后做嵌入。
+
+\begin{lstlisting}
+pitch_prediction = self.pitch_predictor(x, mel_mask)
+if pitch_target is not None:
+  pitch_embedding = self.pitch_embedding(
+      torch.bucketize(pitch_target, self.pitch_bins))
+else:
+  pitch_prediction = pitch_prediction*p_control
+  pitch_embedding = self.pitch_embedding(
+      torch.bucketize(pitch_prediction, self.pitch_bins))
+\end{lstlisting}
+
+这里用到了Pytorch中一个不是特别常见的函数\href{https://pytorch.org/docs/master/generated/torch.bucketize.html}{torch.bucketize}。这是Pytorch中的分桶函数，boundaries确定了各个桶的边界，是一个单调递增向量，用于划分input，并返回input所属桶的索引，桶索引从0开始。
+
+能量嵌入向量的计算方法与之类似。至此，获得了展开之后的编码器输出x，基频嵌入向量\lstinline{pitch_embedding}和能量嵌入向量\lstinline{energy_embedding}之后，元素加获得最终编解码器的输入。
+
+\subsection{损失函数}
+
+FastSpeech 2的目标函数由PostNet前后的频谱均方差，时长、音高和能量的均方差组成。时长映射到指数域（时长预测器输出的数值 $x$ 作为指数，最终的预测时长为 $e^x$ ），音高映射到对数域（音高预测器输出的数值 $x$ 做对数，作为最终的音高 ${\rm log} x$ ），而能量直接采用能量预测器的输出值。整体的损失函数为：
+
+\begin{equation}
+  {\rm Loss}={\rm Loss}_{mel}+{\rm Loss}_{mel}^{post}+{\rm Loss}_{duration}+{\rm Loss}_{pitch}+{\rm Loss}_{energy}
+\end{equation}
+
+频谱的损失函数形式采用均方差（MSE），时长、基频和能量采用平均绝对误差（MAE），具体的实现如下：
+
+\begin{lstlisting}
+log_d_target.requires_grad = False
+p_target.requires_grad = False
+e_target.requires_grad = False
+mel_target.requires_grad = False
+
+log_d_predicted = log_d_predicted.masked_select(src_mask)
+log_d_target = log_d_target.masked_select(src_mask)
+p_predicted = p_predicted.masked_select(mel_mask)
+p_target = p_target.masked_select(mel_mask)
+e_predicted = e_predicted.masked_select(mel_mask)
+e_target = e_target.masked_select(mel_mask)
+
+mel = mel.masked_select(mel_mask.unsqueeze(-1))
+mel_postnet = mel_postnet.masked_select(mel_mask.unsqueeze(-1))
+mel_target = mel_target.masked_select(mel_mask.unsqueeze(-1))
+
+mel_loss = self.mse_loss(mel, mel_target)
+mel_postnet_loss = self.mse_loss(mel_postnet, mel_target)
+
+d_loss = self.mae_loss(log_d_predicted, log_d_target)
+p_loss = self.mae_loss(p_predicted, p_target)
+e_loss = self.mae_loss(e_predicted, e_target)
+
+total_loss = mel_loss + mel_postnet_loss + d_loss + p_loss + e_loss
+\end{lstlisting}
+
+\subsection{小结}
+
+FastSpeech系列的声学模型将Transformer引入语音合成领域，并且显式建模语音中的重要特征，比如时长、音高和能量等。实际上，微软首次在\href{https://arxiv.org/abs/1809.08895}{Neural Speech Synthesis with Transformer Network}将Transformer作为主干网络，实现语音合成的声学模型，这一思想同样被\href{https://arxiv.org/abs/2006.06873}{FastPitch: Parallel Text-to-speech with Pitch Prediction}采用，相关的开源代码：\href{https://github.com/as-ideas/TransformerTTS}{as-ideas/TransformerTTS}。
+
+\section{VITS}
+
+VITS（Variational Inference with adversarial learning for end-to-end Text-to-Speech）是一种结合变分推理（variational inference）、标准化流（normalizing flows）和对抗训练的高表现力语音合成模型。和Tacotron和FastSpeech不同，Tacotron / FastSpeech实际是将字符或音素映射为中间声学表征，比如梅尔频谱，然后通过声码器将梅尔频谱还原为波形，而VITS则直接将字符或音素映射为波形，不需要额外的声码器重建波形，真正的端到端语音合成模型。VITS通过隐变量而非之前的频谱串联语音合成中的声学模型和声码器，在隐变量上进行建模并利用随机时长预测器，提高了合成语音的多样性，输入同样的文本，能够合成不同声调和韵律的语音。VITS合成音质较高，并且可以借鉴之前的FastSpeech，单独对音高等特征进行建模，以进一步提升合成语音的质量，是一种非常有潜力的语音合成模型。
+
+\subsection{模型整体结构}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.6\textwidth]{vits_arch.png}
+  \caption{VITS整体结构 \label{fig:vits_arch}}
+\end{figure}
+
+VITS包括三个部分：
+
+\begin{enumerate}
+  \item 后验编码器。如上图（a）的左下部分所示，在训练时输入线性谱，输出隐变量 $z$ ，推断时隐变量 $z$ 则由 $f_\theta$ 产生。VITS的后验编码器采用WaveGlow和Glow-TTS中的非因果WaveNet残差模块。应用于多人模型时，将说话人嵌入向量添加进残差模块，\lstinline{仅用于训练}。这里的隐变量 $z$ 可以理解为Tacotron / FastSpeech中的梅尔频谱。
+  \item 解码器。如上图（a）左上部分所示，解码器从提取的隐变量 $z$ 中生成语音波形，这个解码器实际就是声码器HiFi-GAN V1的生成器。应用于多人模型时，在说话人嵌入向量之后添加一个线性层，拼接到 $f_\theta$ 的输出隐变量 $z$ 。
+  \item 先验编码器。如上图（a）右侧部分所示，先验编码器结构比较复杂，作用类似于Tacotron / FastSpeech的声学模型，只不过VITS是将音素映射为中间表示 $z$ ，而不是将音素映射为频谱。包括文本编码器和提升先验分布复杂度的标准化流 $f_\theta$ 。应用于多人模型时，向标准化流的残差模块中添加说话人嵌入向量。
+  \item 随机时长预测器。如上图（a）右侧中间橙色部分。从条件输入 $h_{text}$ 估算音素时长的分布。应用于多人模型时，在说话人嵌入向量之后添加一个线性层，并将其拼接到文本编码器的输出 $h_{text}$ 。
+  \item 判别器。实际就是HiFi-GAN的多周期判别器，在上图中未画出，\lstinline{仅用于训练}。目前看来，对于任意语音合成模型，加入判别器辅助都可以显著提升表现。
+\end{enumerate}
+
+\subsection{变分推断}
+
+VITS可以看作是一个最大化变分下界，也即ELBO（Evidence Lower Bound）的条件VAE。
+
+\begin{enumerate}
+  \item 重建损失
+  VITS在训练时实际还是会生成梅尔频谱以指导模型的训练，重建损失中的目标使用的是梅尔频谱而非原始波形：
+  \begin{equation}
+    {\rm L}_{recon}=||x_{mel}-\hat{x}_{mel}||_1
+  \end{equation}
+  但在推断时并不需要生成梅尔频谱。在实现上，不上采样整个隐变量 $z$ ，而只是使用部分序列作为解码器的输入。
+
+  \item KL散度
+  先验编码器 $c$ 的输入包括从文本生成的音素 $c_{text}$ ，和音素、隐变量之间的对齐 $A$ 。所谓的对齐就是 $|c_{text}|\times |z|$ 大小的严格单调注意力矩阵，表示每一个音素的发音时长。因此KL散度是：
+  \begin{equation}
+    {\rm L}_{kl}={\rm log}q_{\phi}(z|x_{lin})-{\rm log}p_\theta (z|c_{text},A)
+  \end{equation}
+  其中， $q_{\phi}(z|x_{lin})$ 表示给定输入 $x$ 的后验分布， $p_\theta(z|c)$ 表示给定条件[公式]的隐变量[公式]先验分布。其中隐变量[公式]为：
+\end{enumerate}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
