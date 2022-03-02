@@ -1078,6 +1078,7 @@ VITS可以看作是一个最大化变分下界，也即ELBO（Evidence Lower Bou
 
 \begin{enumerate}
   \item 重建损失
+  
   VITS在训练时实际还是会生成梅尔频谱以指导模型的训练，重建损失中的目标使用的是梅尔频谱而非原始波形：
   \begin{equation}
     {\rm L}_{recon}=||x_{mel}-\hat{x}_{mel}||_1
@@ -1085,12 +1086,154 @@ VITS可以看作是一个最大化变分下界，也即ELBO（Evidence Lower Bou
   但在推断时并不需要生成梅尔频谱。在实现上，不上采样整个隐变量 $z$ ，而只是使用部分序列作为解码器的输入。
 
   \item KL散度
+  
   先验编码器 $c$ 的输入包括从文本生成的音素 $c_{text}$ ，和音素、隐变量之间的对齐 $A$ 。所谓的对齐就是 $|c_{text}|\times |z|$ 大小的严格单调注意力矩阵，表示每一个音素的发音时长。因此KL散度是：
   \begin{equation}
     {\rm L}_{kl}={\rm log}q_{\phi}(z|x_{lin})-{\rm log}p_\theta (z|c_{text},A)
   \end{equation}
-  其中， $q_{\phi}(z|x_{lin})$ 表示给定输入 $x$ 的后验分布， $p_\theta(z|c)$ 表示给定条件[公式]的隐变量[公式]先验分布。其中隐变量[公式]为：
+  其中， $q_{\phi}(z|x_{lin})$ 表示给定输入 $x$ 的后验分布， $p_\theta(z|c)$ 表示给定条件 $c$ 的隐变量 $z$ 的先验分布。其中隐变量 $z$ 为：
+  \begin{equation}
+    z\sim q_\phi(z|x_{lin})=\mathbb{N}(z;\mu_\phi(x_{lin}),\sigma_\phi(x_{lin}))
+  \end{equation}
+  为了给后验编码器提供更高分辨率的信息，使用线性谱而非梅尔频谱作为后验编码器 $\phi_\theta$ 的输入。同时，为了生成更加逼真的样本，提高先验分布的表达能力比较重要，因此引入标准化流，在文本编码器产生的简单分布和复杂分布间进行可逆变换。也就是说，在经过上采样的编码器输出之后，加入一系列可逆变换：
+  \begin{equation}
+    p_\theta(z|c)=\mathbb{N}(f_\theta(z);\mu_\theta(c),\sigma_\theta(c))|{\rm det}\frac{\partial f_\theta(z)}{\partial z}|
+  \end{equation}
+  其中，上式中的 $c$ 就是上采样的编码器输出：
+  \begin{equation}
+    c=[c_{text},A]
+  \end{equation}
 \end{enumerate}
+
+
+\subsection{对齐估计}
+
+由于在训练时没有对齐的真实标签，因此在训练的每一次迭代时都需要估计对齐。
+
+\begin{enumerate}
+  \item 单调对齐搜索
+  
+  为了估计文本和语音之间的对齐 $A$ ，VITS采用了类似于Glow-TTS中的单调对齐搜索（Monotonic Alignment Search，MAS）方法，该方法寻找一个最优的对齐路径以最大化利用标准化流 $f$ 参数化数据的对数似然：
+  \begin{equation}
+    A=\underset{\hat{A}}{\rm argmax}{\rm log}p(x|c_{text},\hat{A})=\underset{\hat{A}}{\rm argmax}{\rm log}\mathbb{N}(f(x);\mu(c_{text},\hat{A}),\sigma(c_{text},\hat{A}))
+  \end{equation}
+  MAS约束获得的最优对齐必须是单调且无跳过的。但是无法直接将MAS直接应用到VITS，因为VITS优化目标是ELBO而非确定的隐变量 $z$ 的对数似然，因此稍微改变了一下MAS，寻找最优的对齐路径以最大化ELBO：
+  \begin{equation}
+    \underset{\hat{A}}{\rm argmax}{\rm log}p_\theta (x_{mel}|z)-{\rm log}\frac{q_\theta(z|x_{lin})}{p_\theta (z|c_{text},\hat{A})}
+  \end{equation}
+
+  \item 随机时长预测器
+  
+  随机时长预测器是一个基于流的生成模型，训练目标为音素时长对数似然的变分下界：
+  \begin{equation}
+    {\rm log}p_\theta (d|c_{text}\geq \mathbb{E}_{q_\theta (u,v|d,c_{text})}[{\rm log}\frac{p_\theta (d-u,v|c_{text})}{q_\phi (u,v|d,c_{text})}]
+  \end{equation}
+  在训练时，断开随机时长预测器的梯度反传，以防止该部分的梯度影响到其它模块。音素时长通过随机时长预测器的可逆变换从随机噪音中采样获得，之后转换为整型值。
+
+\end{enumerate}
+
+\subsection{对抗训练}
+
+引入判别器 $D$ 判断输出是解码器 $G$ 的输出，还是真实的波形 $y$ 。VITS用于对抗训练的损失函数包括两个部分，第一部分是用于对抗训练的最小二乘损失函数（least-squares loss function）： 
+
+\begin{equation}
+  {\rm L}_{adv}(D)=\mathbb{E}_{(y,z)}[(D(y)-1)^2+(D(G(z)))^2]
+\end{equation}
+
+\begin{equation}
+  {\rm L}_{adv}(G)=\mathbb{E}_z[(D(G(z))-1)^2]
+\end{equation}
+
+第二部分是仅作用于生成器的特征匹配损失（feature-matching loss）：
+
+\begin{equation}
+  {\rm L}_{fm}(G)=\mathbb{E}_{(y,c)}[\sum_{l=1}^T\frac{1}{N_l}||D^l(y)-D^l(G(z))||_1]
+\end{equation}
+
+其中， $T$ 表示判别器的层数， $D^l$ 表示第 $l$ 层判别器的特征图（feature map）， $N_l$ 表示特征图的数量。特征匹配损失可以看作是重建损失，用于约束判别器中间层的输出。
+
+\subsection{总体损失}
+
+VITS可以看作是VAE和GAN的联合训练，因此总体损失为：
+
+\begin{equation}
+  {\rm L}_{vae}={\rm L}_{recon}+{\rm L}_{kl}+{\rm L}_{dur}+{\rm L}_{adv}+{\rm L}_{fm}(G)
+\end{equation}
+
+\subsection{总结}
+
+VITS是一种由字符或音素直接映射为波形的端到端语音合成模型，该语音合成模型采用对抗训练的模式，生成器多个模块基于标准化流。模型较大，合成质量优异。VITS的想法相当有启发，但是理解起来确实比较难，特别是标准化流，可参考：\href{https://github.com/janosh/awesome-normalizing-flows}{Awesome Normalizing Flows}。
+
+
+
+
+% 声码器部分
+\chapter{声码器}
+
+声码器（Vocoder），又称语音信号分析合成系统，负责对声音进行分析和合成，主要用于合成人类的语音。声码器主要由以下功能：
+
+\begin{enumerate}
+  \item 分析Analysis
+  \item 操纵Manipulation
+  \item 合成Synthesis
+\end{enumerate}
+
+分析过程主要是从一段原始声音波形中提取声学特征，比如线性谱、MFCC；操纵过程是指对提取的原始声学特征进行压缩等降维处理，使其表征能力进一步提升；合成过程是指将此声学特征恢复至原始波形。人类发声机理可以用经典的源-滤波器模型建模，也就是输入的激励部分通过线性时不变进行操作，输出的声道谐振部分作为合成语音。输入部分被称为激励部分（Source Excitation Part），激励部分对应肺部气流与声带共同作用形成的激励，输出结果被称为声道谐振部分（Vocal Tract Resonance Part），对应人类发音结构，而声道谐振部分对应于声道的调音部分，对声音进行调制。
+
+声码器的发展可以分为两个阶段，包括用于统计参数语音合成（Statistical Parameteric Speech Synthesis，SPSS）基于信号处理的声码器，和基于神经网络的声码器。常用基于信号处理的声码器包括Griffin-Lim\footnote{Griffin D. and Lim J. (1984). "Signal Estimation from Modified Short-Time Fourier Transform". IEEE Transactions on Acoustics, Speech and Signal Processing. 32 (2): 236–243. doi:10.1109/TASSP.1984.1164317}，STRAIGHT\footnote{Kawahara H. Speech representation and transformation using adaptive interpolation of weighted spectrum: vocoder revisited[C]. 1997 IEEE International Conference on Acoustics, Speech, and Signal Processing. IEEE, 1997, 2: 1303-1306.}和WORLD\footnote{Morise M, Yokomori F, Ozawa K. World: a vocoder-based high-quality speech synthesis system for real-time applications[J]. IEICE TRANSACTIONS on Information and Systems, 2016, 99(7): 1877-1884.}。早期神经声码器包括WaveNet、WaveRNN等，近年来神经声码器发展迅速，涌现出包括MelGAN、HiFiGAN、LPCNet、NHV等优秀的工作。
+
+\section{Griffin Lim声码器}
+
+在早期的很多Tacotron开源语音合成模型中均采用Griffin Lim声码器，同时也有一些专门的开源实现，比如\href{https://github.com/bkvogel/griffin_lim}{GriffinLim}。
+
+GriffinLim将幅度谱恢复为原始波形，但是相比原始波形，幅度谱缺失了原始相位谱信息。音频一般采用的是短视傅里叶变化，也就是将音频分割成帧(每帧0.25ms-0.35ms)，再进行傅里叶变化，帧与帧之间是有重叠的(可百度了解stft)。
+
+griffin lim算法是利用两帧之间的重叠部分重构信号，而且中间用了hanning窗等，所以如果要griffin lim算法还原的信号质量较好，尽量保证两帧之间重叠越多越好（一般帧移为每一帧长的25\%左右，也就是75\%的重叠为宜）。
+
+
+\subsection{代码实现}
+
+摘抄自\href{https://zhuanlan.zhihu.com/p/25002923}{Build End-To-End TTS Tacotron: Griffin Lim 信号估计算法}。
+
+\begin{lstlisting}
+def griffin_lim(stftm_matrix, shape, min_iter=20, max_iter=50, delta=20):
+  y = np.random.random(shape)
+  y_iter = []
+
+  for i in range(max_iter):
+      if i >= min_iter and (i - min_iter) % delta == 0:
+          y_iter.append((y, i))
+      stft_matrix = librosa.core.stft(y)
+      stft_matrix = stftm_matrix * stft_matrix / np.abs(stft_matrix)
+      y = librosa.core.istft(stft_matrix)
+  y_iter.append((y, max_iter))
+
+  return y_iter
+\end{lstlisting}
+
+具体使用：
+
+\begin{lstlisting}
+# assume 1 channel wav file
+sr, data = scipy.io.wavfile.read(argv[0])
+
+# 由 STFT -> STFT magnitude
+stftm_matrix = np.abs(librosa.core.stft(data))
+# + random 模拟 modification
+stftm_matrix_modified = stftm_matrix + np.random.random(stftm_matrix.shape)
+
+# Griffin-Lim 估计音频信号
+y_iters = griffin_lim(stftm_matrix_modified, data.shape)
+\end{lstlisting}
+
+
+https://zhuanlan.zhihu.com/p/424846347
+https://zhuanlan.zhihu.com/p/25002923
+https://zhuanlan.zhihu.com/p/102539783
+https://zhuanlan.zhihu.com/p/32321773
+https://zhuanlan.zhihu.com/p/66809424
+
+
 
 
 
