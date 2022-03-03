@@ -6,7 +6,7 @@
 \author{陈梦楠}
 \institute{Elegant\LaTeX{} Program}
 \date{May 2, 2022}
-\version{4.1}
+\version{1.1}
 \bioinfo{自定义}{信息}
 
 \extrainfo{各人自扫门前雪，休管他人瓦上霜。—— 陈元靓}
@@ -57,19 +57,90 @@ May 2, 2021
 
 \chapter{语音合成概述}
 
-Elegant\LaTeX{} 项目组致力于打造一系列美观、优雅、简便的模板方便用户使用。目前由 \href{https://github.com/ElegantLaTeX/ElegantNote}{ElegantNote}，\href{https://github.com/ElegantLaTeX/ElegantBook}{ElegantBook}，\href{https://github.com/ElegantLaTeX/ElegantPaper}{ElegantPaper} 组成，分别用于排版笔记，书籍和工作论文。强烈推荐使用最新正式版本！本文将介绍本模板的一些设置内容以及基本使用方法。如果您有其他问题，建议或者意见，欢迎在 GitHub 上给我们提交 \href{https://github.com/ElegantLaTeX/ElegantBook/issues}{issues} 或者邮件联系我们。
+\section{背景和概述}
+语音合成（Speech Synthesis）是赋予机器像人一样自如说话能力的技术，是人机语音交互中重要的一环。语音合成的研究历史可追溯至 18 至 19 世纪，从早期的基于规则的机械式、电子式语音合成器，到基于波形拼接、统计参数的语音合成。近年来，基于深度学习（Deep Learning）和神经网络（Neural Network）的建模方法在机器学习领域各个任务上都取得了快速的发展，语音合成技术也在此基础上得到了显著的提升。随着信息技术及人工智能技术的发展，各种应用场景对语音合成的效果有了越来越高的要求。本文系统性介绍语音合成的历史发展、当前主流建模框架、语音合成进阶应用、以及声音转换。
 
-我们的联系方式如下，建议加入用户 QQ 群提问，这样能更快获得准确的反馈，加群时请备注 \LaTeX{} 或者 Elegant\LaTeX{} 相关内容。
-\begin{itemize}
-  \item 官网：\href{https://elegantlatex.org/}{https://elegantlatex.org/}
-  \item GitHub 网址：\href{https://github.com/ElegantLaTeX/}{https://github.com/ElegantLaTeX/}
-  \item CTAN 地址：\href{https://ctan.org/pkg/elegantbook}{https://ctan.org/pkg/elegantbook}
-  \item 下载地址：\href{https://github.com/ElegantLaTeX/ElegantBook/releases}{正式发行版}，\href{https://github.com/ElegantLaTeX/ElegantBook/archive/master.zip}{最新版}
-  \item 微博：Elegant\LaTeX{}
-  \item 微信公众号：Elegant\LaTeX{}
-  \item 用户 QQ 群：692108391 
-  \item 邮件：\email{elegantlatex2e@gmail.com}
-\end{itemize}
+\subsection{背景介绍}
+
+语音是最方便最自然的人机交互方式之一，随着近年来智能手机等智能终端的迅速发展，人机语音交互收到了越来越多的关注。人机语音交互是基于语音识别、自然语言理解及语音合成的人机语音对话技术，作为人机交互的核心技术之一, 语音合成就是赋予计算机及各种终端设备像人一样自如说话的能力。语音合成是一门交叉学科，它涉及到语言学、语音学、自然语言处理、信号处理、统计学习、模式识别等众多学科的理论与技术。
+
+随着信息技术和人工智能技术的发展，以及对语音信号和统计建模技术本身不断的深入理解，语音合成系统的效果逐渐提高，被广泛应用于各个场景，包括语音对话系统；智能语音助手，如 Siri，讯飞语点；电话信息查询系统；车载导航，有声电子书等辅助应用；语言学习；机场，车站等实时信息广播系统；视力或语音障碍者的信息获取与交流等。同时，不同应用场景对于合成语音的各项指标，包括自然度、可懂度、音质、情感风格、控制力也都提出了更高的要求。
+
+\subsection{语音合成方法概述}
+
+  语音信号的产生分为两个阶段，信息编码和生理控制。首先在大脑中出现某种想要表达的想法，然后由大脑将其编码为具体的语言文字序列，及语音中可能存在的强调、重读等韵律信息。经过语言的组织，大脑通过控制发音器官肌肉的运动，产生出相应的语音信号。其中第一阶段主要涉及人脑语言处理方面，第二阶段涉及语音信号产生的生理机制。
+
+  从滤波的角度，人体涉及发音的器官可以分为两部分：激励系统和声道系统，如图\ref{fig:human_speech_arch}所示。激励系统中，储存于肺部的空气源，经过胸腔的压缩排出，经过气管进入声带，根据发音单元决定是否产生振动，形成准周期的脉冲空气激励流或噪声空气激励流。这些空气流作为激励，进入声道系统，被频率整形，形成不同的声音。声道系统包括咽喉、口腔（舌、唇、颌和口）组成，可能还包括鼻道。不同周期的脉冲空气流或者噪声空气流，以及不同声道器官的位置决定了产生的声音。因此，语音合成中通常将语音的建模分解为激励建模和声道建模。
+
+  \begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.6\textwidth]{human_speech_arch.png}
+    \caption{人类发生机理 \label{fig:human_speech_arch}}
+  \end{figure}
+
+\subsection{语音合成历史简介}
+  
+  语音合成系统分为两部分，分别称为前端和后端，如下图所示。
+
+  \begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.6\textwidth]{text_to_speech_arch.png}
+    \caption{语音合成系统框图 \label{fig:text_to_speech_arch}}
+  \end{figure}
+
+  前端主要负责在语言层、语法层、语义层对输入文本进行文本分析；后端主要是从信号处理、模式识别、机器学习等角度，在语音层面上进行韵律特征建模，声学特征建模，然后进行声学预测或者在音库中进行单元挑选，最终经过合成器或者波形拼接等方法合成语音。
+
+  \begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{text_to_speech_history.png}
+    \caption{语音合成发展历史 \label{fig:text_to_speech_history}}
+  \end{figure}
+
+  根据语音合成研究的历史，如图\ref{fig:text_to_speech_history}所示，语音合成研究方法可以分为：机械式语音合成器、电子式语音合成器、共振峰参数合成器、基于波形拼接的语音合成、统计参数语音合成、以及神经网络语音合成。
+
+  语音合成的早期工作主要是通过源-滤波器模型对语音产生的过程进行模拟。最开始的机械式语音合成器，使用风箱模拟人的肺部运动，产生激励空气流，采用振动弹簧片和皮革模拟声道系统，通过手动协调各部分运动，能够合成出五个长元音。机械式的语音合成器难以实用，随着时代的发展，贝尔实验室提出了电子式的语音合成器。不再模拟具体的生理器官，电子式语音合成器通过脉冲发射器和噪声发射器来分别产生模拟浊音和清音的激励系统，通过操作人员手动控制多个带通滤波器来模拟声道系统，最后通过放大器输出语音信号。由于电子式语音合成器使用有限个带通滤波器模拟声道系统，对自然语音的频谱特征的刻画精度有限。为了更好地刻画声道系统，共振峰参数合成器被提出。共振峰参数合成器将声道系统看成一个谐振腔，利用共振峰频率和宽度等声道的谐振特性，构建声道滤波器，以更好地刻画语音的声道特性。然而由于共振峰参数合成器结构复杂，需要大量人工分析调整参数，难以实用。
+
+  早期的语音合成方法由于模型简单，系统复杂等原因，难以在实际场景应用。随着计算机技术的发展，基于波形拼接的语音合成被提出。基于波形拼接的语音合成的基本原理是首先构建一个音库，在合成阶段，通过对合成文本的分析，按照一定的准则，从音库中挑选出与待合成语音相似的声学单元，对这些声学单元进行少量调整，拼接得到合成的语音。早期的波形拼接系统受限于音库大小、挑选算法、拼接调整的限制，合成语音质量较低。 1990 年，基于同步叠加的时域波形修改算法被提出，解决了声学单元拼接处的局部不连续问题。更进一步，基于大语料库的波形拼接语音合成方法被提出，采用更精细的挑选策略，将语音音库极大地拓展，大幅提升了合成语音的自然度。由于直接使用发音人的原始语音，基于波形拼接的语音合成方法合成语音的音质接近自然语音，被广泛应用。但其缺点也较为明显，包括音库制作时间长、需要保存整个音库、拓展性差、合成语音自然度受音库和挑选算法影响，鲁棒性不高等。
+
+  随着统计建模理论的完善，以及对语音信号理解的深入，基于统计参数的语音合成方法被提出。其基本原理是使用统计模型，对语音的参数化表征进行建模。在合成阶段，给定待合成文本，使用统计模型预测出对应的声学参数，经过声码器合成语音波形。统计参数语音合成方法是目前的主流语音合成方法之一。统计参数音合成方法的优点很多，包括只需要较少的人工干预，能够快速地自动构建系统，同时具有较强的灵活性，能够适应不同发音人，不同发音风格，多语种的语音合成，具有较强的鲁棒性等。由于语音参数化表示以及统计建模的平均效应，统计参数语音合成方法生成的语音自然度相比自然语音通常会有一定的差距。基于隐马尔科夫的统计参数语音合成方法是发展最为完善一种。基于 HMM 的统计参数语音合成系统能够同时对语音的基频、频谱和时长进行建模，生成出连续流畅且可懂度高的语音，被广泛应用，但其合成音质较差。
+
+\subsection{当代语音合成框架}
+
+和统计参数语音合成系统类似，深度学习语音合成系统也可大致分为两个部分：文本前端和声学后端。文本前端的主要作用是文本预处理，如：为文本添加韵律信息，并将文本词面转化为语言学特征序列（Linguistic Feature Sequence）；声学后端又可以分为声学特征生成网络和声码器，其中声学特征生成网络根据文本前端输出的信息产生声学特征，如：将语言学特征序列映射到梅尔频谱或线性谱；声码器利用频谱等声学特征，生成语音样本点并重建时域波形，如：将梅尔频谱恢复为对应的语音。近年来，也出现了完全端到端的语音合成系统，将声学特征生成网络和声码器和合并起来，声学后端成为一个整体，直接将语言学特征序列，甚至文本词面端到端转换为语音波形。
+
+\begin{enumerate}
+  \item 文本前端
+  
+  文本前端的作用是从文本中提取发音和语言学信息，其任务至少包括以下四点。
+  
+  \begin{enumerate}
+    \item 文本正则化
+    
+    在语音合成中，用于合成的文本存在特殊符号、阿拉伯数字等，需要把符号转换为文本。如“1.5元”需要转换成“一点五元”，方便后续的语言学分析。
+
+    \item 韵律预测
+    
+    该模块的主要作用是添加句子中韵律停顿或起伏。如“在抗击新型冠状病毒的战役中，党和人民群众经受了一次次的考验”，如果停顿信息不准确就会出现：“在/抗击/新型冠状病毒/的/战役中，党/和/人民群众/经受了/一次/次/的/考验”。“一次次”的地方存在一个错误停顿，这将会导致合成语音不自然，如果严重些甚至会影响语义信息的传达。
+
+    \item 字形转音素
+    
+    将文字转化为发音信息。比如“中国”是汉字表示，需要先将其转化为拼音“zhong1 guo2”，以帮助后续的声学模型更加准确地获知每个汉字的发音情况。
+
+    \item 多音字和变调
+    
+    许多语言中都有多音字的现象，比如“模型”和“模样”，这里“模”字的发音就存在差异。另外，汉字中又存在变调现象，如“一个”和“看一看”中的“一”发音音调不同。所以在输入一个句子的时候，文本前端就需要准确判断出文字中的特殊发音情况，否则可能会导致后续的声学模型合成错误的声学特征，进而生成不正确的语音。
+  \end{enumerate}
+
+  \item 声学特征生成网络
+  
+  声学特征生成网络根据文本前端的发音信息，产生声学特征，如梅尔频谱或线性谱。近年来，基于深度学习的生成网络甚至可以去除文本前端，直接由英文等文本生成对应的频谱。但是一般来说，因为中文字形和读音关联寥寥，因此中文语音合成系统大多无法抛弃文本前端，换言之，直接将中文文本输入到声学特征生成网络中是不可行的。基于深度学习的声学特征生成网络发展迅速，比较有代表性的模型有Tacotron系列，FastSpeech系列等。近年来，也涌现出类似于VITS的语音合成模型，将声学特征生成网络和声码器融合在一起，直接将文本映射为语音波形。
+
+  \item 声码器
+  
+  通过声学特征产生语音波形的系统被称作声码器，声码器是决定语音质量的一个重要因素。一般而言，声码器可以分为以下4类：纯信号处理，如Griffin-Lim、STRAIGHT和WORLD；自回归深度网络模型，如WaveNet和WaveRNN；非自回归模型，如Parallel WaveNet、ClariNet和WaveGlow；基于生成对抗网络（Generative Adversarial Network，GAN）的模型，如MelGAN、Parallel WaveGAN和HiFiGAN。
+
+\end{enumerate}
+
 
 \section{Awesome List}
 \begin{enumerate}
@@ -101,6 +172,7 @@ Elegant\LaTeX{} 项目组致力于打造一系列美观、优雅、简便的模�
 
 \subsection{最新论文}
 \begin{enumerate}
+  \item \href{http://yqli.tech/page/tts_paper.html}{低调奋进TTS最新论文集}
   \item https://arxiv.org/list/eess.AS/recent
   \item https://arxiv.org/list/cs.SD/recent
   \item https://arxiv.org/list/cs.CL/recent
@@ -332,7 +404,10 @@ Elegant\LaTeX{} 项目组致力于打造一系列美观、优雅、简便的模�
 \section{发音学}
 
 \section{数字信号处理}
-\subsection{模拟信号到数字信号的转换（Analog to Digital Converter，ADC，模数转换）}
+\subsection{模数转换}
+
+模拟信号到数字信号的转换（Analog to Digital Converter，ADC）称为模数转换。
+
 奈奎斯特采样定理：要从抽样信号中无失真地恢复原信号，抽样频率应大于2倍信号最高频率。抽样频率小于2倍频谱最高频率时，信号的频谱有混叠。抽样频率大于2倍频谱最高频率时，信号的频谱无混叠。如果对语音模拟信号进行采样率为16000Hz的采样，得到的离散信号中包含的最大频率为8000Hz。
 
 \subsection{傅里叶变换}
@@ -1182,13 +1257,26 @@ VITS是一种由字符或音素直接映射为波形的端到端语音合成模�
 
 声码器的发展可以分为两个阶段，包括用于统计参数语音合成（Statistical Parameteric Speech Synthesis，SPSS）基于信号处理的声码器，和基于神经网络的声码器。常用基于信号处理的声码器包括Griffin-Lim\footnote{Griffin D. and Lim J. (1984). "Signal Estimation from Modified Short-Time Fourier Transform". IEEE Transactions on Acoustics, Speech and Signal Processing. 32 (2): 236–243. doi:10.1109/TASSP.1984.1164317}，STRAIGHT\footnote{Kawahara H. Speech representation and transformation using adaptive interpolation of weighted spectrum: vocoder revisited[C]. 1997 IEEE International Conference on Acoustics, Speech, and Signal Processing. IEEE, 1997, 2: 1303-1306.}和WORLD\footnote{Morise M, Yokomori F, Ozawa K. World: a vocoder-based high-quality speech synthesis system for real-time applications[J]. IEICE TRANSACTIONS on Information and Systems, 2016, 99(7): 1877-1884.}。早期神经声码器包括WaveNet、WaveRNN等，近年来神经声码器发展迅速，涌现出包括MelGAN、HiFiGAN、LPCNet、NHV等优秀的工作。
 
-\section{Griffin Lim声码器}
+\section{Griffin-Lim声码器}
 
-在早期的很多Tacotron开源语音合成模型中均采用Griffin Lim声码器，同时也有一些专门的开源实现，比如\href{https://github.com/bkvogel/griffin_lim}{GriffinLim}。
+在早期的很多Tacotron开源语音合成模型中均采用Griffin-Lim声码器，同时也有一些专门的开源实现，比如\href{https://github.com/bkvogel/griffin_lim}{GriffinLim}。
 
-GriffinLim将幅度谱恢复为原始波形，但是相比原始波形，幅度谱缺失了原始相位谱信息。音频一般采用的是短视傅里叶变化，也就是将音频分割成帧(每帧0.25ms-0.35ms)，再进行傅里叶变化，帧与帧之间是有重叠的(可百度了解stft)。
+\subsection{算法原理}
 
-griffin lim算法是利用两帧之间的重叠部分重构信号，而且中间用了hanning窗等，所以如果要griffin lim算法还原的信号质量较好，尽量保证两帧之间重叠越多越好（一般帧移为每一帧长的25\%左右，也就是75\%的重叠为宜）。
+原始的音频很难提取特征，需要进行傅里叶变换将时域信号转换到频域进行分析。音频进行傅里叶变换后，结果为复数，复数的绝对值就是幅度谱，而复数的实部与虚部之间形成的角度就是相位谱。经过傅里叶变换之后获得的幅度谱特征明显，可以清楚看到基频和对应的谐波。基频一般是声带的频率，而谐波则是声音经过声道、口腔、鼻腔等器官后产生的共振频率，且频率是基频的整数倍。
+
+Griffin-Lim将幅度谱恢复为原始波形，但是相比原始波形，幅度谱缺失了原始相位谱信息。音频一般采用的是短时傅里叶变化，因此需要将音频分割成帧（每帧20ms~50ms），再进行傅里叶变换，帧与帧之间是有重叠的。Griffin-Lim算法利用两帧之间有重叠部分的这个约束重构信号，因此如果使用Griffin-Lim算法还原音频信号，就需要尽量保证两帧之间重叠越多越好，一般帧移为每一帧长度的25\%左右，也就是帧之间重叠75\%为宜。
+
+Griffin-Lim在已知幅度谱，不知道相位谱的情况下重建语音，算法的实现较为简单，整体是一种迭代算法，迭代过程如下：
+
+\begin{enumerate}
+  \item 随机初始化一个相位谱；
+  \item 用相位谱和已知的幅度谱经过逆短时傅里叶变换（ISTFT）合成新语音；
+  \item 对合成的语音做短时傅里叶变换，得到新的幅度谱和相位谱；
+  \item 丢弃新的幅度谱，用相位谱和已知的幅度谱合成语音，如此重复，直至达到设定的迭代轮数。
+\end{enumerate}
+
+在迭代过程中，预测序列与真实序列幅度谱之间的距离在不断缩小，类似于EM算法。推导过程参见：\href{https://zhuanlan.zhihu.com/p/102539783}{Griffin Lim算法的过程和证明}和\href{https://zhuanlan.zhihu.com/p/66809424}{Griffin Lim声码器介绍}。
 
 
 \subsection{代码实现}
@@ -1227,11 +1315,8 @@ y_iters = griffin_lim(stftm_matrix_modified, data.shape)
 \end{lstlisting}
 
 
-https://zhuanlan.zhihu.com/p/424846347
-https://zhuanlan.zhihu.com/p/25002923
-https://zhuanlan.zhihu.com/p/102539783
-https://zhuanlan.zhihu.com/p/32321773
-https://zhuanlan.zhihu.com/p/66809424
+\section{STRAIGHT声码器}
+
 
 
 
