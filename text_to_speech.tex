@@ -78,7 +78,7 @@ May 2, 2021
     \caption{人类发生机理 \label{fig:human_speech_arch}}
   \end{figure}
 
-\subsection{语音合成历史简介}
+\subsection{语音合成的历史}
   
   语音合成系统分为两部分，分别称为前端和后端，如下图所示。
 
@@ -268,12 +268,15 @@ May 2, 2021
 \subsection{开源项目}
 \begin{enumerate}
   \item \href{https://github.com/coqui-ai/TTS}{coqui-ai TTS}: 采用最新研究成果构建的语音合成后端工具集。
-  \item \href{https://github.com/espnet/espnet}{ESPNet}: 语音合成和识别工具集，主要集成后端模型。
-  \item \href{https://github.com/pytorch/fairseq}{fairseq}: 序列到序列建模工具集，包含语音识别、合成、机器翻译等模型。
-  \item \href{https://github.com/espeak-ng/espeak-ng}{eSpeak NG Text-to-Speech}: 共振峰生成的语音合成模型，集成超过100个语种和口音的语音合成系统。
+  \item \href{https://github.com/espnet/espnet}{ESPNet}: 语音合成和识别工具集，主要集成声学模型、声码器等后端模型。
+  \item \href{https://github.com/pytorch/fairseq}{fairseq}: 序列到序列建模工具，包含语音识别、合成、机器翻译等模型。
+  \item \href{https://github.com/espeak-ng/espeak-ng}{eSpeak NG Text-to-Speech}: 共振峰生成的语音合成模型，集成超过100个语种和口音的语音合成系统，特别地，可借鉴该项目中的多语种文本前端。
   \item \href{https://github.com/dmort27/epitran}{Epitran}: 将文本转换为IPA的工具，支持众多语种。
   \item \href{https://github.com/Rayhane-mamah/Tacotron-2}{Tacotron-2}: Tensorflow版本的Tacotron-2.
-  \item \href{https://github.com/syoyo/tacotron-tts-cpp}{Text-to-speech in (partially) C++ using Tacotron model + Tensorflow}: 采用Tensorflow C++ API运行Tacotron模型。
+  \item \href{https://github.com/as-ideas/TransformerTTS}{Transformer TTS}: TensorFlow 2实现的FastSpeech系列语音合成。
+  \item \href{https://github.com/syoyo/tacotron-tts-cpp}{Text-to-speech in (partially) C++ using Tacotron model + Tensorflow}: 采用TensorFlow C++ API运行Tacotron模型。
+  \item \href{https://github.com/microsoft/muzic}{muzic}: 微软AI音乐的开源项目，包括乐曲理解、音乐生成等多种工作。
+  \item \href{https://github.com/CSTR-Edinburgh/merlin}{merlin}: CSTR开发的统计参数语音合成工具包，需要与文本前端（比如Festival）和声码器（比如STRAIGHT或WORLD）搭配使用。
 \end{enumerate}
 
 \section{语音合成评价指标}
@@ -1303,7 +1306,7 @@ def griffin_lim(stftm_matrix, shape, min_iter=20, max_iter=50, delta=20):
 
 \begin{lstlisting}
 # assume 1 channel wav file
-sr, data = scipy.io.wavfile.read(argv[0])
+sr, data = scipy.io.wavfile.read(input_wav_path)
 
 # 由 STFT -> STFT magnitude
 stftm_matrix = np.abs(librosa.core.stft(data))
@@ -1317,9 +1320,238 @@ y_iters = griffin_lim(stftm_matrix_modified, data.shape)
 
 \section{STRAIGHT声码器}
 
+\subsection{概述}
 
+STARIGHT（Speech Transformation and Representation using Adaptive Interpolation of weiGHTed spectrum），即利用自适应加权谱内插进行语音转换和表征。STRAIGHT将语音信号解析成相互独立的频谱参数（谱包络）和基频参数（激励部分），能够对语音信号的基频、时长、增益、语速等参数进行灵活的调整，该模型在分析阶段仅针对语音基音、平滑功率谱和非周期成分3个声学参数进行分析提取，在合成阶段利用上述3个声学参数进行语音重构。
 
+STRAIGHT采用源-滤波器表征语音信号，可将语音信号看作激励信号通过时变线性滤波器的结果。
 
+\begin{note}
+  对于能量信号和周期信号，其傅里叶变换收敛，因此可以用频谱（Spectrum）来描述；对于随机信号，傅里叶变换不收敛，因此不能用频谱进行描述，而应当使用功率谱（PSD），不严谨地说，功率谱可以看作是随机信号的频谱，参见\href{https://zhuanlan.zhihu.com/p/417454806}{功率谱密度（PSD）}。
+\end{note}
+
+\subsection{特征提取}
+
+\begin{enumerate}
+  \item 平滑功率谱的提取，包括低频带补偿和清音帧处理等过程。STRAIGHT分析阶段的一个关键步骤是进行自适应频谱分析，获取无干扰且平滑的功率谱。自适应加权谱的提取关键在于对提取出来的功率谱进行一系列的平滑和补偿。对输入信号进行：语音信号预处理->功率谱提取->低频噪声补偿->过平滑补偿->静音帧谱图的处理，最后得到自适应功率谱。
+  \item 非周期成分提取。
+  \item 通过小波时频分析的方式，提取基频轨迹。首先通过对语音信号中的基频信息进行解析，然后计算出相应的瞬时基频值，最后在频域进行谐波解析，并在频率轴进行平滑处理，获得语音信号的各个基频参数。
+\end{enumerate}
+
+\subsection{语音合成}
+
+STARIGHT采用PSOLA技术和最小相位脉冲响应相结合的方式，在合成语音时输入待合成语音的基音频率轨迹和去除了周期性的二维短时谱包络。
+
+开源的STRAIGHT声码器大多是MATLAB实现，比如\href{https://github.com/HidekiKawahara/legacy_STRAIGHT}{Legacy STRAIGHT}，\href{https://github.com/ashmanmode/StraightRepo}{StraightRepo}。在开源语音合成系统\href{https://github.com/CSTR-Edinburgh/merlin}{merlin}中存在可用的STRAIGHT工具，参见\href{https://github.com/CSTR-Edinburgh/merlin/blob/master/misc/scripts/vocoder/straight/copy_synthesis.sh}{StraightCopySynthesis}。
+
+\section{WORLD声码器}
+
+\subsection{声学特征}
+
+WORLD通过获取三个声学特征合成原始语音，这三个声学特征分别是：基频（fundamental frequency，F0），频谱包络（Spectrum Envelop，也称频谱参数Spectrum Parameter，SP）和非周期信号参数（Aperiodic Parameter，AP）。
+
+\begin{enumerate}
+  \item 基频F0
+  
+  基频F0决定浊音，对应激励部分的周期脉冲序列，如果将声学信号分为周期和非周期信号，基频F0部分包含了语音的韵律信息和结构信息。对于一个由振动而发出的声音信号，这个信号可以看作是若干组频率不同的正弦波叠加而成，其中频率最低的正弦波即为\lstinline{基频}，其它则为\lstinline{泛音}。
+
+  WORLD提取基频的流程：首先，利用低通滤波器对原始信号进行滤波；之后，对滤波之后的信号进行评估，由于滤波之后的信号应该恰好是一个正弦波，每个波段的长度应该恰好都是一个周期长度，因此通过计算这四个周期的标准差，可以评估此正弦波正确与否；最后选取标准差最小周期的倒数作为最终的基频。
+
+  \item 频谱包络SP
+  
+  频谱包络SP决定音色，对应声道谐振部分时不变系统的冲激响应，可以看作通过此线性时不变系统之后，声码器会对激励与系统响应进行卷积。将不同频率的振幅最高点通过平滑的曲线连接起来，就是频谱包络，求解方法有多种，在求解梅尔倒谱系数时，使用的是倒谱法。
+
+  \begin{note}
+    倒频谱（Cepstrum）也称为倒谱、二次谱和对数功率谱等，倒频谱的工程定义为：信号功率谱对数值进行傅里叶逆变换的结果，也就是：信号->求功率谱->求对数->求傅里叶逆变换。参见\href{https://zhuanlan.zhihu.com/p/34989414}{信号频域分析方法的理解（频谱、能量谱、功率谱、倒频谱、小波分析）}。
+  \end{note}
+
+  \item 非周期信号参数AP
+  
+  非周期信号参数AP决定清音，对应混合激励部分的非周期脉冲序列，一般的语音都是由周期和非周期信号组成，因此除了上述的周期信号的声学参数，还需要非周期信号参数，才能够恢复出原始信号。混合激励可以通过AP来控制浊音段中周期激励和噪音（非周期）成分的相对比重。
+
+\end{enumerate}
+
+\subsection{WORLD的分析功能}
+
+WORLD包含3个语音分析模块，语音分析模型包括DIO模块、CheapTrick模块，PLATINUM模块。
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.6\textwidth]{vocoder_world_arch.png}
+  \caption{WORLD声码器整体结构 \label{fig:vocoder_world_arch}}
+\end{figure}
+
+WORLD可以提取原始波形中的基频F0，基频包络SP和非周期信号AP，这三种声学特征对应三种提取算法：DIO输入波形提取基频，CheapTrick输入基频、波形提取频谱包络，D4C输入基频、频谱包络和波形提取非周期信号。最终，通过这三种声学特征通过最小相位谱与激励信号卷积后，输出恢复的原始波形。
+
+\subsection{DIO算法提取基频F0}
+
+F0是周期信号最长持续时间的倒数，反过来，周期是基频的整数分之一。基频会产生二次谐波、三次谐波等，最长的周期理论上对应着频率最低的部分，也就是在语谱图上对应最下面的亮线，能量最高的部分。
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.6\textwidth]{vocoder_pitch_harmonic.png}
+  \caption{基频和谐波 \label{fig:vocoder_pitch_harmonic}}
+\end{figure}
+
+有很多的算法估计基频F0，可以分为两类：一个是利用时域特征，比如自相关；一个利用频谱特征，比如倒谱cepstrum。WORLD使用DIO估计基频F0，比YIN、SWIPE要快，性能依然较好，DIO分为以下三步。
+
+\begin{enumerate}
+  \item 低通滤波器对原始信号进行滤波。使用不同频带的低通滤波器：因为不知道基频的位置，因此这一步包含不同周期的sin低通滤波器。
+  
+  \item 取4个周期计算置信度。计算获得的各个可能基频F0的置信度，因为由基频分量组成的sin信号包含4个间隔（2个顶点、2个过零点）。如果滤波器得到的间隔长度一致，则说明是一个基波，如图\ref{fig:vocoder_world_dio1}。
+  
+  \begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.6\textwidth]{vocoder_world_dio1.png}
+    \caption{取四个间隔计算候选F0及其置信度 \label{fig:vocoder_world_dio1}}
+  \end{figure}
+
+  \item 从某个时间点的正弦波中提取出四个周期信号，并计算置信度，也就是标准差。然后选择标准差最低，也就是置信度最高的基波。
+\end{enumerate}
+
+\subsection{CheapTrick算法提取频谱包络SP}
+
+声音包含不同频率的信号，覆盖0到18000Hz，每个频率都有其振幅，定义每种频率中波的振幅最高点连线形成的图形为\lstinline{包络}。频谱包络是个重要的参数，在频率-振幅图中，用平滑的曲线将所有共振峰连接起来，这个平滑的曲线就是频谱包络。
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.6\textwidth]{vocoder_world_sp.png}
+  \caption{取四个间隔计算候选F0及其置信度 \label{fig:vocoder_world_sp}}
+\end{figure}
+
+提取频谱包络SP的典型算法有线性预测编码（Linear Predictive Coding，LPC）和Cepstrum。线性预测编码LPC的原理是用若干个历史语音采样点的加权线性求和去不断逼近当前的语音采样点；Cepstrum则是基于复数倒谱拥有频谱幅度与相位信息的原理，通过对一个信号进行快速傅里叶变换FFT->取绝对值->取对数->相位展开->逆快速傅里叶变换IFFT的变换处理，从而得到对应的倒谱图。
+
+WORLD采用CheapTrick做谱分析，思想来自于音高同步分析（pitch synchronous analysis），其过程是：先将不同基频进行自适应加窗操作，以及功率谱平滑操作，随后将信号在频域上进行同态滤波。
+
+\subsection{PLANTINUM提取非周期信号}
+
+混合激励和非周期信号参数AP经常应用到合成中，在Legacy-STRAIGHT和TANDEM-STRAIGHT算法中，aperiodicity被用于合成周期和非周期的信号。WORLD直接通过PLANTINUM从波形、F0和谱包络中得到混合激励的非周期信号。
+
+\subsection{WORLD的合成算法}
+
+TANDEM-STRAIGHT直接使用周期响应计算声带的振动，而Legacy-STRAIGHT则操纵组延迟（group delay）以避免嗡嗡声。在WORLD中，利用最小相位响应和激励信号的卷积来计算声带的振动，从下图\ref{fig:vocoder_world_synthesis}，可以看到，WORLD的卷积比STAIGHT要少，因此计算量更少。
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.6\textwidth]{vocoder_world_synthesis.png}
+  \caption{WORLD合成算法 \label{fig:vocoder_world_synthesis}}
+\end{figure}
+
+\subsection{使用示例}
+
+WORLD声码器有较为成熟的\href{https://github.com/mmorise/World}{开源实现}，并且有对应的Python封装：\href{https://github.com/JeremyCCHsu/Python-Wrapper-for-World-Vocoder}{PyWORLD: A Python wrapper of WORLD Vocoder}，另有\href{http://ml.cs.yamanashi.ac.jp/world/english}{官方实现}。以下示例包括了通过\lstinline{PyWorld}提取声学参数，合成原始音频，修改部分声学参数，编辑原始音频。
+
+\begin{lstlisting}
+import pyworld as pw
+from scipy.io import wavfile
+import matplotlib.pyplot as plt
+import numpy as np
+import os
+import soundfile as sf
+
+# 提取语音特征
+x, fs = sf.read(WAV_FILE_PATH)
+
+# f0 : ndarray
+#     F0 contour. 基频等高线
+# sp : ndarray
+#     Spectral envelope. 频谱包络
+# ap : ndarray
+#     Aperiodicity. 非周期性
+f0, sp, ap = pw.wav2world(x, fs)    # use default options
+
+# 分别提取声学参数
+# 使用DIO算法计算音频的基频F0
+_f0, t = pw.dio(x, fs, f0_floor= 50.0, f0_ceil= 600.0, channels_in_octave= 2, frame_period=pw.default_frame_period)
+
+# 使用CheapTrick算法计算音频的频谱包络
+_sp = pw.cheaptrick(x, _f0, t, fs)
+
+# 计算aperiodic参数
+_ap = pw.d4c(x, _f0, t, fs)
+
+# 基于以上参数合成原始音频
+_y = pw.synthesize(_f0, _sp, _ap, fs, pw.default_frame_period)
+
+# 1.变高频-更类似女性
+high_freq = pw.synthesize(f0*2.0, sp, ap, fs)
+
+# 2.直接修改基频，变为机器人发声
+robot_like_f0 = np.ones_like(f0)*100
+robot_like = pw.synthesize(robot_like_f0, sp, ap, fs)
+
+# 3.提高基频，同时频谱包络后移 -> 更温柔的女性？
+female_like_sp = np.zeros_like(sp)
+for f in range(female_like_sp.shape[1]):
+    female_like_sp[:, f] = sp[:, int(f/1.2)]
+female_like = pw.synthesize(f0*2, female_like_sp, ap, fs)
+
+# 4.转换基频（不能直接转换）
+x2, fs2 = sf.read(WAV_FILE_PATH2)
+f02, sp2, ap2 = pw.wav2world(x2, fs2)
+f02 = f02[:len(f0)]
+print(len(f0),len(f02))
+other_like = pw.synthesize(f02, sp, ap, fs)
+\end{lstlisting}
+
+\section{Neural Homomorphic Vocoder (NHV)}
+
+\subsection{源滤波器合成原理}
+
+如图\ref{fig:vocoder_nhv_source_filter}所示，基于源-滤波器的参数合成中，合成器的工作流程主要可分为三步。
+
+\begin{enumerate}
+  \item 根据待合成音节的声调特性构造相应的声门波激励源。
+  \item 再根据协同发音、速度变换（时长参数）等音变信息在原始声道的基础上构造出新的声道参数模型。
+  \item 最后将声门波激励源送入新的声道模型中，输出就是结合给定韵律特性的合成语音。
+\end{enumerate}
+
+共振峰合成和LPC（线性预测分析）合成是上述源-滤波器结构的参数合成中最常用的两种方法，实现原理类似，只是使用的声道模型不同。同时针对声道模型的特性，在源的选取上也略有区别。
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.6\textwidth]{vocoder_nhv_source_filter.png}
+  \caption{源-滤波器合成结构框图 \label{fig:vocoder_nhv_source_filter}}
+\end{figure}
+
+\subsection{共振峰合成方法}
+
+与线性预测方法类似，共振峰合成方法也是对声源-声道模型的模拟，但它更侧重于对声道谐振特性的模拟。它把人的声道看作一个谐振腔，腔体的谐振特性决定所发出语音信号的频谱特性，也即共振峰特性。音色各异的语音有不同的共振峰模式，用每个共振峰以及其带宽作为参数可以构成一个共振峰滤波器，将多个共振峰滤波器组合起来模拟声道的传输特性，根据这个特性对声源发生器产生的激励信号进行调制，经过辐射模型后，就可以得到合成语音。
+
+语音学的研究结果表明，决定语音感知的声学特征主要是语音的共振峰，因此如果合成器的结构和参数设置正确，则这种方法能够合成高音质、高可懂度的语音。
+
+\begin{enumerate}
+  \item 激励源模型
+  
+  一般共振峰合成器的激励源有三种类型：合成浊音时用周期激励序列；合成清音时用伪随机噪音；合成浊擦音时用周期激励调制的噪音。发浊音时，声带不断地张开和关闭，产生间隙的脉冲波，开始时声门闭合幅度为零，接着声门逐渐打开，幅度缓慢上升，然后快速下降，当再次降低到零之后，有一个导数不连续点，相当于声门突然关闭。因此浊音时激励函数形式有三角波、多项式波和滤波器激励响应激励函数。
+
+  \item 共振峰声道模型
+  
+  对于声道模型，声学理论表明，语音信号谱中的谐振特性（对应声道传递函数中的极点）完全由声道的形状决定，与激励源的位置无关。
+\end{enumerate}
+
+\subsection{NHV概述}
+
+NHV论文地址：\href{Neural Homomorphic Vocoder}{https://speechlab.sjtu.edu.cn/papers/2020/zjl00-liu-is2020.pdf}。神经同态声码器（Neural Homomorphic Vocoder，NHV）通过线性时变滤波器对脉冲串和噪音进行滤波后生成语音。给定声学特征，神经网络通过估计时变脉冲响应的复数谱控制线性时变（Linear Time-Varying，LTV）滤波器，并利用多尺度STFT和对抗损失函数进行训练。
+
+许多神经声码器旨在提升源-滤波器（source-filter）模型中对源（source）的建模能力，包括LPCNet、GELP和GlotGAN——通过神经网络仅建模源（比如建模线性预测的残差信号），而通过时变滤波器直接生成语音。不同于仅对源进行建模，神经源滤波器（Neural Source-Filter，NSF）框架将经典框架中的线性滤波器替换为卷积神经网络，其中DDSP\footnote{J. Engel, L. H. Hantrakul, C. Gu, and A. Roberts, “DDSP:
+Differentiable digital signal processing,” in Proc. ICLR, 2020.}通过神经网络控制谐波加性噪声（Harmonic plus Noise）生成音频。
+
+\subsection{整体结构}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.6\textwidth]{vocoder_nhv_arch.png}
+  \caption{源-滤波器示意图 \label{fig:vocoder_nhv_arch}}
+\end{figure}
+
+源-滤波器示意图如图\ref{fig:vocoder_nhv_arch}所示， ${e[n]}$ 表示源（source）， $h[n]$ 则为滤波器， $s[n]$ 是重建的样本点。在NHV中，神经网络负责建模源-滤波器的线性时变（Linear Time-Varying，LTV）滤波器。类似于谐波噪音加性模型（Harmonic plus Noise model），NHV分别生成谐波和噪音成分。谐波部分，主要是通过线性时变脉冲串（LTV filtered impulse trains）建模的发音部分周期性振动；噪音部分，包括背景噪音、不发音成分、以及发音成分中的随机成分，通过线性时变滤波噪音建模。将原始的语音信号 $x$ 和重建信号 $s$ 切分为若干个帧长 $L$ 的不重叠帧， $m$ 为帧索引， $n$ 为样本点索引， $c$ 为特征索引，因此总帧数和总样本点数满足：
+
+\begin{equation}
+  N=M\times L
+\end{equation}
+
+脉冲响应 $h$ 是因果的，谐波脉冲响应 $h_h$ 和噪音脉冲响应 $h_n$ 无限长， $n\in \mathbb{Z}$ 。
 
 
 
