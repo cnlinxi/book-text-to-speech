@@ -239,7 +239,7 @@ May 2, 2021
   \item \href{https://github.com/Emotional-Text-to-Speech/dl-for-emo-tts}{情感数据和实验总结}: 实际是情感语音合成的实验总结，包含了一些情感数据集的总结。
 \end{enumerate}
 
-\subsection{其它}
+\subsection{其它数据集}
 \begin{enumerate}
   \item \href{https://wenet.org.cn/opencpop}{Opencpop}: 高质量歌唱合成数据集。
   \item \href{https://ai.100tal.com/dataset}{好未来开源数据集}: 目前主要开源了3个大的语音数据集，分别是语音识别数据集，语音情感数据集和中英文混合语音数据集，都是多说话人教师授课音频。
@@ -1545,18 +1545,86 @@ Differentiable digital signal processing,” in Proc. ICLR, 2020.}通过神经�
   \caption{源-滤波器示意图 \label{fig:vocoder_nhv_arch}}
 \end{figure}
 
-源-滤波器示意图如图\ref{fig:vocoder_nhv_arch}所示， ${e[n]}$ 表示源（source）， $h[n]$ 则为滤波器， $s[n]$ 是重建的样本点。在NHV中，神经网络负责建模源-滤波器的线性时变（Linear Time-Varying，LTV）滤波器。类似于谐波噪音加性模型（Harmonic plus Noise model），NHV分别生成谐波和噪音成分。谐波部分，主要是通过线性时变脉冲串（LTV filtered impulse trains）建模的发音部分周期性振动；噪音部分，包括背景噪音、不发音成分、以及发音成分中的随机成分，通过线性时变滤波噪音建模。将原始的语音信号 $x$ 和重建信号 $s$ 切分为若干个帧长 $L$ 的不重叠帧， $m$ 为帧索引， $n$ 为样本点索引， $c$ 为特征索引，因此总帧数和总样本点数满足：
+源-滤波器示意图如图\ref{fig:vocoder_nhv_arch}所示， ${e[n]}$ 表示源（source）， $h[n]$ 为滤波器， $s[n]$ 则是重建的样本点。在NHV中，神经网络负责建模源-滤波器模型中的线性时变（Linear Time-Varying，LTV）滤波器。类似于谐波噪音加性模型（Harmonic plus Noise model），NHV分别生成谐波和噪音成分。谐波部分，主要是通过线性时变脉冲串（LTV filtered impulse trains）建模发音部分的周期性振动；噪音部分，包括背景噪音、不发音成分、以及发音部分中的随机成分，通过线性时变滤波噪音建模。将原始的语音信号 $x$ 和重建信号 $s$ 切分为若干个帧长 $L$ 的不重叠帧， $m$ 为帧索引， $n$ 为样本点索引， $c$ 为特征索引，因此总帧数和总样本点数满足：
 
 \begin{equation}
   N=M\times L
 \end{equation}
 
+上式中， $N$ 表示样本点总数， $M$ 表示不重叠帧帧数，  $L$ 表示每个帧中的样本点个数。
+
 脉冲响应 $h$ 是因果的，谐波脉冲响应 $h_h$ 和噪音脉冲响应 $h_n$ 无限长， $n\in \mathbb{Z}$ 。
 
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.6\textwidth]{vocoder_nhv_inference.png}
+  \caption{NHV的语音合成过程 \label{fig:vocoder_nhv_inference}}
+\end{figure}
+
+NHV的语音生成过程如上图\ref{fig:vocoder_nhv_inference}所示，首先通过帧级别基频 $f_0[m]$ 生成脉冲串 $p[n]$ ，从高斯分布中采样得到噪音信号 $u[n]$ ；接着神经网络利用对数域梅尔谱 $S[m,c]$ 估计出每一帧的谐波脉冲响应 $h_h[m,n]$ 和噪音脉冲响应 $h_n[m,n]$ ；接着脉冲串 $p[n]$ 和噪音信号 $u[n]$ 通过LTV线性时变滤波器获得谐波成分 $s_h[n]$ 和噪音成分 $s_n[n]$ ；最后， $s_h[n]$ 和 $s_n[n]$ 加起来，并通过可训练的因果有限冲激响应滤波器 $h[n]$ 滤波，获得最终的语音样本点 $s[n]$ 。
+
+\subsection{脉冲串生成器}
+
+利用低通正弦波的和生成脉冲串：
+
+\begin{equation}
+  p(t)=\left\{\begin{array}{l}
+    \sum_{k=1}^{2kf_0(t)<f_s}{\rm cos}(\int_{0}^{t}2\pi k f_0(\tau){\rm d}\tau),\quad if\ f_0(t)>0 \\ 
+    0,\quad if\ f_0(t)=0
+   \end{array}\right.
+\end{equation}
 
 
+其中，通过zero-order hold或者线性插值从 $f_0[m]$ 中重建 $f_0(t)$ ，且 $p[n]=p(n/f_s)$ ， $f_s$ 为采样率。
 
+由于加性生成时，根据采样率和帧移需要加和200个正弦函数，计算量较大，因此可以采用近似算法：将基频周期四舍五入到采样周期的倍数，此时离散脉冲序列是稀疏的，然后可以按顺序生成，一次生成一个音高。
 
+\subsection{神经网络滤波估计器（Neural Network Filter Estimator）}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.6\textwidth]{vocoder_nhv_nn_filter_estimator.png}
+  \caption{NHV的语音合成过程 \label{fig:vocoder_nhv_nn_filter_estimator}}
+\end{figure}
+
+使用复数谱 $\hat{h}_h$ 和 $\hat{h}_n$ 作为冲激响应 $h_h$ 和 $h_n$ 的中间表示，复数谱同时描述了幅度响应和滤波器的组延迟（group delay），滤波器的组延迟会影响语音的音色。不同于使用线性相位或最小相位滤波器，NHV使用符合相位滤波器，从数据中学习相位特性。限制复倒谱的长度相当于限制幅度和相位响应的分辨率，这提供了控制滤波器复杂性的简单方法——神经网络只预测低频带系数，高频带谱系数设置为零。实验中，每帧预测两个10ms复数谱。实现上，无限冲激响应IIR，比如 $h_h[m,n]$ 和 $h_n[m,n]$ 通过有限冲激响应FIR近似，离散傅里叶变换的窗长必须足够大，以避免混叠现象，实验中窗长设置为 $N=1024$ 。
+
+\subsection{线性时变（LTV）滤波器和可训练的有限冲激响应（FIRs）}
+
+FIR（有限冲激响应）常用于音频信号处理，FIR和IIR（无限冲激响应）最直观的区别就体现在结构形式上，IIR的方程中，当前的输出$y(n)$是由当前输入$x(n)$，过去输入$x(n-1),x(n-2)$和过去输出$y(n-2),y(n-1)$这三类值决定。而在FIR方程中，则没有过去输出这项。IIR的差分方程如下：
+
+\begin{equation}
+  y(n)=\sum_{k=1}^N a_ky(n-k)+\sum_{k=0}^M b_kx(n-k)
+\end{equation}
+
+而FIR的差分方程为：
+
+\begin{equation}
+  y(n)=\sum_{k=0}^M b_k x(n-k)
+\end{equation}
+
+由于IIR的当前输出受到以前输出值的影响，因此它是有反馈的，或者说输出值是递归的；而FIR就是无反馈，非递归的。
+
+谐波部分的线性时变滤波器定义如下式所示：
+
+\begin{equation}
+  s_h[n]=\sum_{m=0}^{M}(w_L[n-mL]\cdot p[n])*h_h[m,n]
+\end{equation}
+
+卷积可以在时域和频域上应用，可训练的FIR滤波器 $h[n]$ 可以应用到语音生成的最后一步，谐波部分的卷积过程如下图所示。
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.6\textwidth]{vocoder_nhv_harmonic_sample.png}
+  \caption{谐波部分的卷积过程 \label{fig:vocoder_nhv_harmonic_sample}}
+\end{figure}
+
+\subsection{神经网络的训练}
+
+\begin{enumerate}
+  \item 多分辨率STFT损失
+  \item 
+\end{enumerate}
 
 
 
