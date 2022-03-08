@@ -1623,7 +1623,8 @@ FIR（有限冲激响应）常用于音频信号处理，FIR和IIR（无限冲�
 
 \begin{enumerate}
   \item 多分辨率STFT损失
-  \item 
+  
+  因为要求原始信号 $x$ 和重建信号 $s$ 的声门激励（Glottal Closure Instants，GCIs）完全对齐，因此在重建信号 $x[n]$ 和原始信号 $s[n]$ 之间无法施加点级损失，而多分辨率STFT计算损失时允许信号间相位偏差。
 \end{enumerate}
 
 
