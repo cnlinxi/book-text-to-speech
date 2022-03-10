@@ -1902,6 +1902,111 @@ x是子判别器展平后的整体输出，大小为[B,l]；fmap是经过卷积�
 
 \subsection{多周期判别器}
 
+多周期判别器的重点是将一维样本点序列以一定周期折叠为二维平面，例如一维样本点序列[1,2,3,4,5,6]，如果以3为周期，折叠成二维平面则是[[1,2,3],[4,5,6]]，然后对这个二维平面施加二维卷积。具体来说，每个特定周期的子判别器首先进行填充，保证样本点数是周期的整倍数，以方便“折叠”为二维平面；接下来进入多个卷积层，输出通道数分别为[32,128,512,1024]，卷积之后利用leaky\_relu激活，卷积层参数规范化方法均为权重归一化（weight\_norm）；然后经过多个卷积层之后，利用一个输入通道数为1024，输出通道为1的卷积层进行后处理；最后展平，作为多周期判别器的最终输出。多周期判别器包含多个周期不同的子判别器，在论文代码中周期数分别设置为[2,3,5,7,11]。
+
+\begin{lstlisting}
+class MultiPeriodDiscriminator(torch.nn.Module):
+    def __init__(self):
+        super(MultiPeriodDiscriminator, self).__init__()
+        self.discriminators = nn.ModuleList([
+            DiscriminatorP(2),
+            DiscriminatorP(3),
+            DiscriminatorP(5),
+            DiscriminatorP(7),
+            DiscriminatorP(11),
+        ])
+
+    def forward(self, y, y_hat):
+        y_d_rs = []
+        y_d_gs = []
+        fmap_rs = []
+        fmap_gs = []
+        for i, d in enumerate(self.discriminators):
+            y_d_r, fmap_r = d(y)
+            y_d_g, fmap_g = d(y_hat)
+            y_d_rs.append(y_d_r)
+            fmap_rs.append(fmap_r)
+            y_d_gs.append(y_d_g)
+            fmap_gs.append(fmap_g)
+
+        return y_d_rs, y_d_gs, fmap_rs, fmap_gs
+\end{lstlisting}
+
+上述代码中y\_d\_rs和y\_d\_gs分别是真实和生成样本的多周期判别器输出，fmap\_rs和fmap\_gs分别是真实和生成样本经过每一层卷积后输出的特征图（feature map）。子判别器DiscriminatorP由若干层二维卷积组成：
+
+\begin{lstlisting}
+class DiscriminatorP(torch.nn.Module):
+    def __init__(self, period, kernel_size=5, stride=3, use_spectral_norm=False):
+        super(DiscriminatorP, self).__init__()
+        self.period = period
+        norm_f = weight_norm if use_spectral_norm == False else spectral_norm
+        self.convs = nn.ModuleList([
+            norm_f(Conv2d(1, 32, (kernel_size, 1), (stride, 1), padding=(get_padding(5, 1), 0))),
+            norm_f(Conv2d(32, 128, (kernel_size, 1), (stride, 1), padding=(get_padding(5, 1), 0))),
+            norm_f(Conv2d(128, 512, (kernel_size, 1), (stride, 1), padding=(get_padding(5, 1), 0))),
+            norm_f(Conv2d(512, 1024, (kernel_size, 1), (stride, 1), padding=(get_padding(5, 1), 0))),
+            norm_f(Conv2d(1024, 1024, (kernel_size, 1), 1, padding=(2, 0))),
+        ])
+        self.conv_post = norm_f(Conv2d(1024, 1, (3, 1), 1, padding=(1, 0)))
+
+    def forward(self, x):
+        fmap = []
+
+        # 1d to 2d
+        b, c, t = x.shape
+        if t % self.period != 0: # pad first
+            n_pad = self.period - (t % self.period)
+            x = F.pad(x, (0, n_pad), "reflect")
+            t = t + n_pad
+        x = x.view(b, c, t // self.period, self.period)
+
+        for l in self.convs:
+            x = l(x)
+            x = F.leaky_relu(x, LRELU_SLOPE)
+            fmap.append(x)
+        x = self.conv_post(x)
+        fmap.append(x)
+        x = torch.flatten(x, 1, -1)
+
+        return x, fmap
+\end{lstlisting}
+
+x是子判别器展平后的整体输出，大小为[B,l]；fmap是经过每一层卷积后的特征图（feature map），类型为list，元素个数为卷积层数，上述代码中有6个卷积层，则fmap元素个数为6，每个元素是大小为[B,C,l',period]的张量。
+
+\subsection{损失函数简介}
+
+HiFiGAN的损失函数主要包括三块，一个是GAN原始的生成对抗损失（GAN Loss）；第二是梅尔频谱损失（Mel-Spectrogram Loss），将生成音频转换回梅尔频谱之后，计算真实和生成音频对应梅尔频谱之间的L1距离；第三是特征匹配损失（Feature Match Loss），主要是对比真实和合成音频在中间卷积层上的差异。
+
+\subsection{生成对抗损失}
+
+HiFiGAN仍然是一个生成对抗网络，判别器计算输入是真实样本的概率，生成器生成以假乱真的样本，最终达到生成器合成接近真实的样本，以致于判别器无法区分真实和生成样本。HiFiGAN使用\href{https://zhuanlan.zhihu.com/p/25768099}{最小二乘GAN（LS-GAN）}，将原始GAN中的二元交叉熵替换为最小二乘损失函数。判别器的生成对抗损失定义为：
+
+\begin{equation}
+  {\rm L}_{Adv}(D;G)=\mathbb{E}_{(x,s)}[(D(x)-1)^2+(D(G(s)))^2]
+\end{equation}
+
+对应的代码实现：
+
+\begin{lstlisting}
+def discriminator_loss(disc_real_outputs, disc_generated_outputs):
+    loss = 0
+    r_losses = []
+    g_losses = []
+    for dr, dg in zip(disc_real_outputs, disc_generated_outputs):
+        r_loss = torch.mean((dr-1)**2)
+        g_loss = torch.mean(dg**2)
+        loss += (r_loss + g_loss)
+        r_losses.append(r_loss.item())
+        g_losses.append(g_loss.item())
+
+    return loss, r_losses, g_losses
+\end{lstlisting}
+
+生成器的生成对抗损失定义为：
+
+\begin{equation}
+  
+\end{equation}
 
 
 

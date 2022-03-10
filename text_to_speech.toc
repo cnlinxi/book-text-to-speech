@@ -208,92 +208,96 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {5.5.7}多周期判别器}{48}{subsection.5.5.7}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {5.6}ElegantBook 更新说明}{48}{section.5.6}%
+\contentsline {subsection}{\numberline {5.5.8}损失函数简介}{50}{subsection.5.5.8}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {5.7}模板安装与更新}{48}{section.5.7}%
+\contentsline {subsection}{\numberline {5.5.9}生成对抗损失}{50}{subsection.5.5.9}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {5.7.1}在线使用模板}{48}{subsection.5.7.1}%
+\contentsline {section}{\numberline {5.6}ElegantBook 更新说明}{50}{section.5.6}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {5.7.2}本地免安装使用}{49}{subsection.5.7.2}%
+\contentsline {section}{\numberline {5.7}模板安装与更新}{51}{section.5.7}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {5.7.3}发行版安装使用}{49}{subsection.5.7.3}%
+\contentsline {subsection}{\numberline {5.7.1}在线使用模板}{51}{subsection.5.7.1}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {5.7.4}更新问题}{49}{subsection.5.7.4}%
+\contentsline {subsection}{\numberline {5.7.2}本地免安装使用}{51}{subsection.5.7.2}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {5.7.5}其他发行版本}{49}{subsection.5.7.5}%
+\contentsline {subsection}{\numberline {5.7.3}发行版安装使用}{51}{subsection.5.7.3}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {5.8}关于提交}{49}{section.5.8}%
+\contentsline {subsection}{\numberline {5.7.4}更新问题}{51}{subsection.5.7.4}%
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {6}ElegantBook 设置说明}{50}{chapter.6}%
+\contentsline {subsection}{\numberline {5.7.5}其他发行版本}{51}{subsection.5.7.5}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {6.1}语言模式}{50}{section.6.1}%
+\contentsline {section}{\numberline {5.8}关于提交}{52}{section.5.8}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {6.2}设备选项}{50}{section.6.2}%
+\contentsline {chapter}{\numberline {6}ElegantBook 设置说明}{53}{chapter.6}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {6.3}颜色主题}{50}{section.6.3}%
+\contentsline {section}{\numberline {6.1}语言模式}{53}{section.6.1}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {6.4}封面}{51}{section.6.4}%
+\contentsline {section}{\numberline {6.2}设备选项}{53}{section.6.2}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {6.4.1}封面个性化}{51}{subsection.6.4.1}%
+\contentsline {section}{\numberline {6.3}颜色主题}{53}{section.6.3}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {6.4.2}封面图}{51}{subsection.6.4.2}%
+\contentsline {section}{\numberline {6.4}封面}{54}{section.6.4}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {6.4.3}徽标}{52}{subsection.6.4.3}%
+\contentsline {subsection}{\numberline {6.4.1}封面个性化}{54}{subsection.6.4.1}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {6.4.4}自定义封面}{52}{subsection.6.4.4}%
+\contentsline {subsection}{\numberline {6.4.2}封面图}{54}{subsection.6.4.2}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {6.5}章标标题}{52}{section.6.5}%
+\contentsline {subsection}{\numberline {6.4.3}徽标}{55}{subsection.6.4.3}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {6.6}数学环境简介}{52}{section.6.6}%
+\contentsline {subsection}{\numberline {6.4.4}自定义封面}{55}{subsection.6.4.4}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {6.6.1}定理类环境的使用}{53}{subsection.6.6.1}%
+\contentsline {section}{\numberline {6.5}章标标题}{55}{section.6.5}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {6.6.2}其他环境的使用}{53}{subsection.6.6.2}%
+\contentsline {section}{\numberline {6.6}数学环境简介}{55}{section.6.6}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {6.7}列表环境}{53}{section.6.7}%
+\contentsline {subsection}{\numberline {6.6.1}定理类环境的使用}{56}{subsection.6.6.1}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {6.8}参考文献}{54}{section.6.8}%
+\contentsline {subsection}{\numberline {6.6.2}其他环境的使用}{56}{subsection.6.6.2}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {6.9}添加序章}{54}{section.6.9}%
+\contentsline {section}{\numberline {6.7}列表环境}{56}{section.6.7}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {6.10}目录选项与深度}{54}{section.6.10}%
+\contentsline {section}{\numberline {6.8}参考文献}{57}{section.6.8}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {6.11}章节摘要}{55}{section.6.11}%
+\contentsline {section}{\numberline {6.9}添加序章}{57}{section.6.9}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {6.12}章后习题}{55}{section.6.12}%
+\contentsline {section}{\numberline {6.10}目录选项与深度}{57}{section.6.10}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{第 6{} 章\tmspace +\thickmuskip {.2777em}练习}{55}{section*.32}%
+\contentsline {section}{\numberline {6.11}章节摘要}{58}{section.6.11}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {6.13}旁注}{56}{section.6.13}%
+\contentsline {section}{\numberline {6.12}章后习题}{58}{section.6.12}%
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {7}字体选项}{57}{chapter.7}%
+\contentsline {section}{第 6{} 章\tmspace +\thickmuskip {.2777em}练习}{58}{section*.32}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {7.1}数学字体选项}{57}{section.7.1}%
+\contentsline {section}{\numberline {6.13}旁注}{59}{section.6.13}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {7.2}使用 newtx 系列字体}{57}{section.7.2}%
+\contentsline {chapter}{\numberline {7}字体选项}{60}{chapter.7}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {7.2.1}连字符}{57}{subsection.7.2.1}%
+\contentsline {section}{\numberline {7.1}数学字体选项}{60}{section.7.1}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {7.2.2}宏包冲突}{57}{subsection.7.2.2}%
+\contentsline {section}{\numberline {7.2}使用 newtx 系列字体}{60}{section.7.2}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {7.3}中文字体选项}{58}{section.7.3}%
+\contentsline {subsection}{\numberline {7.2.1}连字符}{60}{subsection.7.2.1}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {7.3.1}方正字体选项}{58}{subsection.7.3.1}%
+\contentsline {subsection}{\numberline {7.2.2}宏包冲突}{60}{subsection.7.2.2}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {7.3.2}其他中文字体}{58}{subsection.7.3.2}%
+\contentsline {section}{\numberline {7.3}中文字体选项}{61}{section.7.3}%
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {8}ElegantBook 写作示例}{60}{chapter.8}%
+\contentsline {subsection}{\numberline {7.3.1}方正字体选项}{61}{subsection.7.3.1}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {8.1}Lebesgue 积分}{60}{section.8.1}%
+\contentsline {subsection}{\numberline {7.3.2}其他中文字体}{61}{subsection.7.3.2}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {8.1.1}积分的定义}{60}{subsection.8.1.1}%
+\contentsline {chapter}{\numberline {8}ElegantBook 写作示例}{63}{chapter.8}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{第 8{} 章\tmspace +\thickmuskip {.2777em}练习}{62}{section*.35}%
+\contentsline {section}{\numberline {8.1}Lebesgue 积分}{63}{section.8.1}%
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {9}常见问题集}{63}{chapter.9}%
+\contentsline {subsection}{\numberline {8.1.1}积分的定义}{63}{subsection.8.1.1}%
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {10}版本更新历史}{64}{chapter.10}%
+\contentsline {section}{第 8{} 章\tmspace +\thickmuskip {.2777em}练习}{65}{section*.35}%
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {A}基本数学工具}{67}{appendix.A}%
+\contentsline {chapter}{\numberline {9}常见问题集}{66}{chapter.9}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {A.1}求和算子与描述统计量}{67}{section.A.1}%
+\contentsline {chapter}{\numberline {10}版本更新历史}{67}{chapter.10}%
+\defcounter {refsection}{0}\relax 
+\contentsline {chapter}{\numberline {A}基本数学工具}{70}{appendix.A}%
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {A.1}求和算子与描述统计量}{70}{section.A.1}%
