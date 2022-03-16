@@ -36,6 +36,8 @@
 
 2020 年，我打算做 Elegant\LaTeX{} 的最后一个版本，也就是原定计划 ElegantBook 4.x 版本为 Elegant\LaTeX{} 系列模板的终止符。基于我想把 4.x 做成一个最终版本，我计划了很多事情，包括将代码转为 dtx，将三个模板的文档打包进 dtx 里面，然后重新设计封面，补充各种页面，增加元素等等。我想的很多，但是做起来并不是很顺利，中间也发生了很多事情，不想解释。直至今年 4 月，我决定，不论如何，先把 4.1 发布出来。
 
+感谢我的夫人，由于上海严重的疫情，她居家办公，但一直在家划水，所以我希望知道友商领导的联系方式，我要举报她/doge。
+
 \vskip 0.5cm
 
 另外，在临近 Elegant\LaTeX{} 模板告别之际，我想和各位用户说：多分享，多奉献。
@@ -219,7 +221,7 @@ May 15, 2022
   \item 语音之家
 \end{enumerate}
 
-\section{开源材料}
+\section{开源资料}
 \subsection{中文数据集}
 \begin{enumerate}
   \item \href{https://www.data-baker.com/open_source.html}{标贝中文标准女声音库}: 中文单说话人语音合成数据集，质量高。
@@ -371,8 +373,63 @@ May 15, 2022
   \item \href{https://www.inf.ed.ac.uk/teaching/courses/asr/2020-21/asr02-signal.pdf}{爱丁堡大学课件}
 \end{enumerate}
 
-\section{基本概念}
+\section{语音基本概念}
 声波通过空气传播，被麦克风接收，通过 \lstinline{采样}、 \lstinline{量化}、 \lstinline{编码}转换为离散的数字信号，即波形文件。
+
+\subsection{能量}
+
+音频的能量通常指的是时域上每帧的能量，幅度的平方。在简单的语音活动检测（Voice Activity Detection，VAD）中，直接利用能量特征：能量大的音频片段是语音，能量小的音频片段是非语音（包括噪音、静音段等）。这种VAD的局限性比较大，正确率也不高，对噪音非常敏感。
+
+\subsection{短时能量}
+
+短时能量体现的是信号在不同时刻的强弱程度。设第n帧语音信号的短时能量用 $E_n$ 表示，则其计算公式为：
+
+\begin{equation}
+  E_n=\sum_{m=0}^{M-1}x_n^2(m)
+\end{equation}
+
+上式中， $M$ 为帧长， $x_n(m)$ 为该帧中的样本点。
+
+\subsection{声强和声强级}
+
+单位时间内通过垂直于声波传播方向的单位面积的平均声能，称作声强，声强用I表示，单位为“瓦/平米”。实验研究表明，人对声音的强弱感觉并不是与声强成正比，而是与其对数成正比，所以一般声强用声强级来表示：
+
+\begin{equation}
+  L=10{\rm log}(\frac{I}{I'})
+\end{equation}
+
+其中，I为声强，$I'=10e^{-12}w/m^2$ 称为基本声强，声强级的常用单位是分贝(dB)。
+
+\subsection{响度}
+
+响度是一种主观心理量，是人类主观感觉到的声音强弱程度，又称音量。\lstinline{响度与声强和频率有关}。一般来说，声音频率一定时，声强越强，响度也越大。相同的声强，频率不同时，响度也可能不同。响度若用对数值表示，即为响度级，响度级的单位定义为方，符号为phon。根据国际协议规定，0dB声强级的1000Hz纯音的响度级定义为0 phon，n dB声强级的1000Hz纯音的响度级就是n phon。其它频率的声强级与响度级的对应关系要从如图\ref{fig:loudness_curve}等响度曲线查出。
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.6\textwidth]{loudness_curve.png}
+  \caption{等响曲线 \label{fig:loudness_curve}}
+\end{figure}
+
+\subsection{过零率}
+
+过零率体现的是信号过零点的次数，体现的是频率特性。
+
+\begin{equation}
+  Z_n=\sum_{n=0}^{N-1}\sum_{m=0}^{M-1}|{\rm sgn}(x_n(m))-{\rm sgn}(x_n(m-1))|
+\end{equation}
+
+其中，$N$ 表示帧数， $M$ 表示每一帧中的样本点个数， ${\rm sgn}$ 为符号函数，即
+
+\begin{equation}
+  {\rm sgn}=\left\{\begin{matrix}
+    & 1,x \geq 0 \\ 
+    & -1,x<0
+   \end{matrix}\right.
+\end{equation}
+
+\section{发音学}
+
+\subsection{其它概念}
 
 \begin{enumerate}
   \item 波形（waveform）: 声音是由声源振动产生的波
@@ -434,7 +491,6 @@ May 15, 2022
 
 \subsection{频率分辨率}
 频率分辨率是指将两个相邻谱峰分开的能力，在实际应用中是指分辨两个不同频率信号的最小间隔。
-
 
 \chapter{语音特征提取}
 原始信号是不定长的时序信号，不适合作为机器学习的输入。因此一般需要将原始波形转换为特定的特征向量表示，该过程称为语音特征提取。
