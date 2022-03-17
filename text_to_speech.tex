@@ -374,7 +374,7 @@ May 15, 2022
 \end{enumerate}
 
 \section{语音基本概念}
-声波通过空气传播，被麦克风接收，通过 \lstinline{采样}、 \lstinline{量化}、 \lstinline{编码}转换为离散的数字信号，即波形文件。
+声波通过空气传播，被麦克风接收，通过 \lstinline{采样}、 \lstinline{量化}、 \lstinline{编码}转换为离散的数字信号，即波形文件。音量、音高和音色是声音的基本属性。
 
 \subsection{能量}
 
@@ -427,25 +427,165 @@ May 15, 2022
    \end{matrix}\right.
 \end{equation}
 
-\section{发音学}
+\subsection{共振峰}
 
-\subsection{其它概念}
+声门处的准周期激励进入声道时会引起共振特性，产生一组共振频率，这一组共振频率称为共振峰频率或简称共振峰。共振峰包含在语音的频谱包络中，频谱极大值就是共振峰。频率最低的共振峰称为第一共振峰，对应的频率也称作基频，决定语音的F0，其它的共振峰统称为谐波，如图\ref{fig:frequency_f0}所示，蓝色箭头指向频谱的第一共振峰，也就是基频的位置，决定音高；而绿框则是其它共振峰，统称为谐波。谐波是基频对应的整数次频率成分，由声带发声带动空气共振形成的，对应着声音三要素的音色。谐波的位置，相邻的距离共同形成了音色特征。谐波之间距离近听起来则偏厚粗，之间距离远听起来偏清澈。在男声变女声的时候，除了基频的移动，还需要调整谐波间的包络，距离等，否则将会丢失音色信息。
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.6\textwidth]{frequency_f0.png}
+  \caption{共振峰 \label{fig:frequency_f0}}
+\end{figure}
+
+\subsection{基频和基音周期}
+
+基音周期反映了声门相邻两次开闭之间的时间间隔，基频（fundamental frequency，F0）则是基音周期的倒数，对应着声带振动的频率，代表声音的音高，声带振动越快，基频越高。它是语音激励源的一个重要特征，比如可以通过基频区分性别。一般来说，成年男性基频在100-250Hz左右，成年女性基频在150-350Hz左右，女声的音高一般比男声稍高。
+
+人类可感知声音的频率大致在20-20000Hz之间，人类对于基频的感知遵循对数律，也就是说，人们会感觉100Hz到200Hz的差距，与200Hz到400Hz的差距相同。因此，音高常常用基频的对数来表示。在音乐上，把相差一倍的两个基频的差距称为一个八度（octave）；把一个八度12等分，每一份称为一个半音（semitone）；把一个半音再100等分，每一份称为一个音分（cent）。
+
+基频是语音的重要特征，在包括语音合成的语音处理中有着广泛的应用，比如语音转换（Voice Conversion，VC）和语音合成中基频是一个强特征。基频的提取可以分为时域法和频域法。时域法以波形为输入，基本原理是寻找波形的最小正周期；频域法则会先对信号进行傅里叶变换，得到频谱，频谱在基频的整倍数处有尖峰，频域法的基本原理就是求出这些尖峰频率的最大公约数。但是考虑到基频并非每一帧都有，因此在提取基频前后，都需要判断有无基频，称之为清浊音判断（Unvoiced/Voiced Decision，U/V Decision）。语音的基频往往随着时间变化，在提取基频之前往往要进行分帧，逐帧提取的基频常常含有错误，其中常见的错误就是倍频错误和半频错误，也就是提取出来的基频是真实基频的两倍或者一半，因此基频提取后要进行平滑操作。常见的基频提取算法有基于信号处理时域法的YIN\footnote{A. de Cheveigné and H. Kawahara, "YIN, a fundamental frequency estimator for speech and music", Journal of the Acoustical Society of America, 2002.}，基于信号处理频域法的SWIPE\footnote{A. Camacho and J. G. Harris, "A sawtooth waveform inspired pitch estimator for speech and music", Journal of the Acoustical Society of America, 2008.}，基于机器学习时域法的CREPE\footnote{J. W. Kim, et al., "CREPE: A convolutional representation for pitch estimation", ICASSP, 2018.}和基于机器学习频域法的SPICE\footnote{B. Gfeller, et al., "SPICE: Self-supervised pitch estimation", IEEE Transactions on Audio, Speech and Language Processing, 2020.}。常用的基频提取工具有\href{https://github.com/JeremyCCHsu/Python-Wrapper-for-World-Vocoder}{pyWORLD}，\href{https://github.com/YannickJadoul/Parselmouth}{Parselmouth}，\href{https://github.com/marl/crepe}{CREPE}，\href{https://github.com/patriceguyot/Yin}{YIN}等。参见\href{https://zhuanlan.zhihu.com/p/269107205}{基频提取算法综述}。
+
+\subsection{音高}
+
+音高（pitch）是由声音的基频决定的，音高和基频常常混用。可以这样认为，音高（pitch）是稀疏离散化的基频（F0）。由规律振动产生的声音一般都会有基频，比如语音中的元音和浊辅音；也有些声音没有基频，比如人类通过口腔挤压气流的清辅音。在汉语中，元音有a/e/i/o/u，浊辅音有y/w/v，其余音素比如b/p/q/x等均为清辅音，在发音时，可以通过触摸喉咙感受和判断发音所属音素的种类。
+
+\subsection{MFCC和语谱图}
+
+对语音进行分析和处理时，部分信息在时域上难以分析，因此往往会提取频谱特征。在语音合成中，通常将频谱作为中间声学特征：首先将文本转换为频谱，再将频谱转换为波形；在语音识别中，则将频谱或者MFCC作为中间声学特征。语音通过预加重、分帧、加窗、傅里叶变换之后，取功率谱的幅度平方，进行梅尔滤波取对数之后，就得到了梅尔频谱（或称FilterBank/FBank），如果再进行离散余弦变换，就能够获得MFCC，下一章将进行详述。语音通常是一个短时平稳信号，在进行傅里叶变换之前，一般要进行分帧，取音频的一个小片段进行短时傅里叶变换（STFT）。STFT的结果是一个复数，包括幅度和相位信息，将该复数中的频率作为横轴，幅度作为纵轴，如图\ref{fig:frequency_spectrum}所示，就组成了频谱图，将频谱图中的尖峰点连接起来，就形成了频谱包络。注意到，频谱图反映一个语音帧的频域情况，没有时间信息。因此，将每个帧对应的频谱图连接起来，以时间作为横轴，频率作为纵轴，颜色深浅表示幅度，如图\ref{fig:frequency_time_fig}下面红图所示，就组成了语谱图。语谱图实际上是一个三维图，横轴时间，纵轴频率，颜色深浅表示幅度大小，一般来说，颜色越深，表示幅度值越大。
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.6\textwidth]{frequency_spectrum.jpeg}
+  \caption{频谱图 \label{fig:frequency_spectrum}}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.6\textwidth]{frequency_time_fig.png}
+  \caption{波形和对应的语谱图 \label{fig:frequency_time_fig}}
+\end{figure}
+
+\section{语言学}
+
+语言学研究人类的语言，计算语言学则是一门跨学科的研究领域，试图找出自然语言的规律，建立运算模型，语音合成其实就是计算语言学的子领域之一。在语音合成中，一般需要将文本转换为对应的音素，然后再将音素输入到后端模型中，因此需要为每个语种甚至方言构建恰当合理的音素体系。相关概念如下。
 
 \begin{enumerate}
-  \item 波形（waveform）: 声音是由声源振动产生的波
-  \item 音高（pitch）: 与频率（frequency）有关，是频谱上的第一共振峰。音高（pitch）是稀疏离散化的基频（f0）。
-  \item 响度: 与振幅（amplitude）有关。
-  \item 音色: 由频谱上的谐波决定。音高、响度和音色被称作声音的三要素。
+  \item 音素（phoneme）：也称音位，是能够区别意义的最小语音单位，同一音素由不同人/环境阅读，可以形成不同的发音。
+  \item 字素（grapheme）：音素对应的文本。具体的区别参见：\href{https://www.youtube.com/watch?v=25r1fyoorko}{Phonemes, Graphemes, and Morphemes!}
+  \item 发音（phone）： 某个音素的具体发音。实际上，phoneme和phone都是指的是音素，音素可具化为实际的音，该过程称为音素的语音体现。一个音素可能包含着几个不同音值的音，因而可以体现为一个音、两个音或更多的同位音。但是在一些论述中，phoneme偏向于表示发音的符号，phone更偏向于符号对应的实际发音，因此phoneme可对应无数个phone。
+  \item 音节（syllable）：音节由音素组成。在汉语中，除儿化音外，一个汉字就是一个音节。如wo3（我）是一个音节，zhong1（中）也是一个音节。
+\end{enumerate}
+
+\subsection{国际音标简介}
+
+国际音标（International Phonetic Alphabet，IPA）是一种通用的注音系统，一套注音体系可以标注多种语言。对于汉语来说，使用国际音标和使用拼音标注发音效果是相同的；但是如果希望实现多语言的注音，就必须采用统一的注音，IPA就是这样一种比较好的发音标注形式。
+
+因为人类语音差异很大，有限的拉丁字母远不够用，于是就需要改变字形和借用其它语言的字母来补充。也就是说，IPA以拉丁字母（罗马字母）的小写印刷体为主，如：a、b、c、d、f、g、h、i、j、k、p等。在不够用时，使用以下几种方法来补充，包括：
+
+\begin{enumerate}
+  \item 使用拉丁字母大写印刷体或书写体（草体）；
+  \item 颠倒或者改变拉丁字母的字形，如：倒置e，卷尾c，右弯尾d，长右腿n等；
+  \item 借用其它语言字母；
+  \item 新制字母；
+  \item 在字母上加符号。
+\end{enumerate}
+
+\subsection{IPA的字母和发音}
+
+读音上，为照顾习惯，大多数符号仍读拉丁语或其它语言的原音。IPA追求一个字符表示一个发音，不会出现在一些语言中，如英语用“th”、“sh”表示一个发音的情况。IPA字母的发音，有些和原始的希腊字母发音相同，但有些又和英语等语言发音相同，其大致的规则包括：
+
+\begin{enumerate}
+  \item 元音字母：如[a]、[o]、[i]等发音和意大利语、西班牙语无较大差别；
+  \item 辅音字母：如[m]、[n]、[z]、[p]、[b]的发音则接近于英语；
+  \item 其他字母：如[y]和德语或芬兰语中的y类似，而[j]与英语的y发音接近。
+\end{enumerate}
+
+IPA的字母构成会随着规范的修改而变动，2018年发布的标准中，IPA的字母有107个，包括了59个肺部气流辅音，10个非肺部气流辅音，28个元音和10个其他字母，如下表\ref{fig:ipa_consant}-\ref{fig:other_alphabet}所示：
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.6\textwidth]{ipa_consant.png}
+  \caption{肺部气流辅音（59个） \label{fig:ipa_consant}}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.6\textwidth]{ipa_consant_not.png}
+  \caption{非肺部气流辅音（10个） \label{fig:ipa_consant_not}}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.6\textwidth]{vowel.png}
+  \caption{（元音） \label{fig:vowel}}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.6\textwidth]{other_alphabet.png}
+  \caption{（其它字母） \label{fig:other_alphabet}}
+\end{figure}
+
+在国际音标表中，同一列、或同一行的音标，在发音方法上有相同之处，因此也就具有相似的性质，这为语音的研究提供了较大的便利。“国际音标表”是语音学的基础，就如同“元素周期表”是化学的基础。一些开源工具，比如\href{https://github.com/espeak-ng/espeak-ng}{eSpeak NG Text-to-Speech}、\href{https://github.com/dmort27/epitran}{Epitran}实现了各语种的字素转国际音标。但是，这些国际音标开源工具并没有提供对方言的支持，比如上海话、闽南语的字素转音素；国际音标本身识记较为复杂，学习成本比较高，并且为了照顾世界所有语种，音素的划分上较为精细，因此国际音标是语音合成中音素体系的重要参考方案，但非最佳方案。
+
+\subsection{音系学}
+
+对于语音合成来说，需要了解语言学的分支之一：音系学，以便更好地制定适用于一个语种语音合成系统的音素体系。这里需要探讨三个问题：音位数量，这里的音位和音素概念区别不大，音素不针对一个语种，是一个最小的语音单位，音位是针对一个特定语言的，具有区别意义的最小语音单位，参见\href{https://www.zhihu.com/question/27250496}{音素和音位的区别与联系是什么？}；语音配列，也就是语音符号的组合规律，哪些音段的组合是不被允许的，音段出现的位置有哪些限制；音系交替，音与音同时出现时，彼此受影响会导致哪些形式的变化，这涉及到音系过程。音系过程可以理解为一个音段受所处语音环境或语法环境的影响而产生变化的过程，音系过程的种类有很多，比如同化和异化两种过程。
+
+音位数量的确定牵扯到对比分布和互补分布两个概念。如果A和B处于对比分布时，那么甲和乙处于同样的语言环境中时，就会引起意义的不同。比如英语中的[p]和[b]就处于对比分布，当它们处于相同的语言环境中时，比如pin[\underline{p}in]和bin[\underline{b}in]，但是两个单词的意义完全不同，因此[p]和[b]就分属两个不同的音位。而假如A和B处于互补分布时，那么甲和乙不可能出现在同样的语音环境中，例如英语中的[p]处于重读音节首时pig[\underline{p}ig]，往往表现为送气的[ $p^h$ ]，而在[s]后面时spit[s\underline{p}it]，往往表现为不送气的[p]，送气的[ $p^h$ ]和不送气的[p]不会出现在同一语音环境中，可以说，它们是同一个音位在不同语音环境中的音位变体。因此，\lstinline{音位处于对比分布，而音位变体处于互补分布}。确立音位的做法便是寻找最小对比对，也就是说寻找音位时要满足：1. 在相同的语音环境；2. 单词的意思不同。最直接的做法就是找两个意义不同的的单词，并且只有在一个位置上有不同的音段，在其它位置上的音段都相同，这一对单词就是最小对比对。比如ban[\underline{b}an]和man[\underline{m}an]这对最小对比对中，除了[b]和[m]之外，其它音段都相同，正因为[b]和[m]，这两个单词的意义也不同。 因此归纳音位的原则有：对立互补原则和语音相似原则。
+
+语音配列是一个语种中，对于一个单词、语素或音节中可能出现的元音和辅音序列制约条件的集合。比如英语单词“wtist”是不可能存在的，因为[w]是滑音（glide），而[t]则是塞擦音（plosive），在英语中如果滑音和塞擦音同时出现在词首，则塞擦音一定在滑音的前面，比如twin，因此“wtist”一定是非法英语单词。
+
+同化是指一个音段变得和另一个音段相似的音系学过程，根据同化的方向，这一过程又可以分为顺同化和逆同化。顺同化又称遗留同化，是指后面的音段被前面的音段同化了，比如英语中的复数和动词的过去式。英语单词“cup”词缀辅音和前面词干尾的辅音在清浊上是一致的，音系学上认为复数形式本来的形式是[z]，是一个浊音，但当词干尾的辅音是清音比如[t]、[k]、[p]，这个浊辅音就会被前面的清音同化为清辅音[s]，因此“cup”的复数形式“cups”读音就是[kaps]而不是[kapz]。顺同化是从左到右的同化，逆同化就是从右到左的同化。逆同化又称为先行同化，是前面的音段被后面音段同化的过程。比如汉语普通话中，当两个第三声的字放在一起，第一个就会变成第二声，如永（yong3）、远（yuan3），组成单词“永远”时，读音为“yong2 yuan3”。
+
+对于目前类似于Tacotron这样的端到端声学模型来说，给定的音素体系一般\lstinline{只需确定音位，对于各种协同发音导致的音位变体，则可以不加区分。}例如对于法语这样存在同一个音素在不同单词中发音不同的语种，文本前端的音素体系可以只关注音位，音位变体由后端模型自行学习。为了模型增强可控性，也可以尝试结合词面信息，根据上下文给出音位不同的符号表示。比如s[s]这个字母，在不同语境中可能存在不同的音位变体，后面结合字母a是一个音位变体，因此将此时字母s的音位变体标记为[sa]；后面结合字母b可能又是一个音位变体，这时则将该s的音位变体标记为[sb]。
+
+
+\subsection{参考资料}
+
+\begin{enumerate}
+  \item \href{https://space.bilibili.com/363660379}{十分语言学（视频扫盲课程）}
+  \item \href{http://media.openonline.com.cn/media_file/rm/huashi0703/yuyanxgl/mulu.htm}{语言学概论}
+  \item \href{https://zhuanlan.zhihu.com/p/470501423}{《语音模式》笔记（上）：肺部气流辅音}
+  \item \href{https://zhuanlan.zhihu.com/p/471036291}{《语音模式》笔记（下）：非肺部辅音、元音、一些杂谈}
+  \item \href{https://www.zhihu.com/column/yulinhanshe}{语林寒舍-Huisje in het Taalbos}
+\end{enumerate}
+
+\section{音频格式}
+\begin{enumerate}
+  \item *.wav: 波形无损压缩格式，是语音合成中音频语料的常用格式，主要的三个参数：采样率，量化位数和通道数。一般来说，合成语音的采样率采用16kHz、22050Hz、24kHz，对于歌唱合成等高质量合成场景采样率可达到48kHz；量化位数采用16bit；通道数采用1.
+  \item *.flac: Free Lossless Audio Codec，无损音频压缩编码。
+  \item *.mp3: Moving Picture Experts Group Audio Player III，有损压缩。
+  \item *.wma: Window Media Audio，有损压缩。
+  \item *.avi: Audio Video Interleaved，avi文件将音频和视频包含在一个文件容器中，允许音视频同步播放。
+\end{enumerate}
+
+\section{数字信号处理}
+
+\subsection{模数转换}
+
+模拟信号到数字信号的转换（Analog to Digital Converter，ADC）称为模数转换。
+
+奈奎斯特采样定理：要从抽样信号中无失真地恢复原信号，抽样频率应大于2倍信号最高频率。抽样频率小于2倍频谱最高频率时，信号的频谱有混叠。抽样频率大于2倍频谱最高频率时，信号的频谱无混叠。如果对语音模拟信号进行采样率为16000Hz的采样，得到的离散信号中包含的最大频率为8000Hz。
+
+\subsection{频谱泄露}
+
+音频处理中，经常需要利用傅里叶变换将时域信号转换到频域，而一次快速傅里叶变换（FFT）只能处理有限长的时域信号，但语音信号通常是长的，所以需要将原始语音截断成一帧一帧长度的数据块。这个过程叫\lstinline{信号截断}，也叫\lstinline{分帧}。分完帧后再对每帧做FFT，得到对应的频域信号。FFT是离散傅里叶变换（DFT）的快速计算方式，而做DFT有一个先验条件：分帧得到的数据块必须是整数周期的信号，也即是每次截断得到的信号要求是周期主值序列。
+
+但做分帧时，很难满足\lstinline{周期截断}，因此就会导致\lstinline{频谱泄露}。要解决非周期截断导致的频谱泄露是比较困难的，可以通过\lstinline{加窗}尽可能减少频谱泄露带来的影响。窗类型可以分为汉宁窗、汉明窗、平顶窗等。虽然加窗能够减少频谱泄露，但加窗衰减了每帧信号的能量，特别是边界处的能量，这时加一个合成窗，且overlap-add，便可以补回能量。参见：\href{https://zhuanlan.zhihu.com/p/339692933}{频谱泄露和加窗}。
+
+\subsection{频率分辨率}
+频率分辨率是指将两个相邻谱峰分开的能力，在实际应用中是指分辨两个不同频率信号的最小间隔。
+
+\section{其它概念}
+
+\begin{enumerate}
+  \item 波形（waveform）: 声音是由声源振动产生的波。
   \item 信道: 通信的通道Channel，是信号传输的媒介。
   \item 声道: 声音在录制和播放时，在不同空间位置采集或回放相互独立的音频信号，因此声道数也就是声音录制时的音源数量或回放时相应的扬声器数量。
   \item 采样率：单位时间内从连续信号中提取并组成离散信号的采样个数，音频常用单位kHz。
   \item 采样位数/采样深度：数字信号的二进制位数，与每次采样的可能值个数有关，音频常用单位bit。常见的音频格式： \lstinline{16kHz，16bit}中16kHz指的是采样率，16bit表示采样位深。
   \item 信噪比（SNR）：和声压级类似，单位仍采用分贝，数值越高，表示声音越干净，噪音比例越小。
-  \item 音素（phoneme）：声音的最小单位，同一音素由不同人/环境阅读，可以形成不同的发音。
-  \item 字素（grapheme）：音素对应的文本。具体的区别参见：\href{https://www.youtube.com/watch?v=25r1fyoorko}{Phonemes, Graphemes, and Morphemes!}
-  \item phone: 某个音素的具体发音。
-  \item 过零率
-  \item 短时能量
   \item LPC。线性预测系数。LPC的基本思想是，当前时刻的信号可以用若干历史时刻信号的线性组合来估计，通过使实际语音的采样值和线性预测的采样值之间达到均方差最小，即可得到一组线性预测系数。求解LPC系数可以采用自相关法、协方差法、格型法等快速算法。
   \begin{note}
     语音信号的数字表示可以分为两类：\lstinline{波形表示}和\lstinline{参数表示}，波形表示仅通过采样和量化保存模拟信号的波形；而参数表示将语音信号表示为某种语音产生模型的输出，是对数字化语音进行分析和处理之后得到的。
@@ -463,34 +603,12 @@ May 15, 2022
 
 对于一段1秒的波形，假设采样率16kHz，采样位深16bit，则包含样本点 $1\times 16000=16000$ 个，所占容量 $1\times 16000\times 16 /8=32000$ 字节（B）。
 
-\section{音频格式}
-\begin{enumerate}
-  \item *.wav: 波形无损压缩格式，是语音合成中音频语料的常用格式，主要的三个参数：采样率，量化位数和通道数。一般来说，合成语音的采样率采用16kHz、22050Hz、24kHz，对于歌唱合成等高质量合成场景采样率可达到48kHz；量化位数采用16bit；通道数采用1.
-  \item *.flac: Free Lossless Audio Codec，无损音频压缩编码。
-  \item *.mp3: Moving Picture Experts Group Audio Player III，有损压缩。
-  \item *.wma: Window Media Audio，有损压缩。
-  \item *.avi: Audio Video Interleaved，avi文件将音频和视频包含在一个文件容器中，允许音视频同步播放。
-\end{enumerate}
 
-\section{发音学}
 
-\section{数字信号处理}
-\subsection{模数转换}
 
-模拟信号到数字信号的转换（Analog to Digital Converter，ADC）称为模数转换。
 
-奈奎斯特采样定理：要从抽样信号中无失真地恢复原信号，抽样频率应大于2倍信号最高频率。抽样频率小于2倍频谱最高频率时，信号的频谱有混叠。抽样频率大于2倍频谱最高频率时，信号的频谱无混叠。如果对语音模拟信号进行采样率为16000Hz的采样，得到的离散信号中包含的最大频率为8000Hz。
 
-\subsection{傅里叶变换}
 
-\subsection{频谱泄露}
-
-音频处理中，经常需要利用傅里叶变换将时域信号转换到频域，而一次快速傅里叶变换（FFT）只能处理有限长的时域信号，但语音信号通常是长的，所以需要将原始语音截断成一帧一帧长度的数据块。这个过程叫\lstinline{信号截断}，也叫\lstinline{分帧}。分完帧后再对每帧做FFT，得到对应的频域信号。FFT是离散傅里叶变换（DFT）的快速计算方式，而做DFT有一个先验条件：分帧得到的数据块必须是整数周期的信号，也即是每次截断得到的信号要求是周期主值序列。
-
-但做分帧时，很难满足\lstinline{周期截断}，因此就会导致\lstinline{频谱泄露}。要解决非周期截断导致的频谱泄露是比较困难的，可以通过\lstinline{加窗}尽可能减少频谱泄露带来的影响。窗类型可以分为汉宁窗、汉明窗、平顶窗等。虽然加窗能够减少频谱泄露，但加窗衰减了每帧信号的能量，特别是边界处的能量，这时加一个合成窗，且overlap-add，便可以补回能量。参见：\href{https://zhuanlan.zhihu.com/p/339692933}{频谱泄露和加窗}。
-
-\subsection{频率分辨率}
-频率分辨率是指将两个相邻谱峰分开的能力，在实际应用中是指分辨两个不同频率信号的最小间隔。
 
 \chapter{语音特征提取}
 原始信号是不定长的时序信号，不适合作为机器学习的输入。因此一般需要将原始波形转换为特定的特征向量表示，该过程称为语音特征提取。
