@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021) (preloaded format=xelatex 2022.3.2)  18 MAR 2022 00:19
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021) (preloaded format=xelatex 2022.3.2)  19 MAR 2022 19:56
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1971,8 +1971,6 @@ Package fontspec Info: Font family 'KaitiSC(0)' created for font 'Kaiti SC'
 (fontspec)             Bold/OT:language=dflt;"
 (fontspec)             - 'bold small caps'  (b/sc) with NFSS spec.: 
 
-LaTeX Font Info:    Font shape `T1/ntxtlf/m/n' will be
-(Font)              scaled to size 7.3pt on input line 28.
 File: ./figure//logo-blue.png Graphic file (type bmp)
 <./figure//logo-blue.png>
 [1
@@ -1998,7 +1996,10 @@ LaTeX Font Info:    Font shape `T1/ntxtlf/m/n' will be
  [6]
 第 1{} 章 1.
 LaTeX Font Info:    Font shape `T1/ntxtlf/b/n' will be
-(Font)              scaled to size 12.0pt on input line 65.
+(Font)              scaled to size 12.0pt on input line 63.
 File: ./image//human_speech_arch.png Graphic file (type bmp)
 <./image//human_speech_arch.png>
-File: ./image//text_to_speech_arch.png Graphic file (type bmp
+File: ./image//text_to_speech_arch.png Graphic file (type bmp)
+<./image//text_to_speech_arch.png>
+File: ./image//text_to_speech_history.png Graphic file (type bmp)
+<./image//t
