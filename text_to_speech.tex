@@ -74,8 +74,8 @@
 
   \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.6\textwidth]{human_speech_arch.png}
-    \caption{人类发生机理 \label{fig:human_speech_arch}}
+    \includegraphics[width=0.4\textwidth]{human_speech_arch.png}
+    \caption{人类发声机理 \label{fig:human_speech_arch}}
   \end{figure}
 
 \subsection{语音合成的历史}
@@ -84,7 +84,7 @@
 
   \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.6\textwidth]{text_to_speech_arch.png}
+    \includegraphics[scale=0.7]{text_to_speech_arch.png}
     \caption{语音合成系统框图 \label{fig:text_to_speech_arch}}
   \end{figure}
 
@@ -92,7 +92,7 @@
 
   \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.9\textwidth]{text_to_speech_history.png}
+    \includegraphics[scale=0.7]{text_to_speech_history.png}
     \caption{语音合成发展历史 \label{fig:text_to_speech_history}}
   \end{figure}
 
@@ -1060,12 +1060,12 @@ def normalize_wav(wav_path, sample_rate, target_loudness=-24.0)
   \item 句子层级。增删停顿，确保和实际录音一致。
 \end{enumerate}
 
-标注人员可以采用\href{https://www.fon.hum.uva.nl/praat/}{Prrat}进行可视化标注和检查，如图\ref{fig:sample_prrat}所示为利用Prrat标注语料的示例。
+标注人员可以采用\href{https://www.fon.hum.uva.nl/praat/}{Praat}进行可视化标注和检查，如图\ref{fig:sample_praat}所示为利用Praat标注语料的示例。
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.6\textwidth]{sample_prrat.png}
-  \caption{利用Prrat标注歌唱合成的语料 \label{fig:sample_prrat}}
+  \includegraphics[width=0.6\textwidth]{sample_praat.png}
+  \caption{利用Praat标注歌唱合成的语料 \label{fig:sample_praat}}
 \end{figure}
 
 总而言之，录音完成后，音素序列跟着录音走，语音如何发音，音素序列就严格按照语音标注，实在不行就发回重录。在语音合成中，同样的音频，不同场景的标注有可能是有细微变化的。比如在新闻播报场景下，发音风格比较平淡，某些细微的停顿和韵律变化可以不用在意，标注上也可以不体现；但是在交互或者小说领域，发音风格的变化较为丰富，对韵律和情感控制要求较高，因此标注可能更为精细，甚至会增加额外的标注信息，停顿、韵律等信息的标注可能和播报风有所不同。
@@ -1180,7 +1180,7 @@ def normalize_wav(wav_path, sample_rate, target_loudness=-24.0)
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.6\textwidth]{text_to_speech-语音合成工作流.png}
+  \includegraphics[scale=0.7]{text_to_speech-语音合成工作流.png}
   \caption{神经网络TTS的三个主要部件 \label{fig:main_components_in_tts}}
 \end{figure}
 
@@ -1201,8 +1201,8 @@ def normalize_wav(wav_path, sample_rate, target_loudness=-24.0)
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.6\textwidth]{tacotron2_img.png}
-  \caption{Tacotron-2模型结构 \label{fig:tacotron2}}
+  \includegraphics[scale=0.7]{tacotron2_arch.png}
+  \caption{Tacotron-2模型结构 \label{fig:tacotron2_arch}}
 \end{figure}
 
 \subsection{声学特征建模网络}
@@ -1223,7 +1223,7 @@ Tacotron-2的声学模型部分采用典型的序列到序列结构。编码器�
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.6\textwidth]{tacotron2_decoder.png}
+  \includegraphics[scale=0.7]{tacotron2_decoder.png}
   \caption{Tacotron2解码过程 \label{fig:tacotron2_decoder}}
 \end{figure}
 
@@ -1766,7 +1766,7 @@ F0是周期信号最长持续时间的倒数，反过来，周期是基频的整
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.6\textwidth]{vocoder_pitch_harmonic.png}
+  \includegraphics[scale=0.8]{vocoder_pitch_harmonic.png}
   \caption{基频和谐波 \label{fig:vocoder_pitch_harmonic}}
 \end{figure}
 
@@ -1887,7 +1887,7 @@ other_like = pw.synthesize(f02, sp, ap, fs)
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.6\textwidth]{vocoder_nhv_source_filter.png}
+  \includegraphics[scale=0.7]{vocoder_nhv_source_filter.png}
   \caption{源-滤波器合成结构框图 \label{fig:vocoder_nhv_source_filter}}
 \end{figure}
 
@@ -2515,7 +2515,7 @@ def feature_loss(fmap_r, fmap_g):
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.8\textwidth]{text_to_speech_knowledge.png}
+  \includegraphics[width=0.9\textwidth]{text_to_speech_knowledge.png}
   \caption{语音合成知识结构 \label{fig:text_to_speech_knowledge}}
 \end{figure}
 
