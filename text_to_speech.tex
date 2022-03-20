@@ -884,35 +884,35 @@ MFCC和FBank唯一的不同就在于，获得FBank特征之后，再经过反离
 \subsection{利用librosa读取音频}
 
 \begin{lstlisting}
-  from matplotlib import pyplot as plt
-  import numpy as np
-  import librosa
+from matplotlib import pyplot as plt
+import numpy as np
+import librosa
 
-  # 利用librosa读取音频
-  input_wav_path = r'test.wav'
-  y, sr = librosa.load(input_wav_path)
-  y_num = np.arange(len(y))
-  
-  # 截取前0.3s的音频
-  sample_signal = y[0:int(sr*0.3)]
-  sample_num = np.arange(len(sample_signal))
-  
-  plt.figure(figsize=(11, 7), dpi=500)
-  plt.subplot(211)
-  plt.plot(y_num/sr, y, color='black')
-  plt.plot(sample_num/sr, sample_signal, color='blue')
-  plt.xlabel('Time (sec)')
-  plt.ylabel('Amplitude')
-  plt.title('Waveform')
-  
-  plt.subplot(212)
-  plt.plot(sample_num/sr, sample_signal, color='blue')
-  plt.xlabel('Time (sec)')
-  plt.ylabel('Amplitude')
-  plt.title('0~0.3s waveform')
-  plt.tight_layout()
-  plt.savefig('waveform.png', dpi=500)
-  plt.show()
+# 利用librosa读取音频
+input_wav_path = r'test.wav'
+y, sr = librosa.load(input_wav_path)
+y_num = np.arange(len(y))
+
+# 截取前0.3s的音频
+sample_signal = y[0:int(sr*0.3)]
+sample_num = np.arange(len(sample_signal))
+
+plt.figure(figsize=(11, 7), dpi=500)
+plt.subplot(211)
+plt.plot(y_num/sr, y, color='black')
+plt.plot(sample_num/sr, sample_signal, color='blue')
+plt.xlabel('Time (sec)')
+plt.ylabel('Amplitude')
+plt.title('Waveform')
+
+plt.subplot(212)
+plt.plot(sample_num/sr, sample_signal, color='blue')
+plt.xlabel('Time (sec)')
+plt.ylabel('Amplitude')
+plt.title('0~0.3s waveform')
+plt.tight_layout()
+plt.savefig('waveform.png', dpi=500)
+plt.show()
 \end{lstlisting}
 
 \begin{figure}[htbp]
@@ -996,6 +996,8 @@ plot_spectrogram(mel_spec, 'mel_spectrogram.png')
 \subsection{提取MFCC}
 
 \begin{lstlisting}
+from scipy.fftpack import dct
+
 num_ceps = 12
 mfcc = dct(mel_spec, type=2, axis=1, norm='ortho')[:, 1 : (num_ceps + 1)]
 plot_spectrogram(mfcc, 'mfcc.png')
