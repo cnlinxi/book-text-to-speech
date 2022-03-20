@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021) (preloaded format=xelatex 2022.3.2)  19 MAR 2022 23:23
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021) (preloaded format=xelatex 2022.3.2)  20 MAR 2022 22:04
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -2096,9 +2096,10 @@ File: ./image//waveform.png Graphic file (type bmp)
  [25] [26]
 File: ./image//mel_spectrogram.png Graphic file (type bmp)
 <./image//mel_spectrogram.png>
+ [27]
 File: ./image//mfcc.png Graphic file (type bmp)
 <./image//mfcc.png>
- [27] [28]
+ [28]
 第 4{} 章 4.
 Missing character: There is no ə ("259) in font ntx-Regular-tlf-t1!
 Missing character: There is no ʊ ("28A) in font ntx-Regular-tlf-t1!
@@ -2163,9 +2164,9 @@ File: ./image//vocoder_nhv_harmonic_sample.png Graphic file (type bmp)
 <./image//vocoder_nhv_harmonic_sample.png>
  [55] [56]
 LaTeX Font Info:    Font shape `T1/ntxtlf/m/n' will be
-(Font)              scaled to size 7.3pt on input line 2066.
+(Font)              scaled to size 7.3pt on input line 2084.
 LaTeX Font Info:    Font shape `T1/ntxtlf/m/n' will be
-(Font)              scaled to size 5.5pt on input line 2066.
+(Font)              scaled to size 5.5pt on input line 2084.
  [57] [58] [59] [60] [61] [62] [63] [64] [65] [66]
 第 7{} 章 7.
 File: ./image//text_to_speech_knowledge.png Graphic file (type bmp)
@@ -2180,10 +2181,10 @@ Package logreq Info: Writing requests to 'text_to_speech.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 47059 strings out of 476919
- 975022 string characters out of 5821841
+ 47084 strings out of 476919
+ 975794 string characters out of 5821841
  2252612 words of memory out of 5000000
- 66161 multiletter control sequences out of 15000+600000
+ 66186 multiletter control sequences out of 15000+600000
  458064 words of font info for 113 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  118i,12n,131p,1436b,1887s stack positions out of 5000i,500n,10000p,200000b,80000s

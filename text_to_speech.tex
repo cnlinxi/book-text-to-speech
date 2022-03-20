@@ -640,13 +640,13 @@ IPA的字母构成会随着规范的修改而变动，2018年发布的标准中�
 包括预加重、分帧和加窗。
 
 \subsection{预加重}
-语音经过说话人的口唇辐射发出，受到唇端辐射抑制，高频能量明显降低。一般来说，当语音信号的频率提高两倍时，其功率谱的幅度下降约6dB，即语音信号的高频部分受到的抑制影响较大。在进行语音信号的分析和处理时，可采用预加重（pre-emphasis）的方法补偿语音信号高频部分的振幅，本质是施加低通滤波器。假设输入信号第 $n$ 个采样点为 $x[n]$ ，则预加重公式如下：
+语音经过说话人的口唇辐射发出，受到唇端辐射抑制，高频能量明显降低。一般来说，当语音信号的频率提高两倍时，其功率谱的幅度下降约6dB，即语音信号的高频部分受到的抑制影响较大。在进行语音信号的分析和处理时，可采用预加重（pre-emphasis）的方法补偿语音信号高频部分的振幅，在傅里叶变换操作中避免数值问题，本质是施加高通滤波器。假设输入信号第 $n$ 个采样点为 $x[n]$ ，则预加重公式如下：
 
 \begin{equation}
   x'[n]=x[n]-a\times x[n-1]
 \end{equation}
 
-其中， $a$ 是预加重系数，一般取 $a=0.97$。
+其中， $a$ 是预加重系数，一般取 $a=0.97$ 或 $a=0.95$ 。
 
 \subsection{分帧}
 语音信号是非平稳信号，考虑到发浊音时声带有规律振动，即基音频率在短时范围内时相对固定的，因此可以认为语音信号具有短时平稳特性，一般认为10ms~50ms的语音信号片段是一个准稳态过程。短时分析采用分帧方式，一般每帧帧长为20ms或50ms。假设语音采样率为16kHz，帧长为20ms，则一帧有 $16000\times 0.02=320$ 个样本点。
@@ -943,48 +943,48 @@ MFCC和FBank唯一的不同就在于，获得FBank特征之后，再经过反离
 \subsection{提取梅尔频谱}
 
 \begin{lstlisting}
-  sample_rate = 16000
-  preemphasis = 0.97
-  n_fft = 1024
-  frame_length = 0.05  # ms
-  frame_shift = 0.01  # ms
-  fmin = 0
-  fmax = sample_rate/2
-  eps = 1e-10
-  n_mel = 80
-  win_length = int(sample_rate*frame_length)
-  hop_length = int(sample_rate*frame_shift)
-  mel_basis = librosa.filters.mel(
-      sample_rate, n_fft, n_mel, fmin=fmin, fmax=fmax)
-  
-  
-  def get_spectrogram(input_wav_path):
-      y, sr = librosa.load(input_wav_path)
-      y = np.append(y[0], y[1:]-preemphasis*y[:-1])
-      linear = librosa.stft(
-          y=y, n_fft=n_fft, hop_length=hop_length, win_length=win_length)
-      mag = np.abs(linear)
-      mel = np.dot(mel_basis, mag)
-      mel = np.log10(np.maximum(eps, mel))
-      mel = mel.T.astype(np.float32)  # (T,n_mels)
-      return mel
-  
-  # plt.switch_backend('agg')
-  
-  
-  def plot_spectrogram(spectrogram, file_path):
-      spectrogram = spectrogram.T
-      fig = plt.figure(figsize=(16, 9))
-      plt.imshow(spectrogram, aspect='auto', origin='lower')
-      plt.colorbar()
-      plt.xlabel('frames')
-      plt.tight_layout()
-      plt.savefig(file_path, dpi=500)
-      plt.show()
-  
-  
-  mel_spec = get_spectrogram(input_wav_path)
-  plot_spectrogram(mel_spec, 'mel_spectrogram.png')
+sample_rate = 16000
+preemphasis = 0.97
+n_fft = 1024
+frame_length = 0.05  # ms
+frame_shift = 0.01  # ms
+fmin = 0
+fmax = sample_rate/2
+eps = 1e-10
+n_mel = 80
+win_length = int(sample_rate*frame_length)
+hop_length = int(sample_rate*frame_shift)
+mel_basis = librosa.filters.mel(
+    sample_rate, n_fft, n_mel, fmin=fmin, fmax=fmax)
+
+
+def get_spectrogram(input_wav_path):
+    y, sr = librosa.load(input_wav_path)
+    y = np.append(y[0], y[1:]-preemphasis*y[:-1])
+    linear = librosa.stft(
+        y=y, n_fft=n_fft, hop_length=hop_length, win_length=win_length)
+    mag = np.abs(linear)
+    mel = np.dot(mel_basis, mag)
+    mel = np.log10(np.maximum(eps, mel))
+    mel = mel.T.astype(np.float32)  # (T,n_mels)
+    return mel
+
+# plt.switch_backend('agg')
+
+
+def plot_spectrogram(spectrogram, file_path):
+    spectrogram = spectrogram.T
+    fig = plt.figure(figsize=(16, 9))
+    plt.imshow(spectrogram, aspect='auto', origin='lower')
+    plt.colorbar()
+    plt.xlabel('frames')
+    plt.tight_layout()
+    plt.savefig(file_path, dpi=500)
+    plt.show()
+
+
+mel_spec = get_spectrogram(input_wav_path)
+plot_spectrogram(mel_spec, 'mel_spectrogram.png')
 \end{lstlisting}
 
 \begin{figure}[htbp]
@@ -996,8 +996,17 @@ MFCC和FBank唯一的不同就在于，获得FBank特征之后，再经过反离
 \subsection{提取MFCC}
 
 \begin{lstlisting}
-  mfcc = dct(mel_spec)
-  plot_spectrogram(mfcc, 'mfcc.png')
+num_ceps = 12
+mfcc = dct(mel_spec, type=2, axis=1, norm='ortho')[:, 1 : (num_ceps + 1)]
+plot_spectrogram(mfcc, 'mfcc.png')
+# 将正弦同态滤波（sinusoidal liftering）应用于MFCC以去强调更高的MFCC，其已被证明可以改善噪声信号中的语音识别。
+# reference: https://haythamfayek.com/2016/04/21/speech-processing-for-machine-learning.html
+(nframes, ncoeff) = mfcc.shape
+cep_lifter = 22
+n = np.arange(ncoeff)
+lift = 1 + (cep_lifter / 2) * np.sin(np.pi * n / cep_lifter)
+mfcc *= lift
+plot_spectrogram(mfcc, 'mfcc_lift.png')
 \end{lstlisting}
 
 \begin{figure}[htbp]
@@ -1006,6 +1015,15 @@ MFCC和FBank唯一的不同就在于，获得FBank特征之后，再经过反离
   \caption{MFCC \label{fig:mfcc}}
 \end{figure}
 
+在语音合成中，类似于深度学习其它领域，输入数据要进行均值方差归一化，使得数据量纲一致并遵循一定分布，避免模型梯度爆炸，降低学习难度。
+
+\begin{lstlisting}
+frame_num = mel_spec.shape[0]
+cep_sum = np.sum(mel_spec, axis=0)
+cep_squ_sum = np.sum(np.square(mel_spec), axis=0)
+cep_mean = cep_sum/frame_num
+cep_std = cep_squ_sum/frame_num-np.square(cep_mean)
+\end{lstlisting}
 
 
 \chapter{音库制作和文本前端}
