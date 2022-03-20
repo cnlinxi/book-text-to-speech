@@ -998,7 +998,7 @@ plot_spectrogram(mel_spec, 'mel_spectrogram.png')
 \begin{lstlisting}
 from scipy.fftpack import dct
 
-num_ceps = 12
+num_ceps = 12  # MFCC阶数，可选值2~13
 mfcc = dct(mel_spec, type=2, axis=1, norm='ortho')[:, 1 : (num_ceps + 1)]
 plot_spectrogram(mfcc, 'mfcc.png')
 # 将正弦同态滤波（sinusoidal liftering）应用于MFCC以去强调更高的MFCC，其已被证明可以改善噪声信号中的语音识别。
