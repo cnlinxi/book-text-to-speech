@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021) (preloaded format=xelatex 2022.3.2)  20 MAR 2022 22:14
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021) (preloaded format=xelatex 2022.3.2)  21 MAR 2022 15:43
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1978,6 +1978,8 @@ Package fontspec Info: Font family 'KaitiSC(0)' created for font 'Kaiti SC'
 ]
 LaTeX Font Info:    Font shape `T1/ntxtlf/b/n' will be
 (Font)              scaled to size 17.28pt on input line 31.
+LaTeX Font Info:    Font shape `T1/ntxtlf/m/n' will be
+(Font)              scaled to size 7.3pt on input line 49.
  [1
 
 
@@ -1994,7 +1996,7 @@ LaTeX Font Info:    Font shape `T1/ntxtlf/m/n' will be
  [5]
 第 1{} 章 1.
 LaTeX Font Info:    Font shape `T1/ntxtlf/b/n' will be
-(Font)              scaled to size 12.0pt on input line 63.
+(Font)              scaled to size 12.0pt on input line 67.
 File: ./image//human_speech_arch.png Graphic file (type bmp)
 <./image//human_speech_arch.png>
 File: ./image//text_to_speech_arch.png Graphic file (type bmp)
@@ -2033,9 +2035,9 @@ Package fontspec Info: Font family 'STFangsong(0)' created for font
 (fontspec)             - 'small caps'  (m/sc) with NFSS spec.: 
 
 LaTeX Font Info:    Font shape `T1/ntxtlf/m/n' will be
-(Font)              scaled to size 9.0pt on input line 248.
+(Font)              scaled to size 9.0pt on input line 252.
 LaTeX Font Info:    Font shape `T1/ntxtlf/m/n' will be
-(Font)              scaled to size 8.0pt on input line 248.
+(Font)              scaled to size 8.0pt on input line 252.
 [6] [7] [8] [9] [10]
 第 2{} 章 2.
 File: ./image//loudness_curve.png Graphic file (type bmp)
@@ -2046,14 +2048,14 @@ File: ./image//loudness_curve.png Graphic file (type bmp)
 File: ./image//frequency_f0.png Graphic file (type bmp)
 <./image//frequency_f0.png>
  [12]
-LaTeX Font Info:    Trying to load font information for T1+ntxsups on input line 469.
+LaTeX Font Info:    Trying to load font information for T1+ntxsups on input line 473.
  (/usr/local/texlive/2021/texmf-dist/tex/latex/newtx/t1ntxsups.fd
 File: t1ntxsups.fd 2015/01/17 v1.0
 )
 LaTeX Font Info:    Font shape `T1/ntxsups/m/n' will be
-(Font)              scaled to size 10.0pt on input line 469.
+(Font)              scaled to size 10.0pt on input line 473.
 LaTeX Font Info:    Font shape `T1/ntxsups/m/n' will be
-(Font)              scaled to size 8.0pt on input line 469.
+(Font)              scaled to size 8.0pt on input line 473.
  [13]
 File: ./image//frequency_spectrum.jpeg Graphic file (type bmp)
 <./image//frequency_spectrum.jpeg>
@@ -2074,15 +2076,15 @@ File: ./image//other_alphabet.png Graphic file (type bmp)
 
 ] [21]
 LaTeX Font Info:    Font shape `T1/ntxtlf/m/sl' will be
-(Font)              scaled to size 9.0pt on input line 776.
-LaTeX Font Info:    Trying to load font information for TS1+ntxtlf on input line 776.
+(Font)              scaled to size 9.0pt on input line 780.
+LaTeX Font Info:    Trying to load font information for TS1+ntxtlf on input line 780.
  (/usr/local/texlive/2021/texmf-dist/tex/latex/newtx/ts1ntxtlf.fd
 File: ts1ntxtlf.fd 2015/01/18 v1.0 fd file for TS1/ntxtlf
 )
 LaTeX Font Info:    Font shape `TS1/ntxtlf/m/sl' in size <9> not available
-(Font)              Font shape `TS1/ntxtlf/m/it' tried instead on input line 776.
+(Font)              Font shape `TS1/ntxtlf/m/it' tried instead on input line 780.
 LaTeX Font Info:    Font shape `TS1/ntxtlf/m/it' will be
-(Font)              scaled to size 9.0pt on input line 776.
+(Font)              scaled to size 9.0pt on input line 780.
 File: ./image//mel_vs_f.png Graphic file (type bmp)
 <./image//mel_vs_f.png>
  [22] [23]
@@ -2090,7 +2092,7 @@ File: ./image//text_to_speech_acoustic_feature.png Graphic file (type bmp)
 <./image//text_to_speech_acoustic_feature.png>
  [24]
 LaTeX Font Info:    Font shape `T1/ntxtlf/m/it' will be
-(Font)              scaled to size 9.0pt on input line 891.
+(Font)              scaled to size 9.0pt on input line 895.
 File: ./image//waveform.png Graphic file (type bmp)
 <./image//waveform.png>
  [25] [26]
@@ -2101,8 +2103,6 @@ File: ./image//mfcc.png Graphic file (type bmp)
 <./image//mfcc.png>
  [28]
 第 4{} 章 4.
-Missing character: There is no ə ("259) in font ntx-Regular-tlf-t1!
-Missing character: There is no ʊ ("28A) in font ntx-Regular-tlf-t1!
 [29
 
 ]
@@ -2164,9 +2164,7 @@ File: ./image//vocoder_nhv_harmonic_sample.png Graphic file (type bmp)
 <./image//vocoder_nhv_harmonic_sample.png>
  [55] [56]
 LaTeX Font Info:    Font shape `T1/ntxtlf/m/n' will be
-(Font)              scaled to size 7.3pt on input line 2086.
-LaTeX Font Info:    Font shape `T1/ntxtlf/m/n' will be
-(Font)              scaled to size 5.5pt on input line 2086.
+(Font)              scaled to size 5.5pt on input line 2090.
  [57] [58] [59] [60] [61] [62] [63] [64] [65] [66]
 第 7{} 章 7.
 File: ./image//text_to_speech_knowledge.png Graphic file (type bmp)

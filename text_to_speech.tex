@@ -32,6 +32,8 @@
 
 \markboth{Introduction}{前言}
 
+语音合成（Speech Synthesis）是一种将文本转换为语音的技术，大多数情况下与Text-to-Speech (TTS)同义，是人工智能的子领域之一。本文档简要介绍当前语音合成技术的发展。
+
 想写这个总结已经很久了，上海疫情导致各个区几乎停摆，不间断的核酸检测，小区也封闭很久了，现在算是一个好时机，就赶快整理出来吧。大多数内容来自平日的博客和毕业论文，所以还不算特别辛苦。
 
 最近自愿半自愿地迷恋上烹饪，比较自豪，零基础至少学会了20+道菜，炒炸爆煎焖炖煮，几乎顿顿不重样，自我感觉良好。
@@ -40,9 +42,11 @@
 
 感谢我的夫人，由于上海严重的疫情，她居家办公，但一直在家划水，不然我应该能够多写一点，所以我希望知道友商领导的联系方式，我要举报她/doge。
 
+精力有限，不免错漏，可以通过GitHub发起issue，或者我的邮箱：cncmn/at/hotmail.com联系我。
+
 \vskip 0.5cm
 
-模板来自\href{https://github.com/ElegantLaTeX/ElegantBook}{ElegantBook}，感谢开源社区的贡献。
+\LaTeX{}模板来自\href{https://github.com/ElegantLaTeX/ElegantBook}{ElegantBook}，感谢开源社区的贡献。
 
 \vskip 1.5cm
 
@@ -154,7 +158,7 @@
 \begin{enumerate}
   \item \href{https://nndl.github.io/}{神经网络与深度学习}
   \item Tan X, Qin T, Soong F, et al. A survey on neural speech synthesis[J]. arXiv preprint arXiv:2106.15561, 2021.
-  \item Sisman B, Yamagishi J, King S, et al. An overview of voice conversion and its challenges: From statistical modeling to deep learning[J]. IEEE/ACM Transactions on Audio, Speech, and Language Processing, 2020, 29: 132-157.
+  \item Sisman B, Yamagishi J, King S, et al. An Overview of Voice Conversion and Its Challenges: From Statistical Modeling to Deep Learning[J]. IEEE/ACM Transactions on Audio, Speech, and Language Processing, 2020, 29: 132-157.
 \end{enumerate}
 
 \section{语音相关的会议、期刊、比赛和公司}
@@ -245,7 +249,7 @@
   \item \href{https://datashare.is.ed.ac.uk/handle/10283/2651}{VCTK}: 英文多说话人语音数据集，44小时，109个说话人，每人400句话，采样率48kHz，位深16bits。
   \item \href{https://catalog.ldc.upenn.edu/LDC93S1}{TIMIT}: 630个说话人，8个美式英语口音，每人10句话，采样率16kHz，位深16bits。\href{http://academictorrents.com/details/34e2b78745138186976cbc27939b1b34d18bd5b3}{这里是具体下载地址}，下载方法：首先下载种子，然后执行：
   \begin{lstlisting}
-    ctorrent *.torrent
+  ctorrent *.torrent
   \end{lstlisting}
   \item \href{http://festvox.org/cmu_arctic/packed/}{CMU ARCTIC}: 7小时，7个说话人，采样率16kHz。语音质量较高，可以用于英文多说话人的训练。
   \item \href{https://www.cstr.ed.ac.uk/projects/blizzard/2011/lessac_blizzard2011/}{Blizzard-2011}: 16.6小时，单说话人，采样率16kHz。可以从\href{https://www.cstr.ed.ac.uk/projects/blizzard/}{The Blizzard Challenge}查找该比赛的相关数据，从\href{https://www.synsig.org/index.php}{SynSIG}查找该比赛的相关信息。
@@ -462,7 +466,7 @@
 
 \subsection{基频和基音周期}
 
-基音周期反映了声门相邻两次开闭之间的时间间隔，基频（fundamental frequency，F0）则是基音周期的倒数，对应着声带振动的频率，代表声音的音高，声带振动越快，基频越高。它是语音激励源的一个重要特征，比如可以通过基频区分性别。一般来说，成年男性基频在100-250Hz左右，成年女性基频在150-350Hz左右，女声的音高一般比男声稍高。
+基音周期反映了声门相邻两次开闭之间的时间间隔，基频（fundamental frequency，F0）则是基音周期的倒数，对应着声带振动的频率，代表声音的音高，声带振动越快，基频越高。它是语音激励源的一个重要特征，比如可以通过基频区分性别。一般来说，成年男性基频在100~250Hz左右，成年女性基频在150~350Hz左右，女声的音高一般比男声稍高。
 
 人类可感知声音的频率大致在20-20000Hz之间，人类对于基频的感知遵循对数律，也就是说，人们会感觉100Hz到200Hz的差距，与200Hz到400Hz的差距相同。因此，音高常常用基频的对数来表示。在音乐上，把相差一倍的两个基频的差距称为一个八度（octave）；把一个八度12等分，每一份称为一个半音（semitone）；把一个半音再100等分，每一份称为一个音分（cent）。
 
@@ -555,7 +559,7 @@ IPA的字母构成会随着规范的修改而变动，2018年发布的标准中�
 
 对于语音合成来说，需要了解语言学的分支之一：音系学，以便更好地制定适用于一个语种语音合成系统的音素体系。这里需要探讨三个问题：音位数量，这里的音位和音素概念区别不大，音素不针对一个语种，是一个最小的语音单位，音位是针对一个特定语言的，具有区别意义的最小语音单位，参见\href{https://www.zhihu.com/question/27250496}{音素和音位的区别与联系是什么？}；语音配列，也就是语音符号的组合规律，哪些音段的组合是不被允许的，音段出现的位置有哪些限制；音系交替，音与音同时出现时，彼此受影响会导致哪些形式的变化，这涉及到音系过程。音系过程可以理解为一个音段受所处语音环境或语法环境的影响而产生变化的过程，音系过程的种类有很多，比如同化和异化两种过程。
 
-音位数量的确定牵扯到对比分布和互补分布两个概念。如果A和B处于对比分布时，那么甲和乙处于同样的语言环境中时，就会引起意义的不同。比如英语中的[p]和[b]就处于对比分布，当它们处于相同的语言环境中时，比如pin[\underline{p}in]和bin[\underline{b}in]，但是两个单词的意义完全不同，因此[p]和[b]就分属两个不同的音位。而假如A和B处于互补分布时，那么甲和乙不可能出现在同样的语音环境中，例如英语中的[p]处于重读音节首时pig[\underline{p}ig]，往往表现为送气的[ $p^h$ ]，而在[s]后面时spit[s\underline{p}it]，往往表现为不送气的[p]，送气的[ $p^h$ ]和不送气的[p]不会出现在同一语音环境中，可以说，它们是同一个音位在不同语音环境中的音位变体。因此，\lstinline{音位处于对比分布，而音位变体处于互补分布}。确立音位的做法便是寻找最小对比对，也就是说寻找音位时要满足：1. 在相同的语音环境；2. 单词的意思不同。最直接的做法就是找两个意义不同的的单词，并且只有在一个位置上有不同的音段，在其它位置上的音段都相同，这一对单词就是最小对比对。比如ban[\underline{b}an]和man[\underline{m}an]这对最小对比对中，除了[b]和[m]之外，其它音段都相同，正因为[b]和[m]，这两个单词的意义也不同。 因此归纳音位的原则有：对立互补原则和语音相似原则。
+音位数量的确定牵扯到对比分布和互补分布两个概念。如果A和B处于对比分布时，那么甲和乙处于同样的语言环境中时，就会引起意义的不同。比如英语中的[p]和[b]就处于对比分布，当它们处于相同的语言环境中时，比如pin[\underline{p}in]和bin[\underline{b}in]，但是两个单词的意义完全不同，因此[p]和[b]就分属两个不同的音位。而假如A和B处于互补分布时，那么甲和乙不可能出现在同样的语音环境中，例如英语中的[p]处于重读音节首时pig[\underline{p}ig]，往往表现为送气的[$p^h$]，而在[s]后面时spit[s\underline{p}it]，往往表现为不送气的[p]，送气的[$p^h$]和不送气的[p]不会出现在同一语音环境中，可以说，它们是同一个音位在不同语音环境中的音位变体。因此，\lstinline{音位处于对比分布，而音位变体处于互补分布}。确立音位的做法便是寻找最小对比对，也就是说寻找音位时要满足：1. 在相同的语音环境；2. 单词的意思不同。最直接的做法就是找两个意义不同的的单词，并且只有在一个位置上有不同的音段，在其它位置上的音段都相同，这一对单词就是最小对比对。比如ban[\underline{b}an]和man[\underline{m}an]这对最小对比对中，除了[b]和[m]之外，其它音段都相同，正因为[b]和[m]，这两个单词的意义也不同。 因此归纳音位的原则有：对立互补原则和语音相似原则。
 
 语音配列是一个语种中，对于一个单词、语素或音节中可能出现的元音和辅音序列制约条件的集合。比如英语单词“wtist”是不可能存在的，因为[w]是滑音（glide），而[t]则是塞擦音（plosive），在英语中如果滑音和塞擦音同时出现在词首，则塞擦音一定在滑音的前面，比如twin，因此“wtist”一定是非法英语单词。
 
@@ -764,24 +768,24 @@ $N$ 个采样点序列组成的时域信号经过DFT之后，对应 $K$ 个频�
 \end{equation}
 
 \begin{lstlisting}
-  from matplotlib import pyplot as plt
-  import numpy as np
+from matplotlib import pyplot as plt
+import numpy as np
 
-  x = np.linspace(0, 5000, 50000)
-  y = 2595*np.log10(1+x/700)
-  x0 = 1000
-  y0 = 2595*np.log10(1+x0/700)
-  plt.plot(x, y)
-  plt.scatter(x0, y0)
-  plt.plot([x0, x0], [0, y0], 'k--')
-  plt.plot([0, x0], [x0, y0], 'k--')
-  plt.xlabel('f (Hz)')
-  plt.ylabel('Mel(f)')
-  plt.title('relationship between linear and mel scale')
-  plt.xlim(0, x[-1])
-  plt.ylim(0, y[-1])
-  plt.savefig('mel_vs_f.png')
-  plt.show()
+x = np.linspace(0, 5000, 50000)
+y = 2595*np.log10(1+x/700)
+x0 = 1000
+y0 = 2595*np.log10(1+x0/700)
+plt.plot(x, y)
+plt.scatter(x0, y0)
+plt.plot([x0, x0], [0, y0], 'k--')
+plt.plot([0, x0], [x0, y0], 'k--')
+plt.xlabel('f (Hz)')
+plt.ylabel('Mel(f)')
+plt.title('relationship between linear and mel scale')
+plt.xlim(0, x[-1])
+plt.ylim(0, y[-1])
+plt.savefig('mel_vs_f.png')
+plt.show()
 \end{lstlisting}
 
 \begin{figure}[htbp]
@@ -926,7 +930,7 @@ plt.show()
 
 \begin{table}[htbp]
   \centering
-  \caption{SoX音频个数}
+  \caption{SoX音频格式}
     \begin{tabular}{llll}
     \toprule
     选项 & 描述 & 常见可选项 \\
@@ -1045,7 +1049,7 @@ cep_std = cep_squ_sum/frame_num-np.square(cep_mean)
 在一个语种的语音合成建设之初，就可以同步收集该语种对应的大文本。大文本不仅仅可以筛选录音文本，还可以从中提取词条、统计词频、制作词典、标注韵律、构建测试集等等。录音文本的选择一般遵循以下几个原则：
 
 \begin{enumerate}
-  \item 音素覆盖。这就要求在录音开始之前，就需要构建起来一套基础的文本前端，最起码要有简单的文本转音素（G2P）系统。大部分语种的字符或者字符组合会有较为固定的发音，比如英语中的h总是会发[h]的音，o总是会发[əʊ]的音，如果找不到公开、即时可用的文本转音素系统，可以根据规则构建。用于录音的文本要保持多样性，音素或者音素组合要尽可能覆盖全，可以统计音素序列中的N-Gram，确保某些音素或者音素组合出现频次过高，而某些音素或音素组合又鲜少出现。
+  \item 音素覆盖。这就要求在录音开始之前，就需要构建起来一套基础的文本前端，最起码要有简单的文本转音素（G2P）系统。大部分语种的字符或者字符组合会有较为固定的发音，比如英语中的h总是会发[h]的音，o总是会发[eu]的音，如果找不到公开、即时可用的文本转音素系统，可以根据规则构建。用于录音的文本要保持多样性，音素或者音素组合要尽可能覆盖全，可以统计音素序列中的N-Gram，确保某些音素或者音素组合出现频次过高，而某些音素或音素组合又鲜少出现。
   \item 场景定制。如果是通用语音合成，需要确保百科、新闻、对话、高频词、基数词和序数词等数字串、包含常用外来词（如包含英语单词）的句子要有所覆盖；如果是特定场景，比如车载领域，则可以收集车载播报的常用话术、专业术语（比如油量、胎压等）、音乐名或歌手名、地名和新闻播报，在特定场景下，需要对业务有一定的理解，并且在一开始就要和需求方紧密沟通。
   \item 文本正确性。录音文本确保拼写无误，内容正确，比如需要删除脏话、不符合宗教信仰或政治不正确的语句等。
 \end{enumerate}
