@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021) (preloaded format=xelatex 2022.3.2)  24 MAR 2022 00:31
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021) (preloaded format=xelatex 2022.3.2)  24 MAR 2022 00:40
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1482,12 +1482,12 @@ LaTeX Info: Redefining \bm on input line 209.
 LaTeX Warning: Unused global option(s):
     [citestyle=gb7714-2015].
 
-No file text_to_speech.aux.
+(./text_to_speech.aux)
 \openout1 = `text_to_speech.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/ntxmi/m/it on input line 26.
 LaTeX Font Info:    Trying to load font information for OML+ntxmi on input line 26.
-(/usr/local/texlive/2021/texmf-dist/tex/latex/newtx/omlntxmi.fd
+ (/usr/local/texlive/2021/texmf-dist/tex/latex/newtx/omlntxmi.fd
 File: omlntxmi.fd 2015/08/25 Fontinst v1.933 font definitions for OML/ntxmi.
 )
 LaTeX Font Info:    ... okay on input line 26.
@@ -1538,12 +1538,10 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 LaTeX Info: Redefining \ref on input line 26.
 LaTeX Info: Redefining \pageref on input line 26.
 LaTeX Info: Redefining \nameref on input line 26.
+ (./text_to_speech.out) (./text_to_speech.out)
 \@outlinefile=\write8
 \openout8 = `text_to_speech.out'.
 
-
-
-Package hyperref Warning: Rerun to get /PageLabels entry.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: xetex
@@ -1722,19 +1720,19 @@ LaTeX Font Info:    Font shape `T1/ntxtlf/m/n' will be
 
 
 
+] (./text_to_speech.toc [2
+
 ]
+LaTeX Font Info:    Font shape `T1/ntxtlf/m/n' will be
+(Font)              scaled to size 7.0pt on input line 83.
+ [3] [4])
 \tf@toc=\write9
 \openout9 = `text_to_speech.toc'.
 
- [2
-
-]
+ [5]
 第\nobreakspace {}1{}\nobreakspace {}章 1.
 LaTeX Font Info:    Font shape `T1/ntxtlf/b/n' will be
 (Font)              scaled to size 12.0pt on input line 67.
-
-LaTeX Warning: Reference `fig:human_speech_arch' on page 1 undefined on input line 77.
-
 File: ./image//human_speech_arch.png Graphic file (type bmp)
 <./image//human_speech_arch.png>
 LaTeX Font Info:    Font shape `T1/ntxtlf/m/n' will be
@@ -1750,16 +1748,10 @@ Overfull \hbox (53.23352pt too wide) in paragraph at lines 99--100
  [][] 
  []
 
-
-LaTeX Warning: Reference `fig:text_to_speech_history' on page 1 undefined on input line 103.
-
 [1
 
 
-]
-LaTeX Font Info:    Font shape `T1/ntxtlf/m/n' will be
-(Font)              scaled to size 7.0pt on input line 104.
- [2] [3]
+] [2] [3]
 Overfull \hbox (5.14084pt too wide) in paragraph at lines 160--161
 []\T1/ntxtlf/m/n/10 Tan X, Qin T, Soong F, et al. A sur-vey on neu-ral speech syn-the-sis[J]. arXiv preprint arXiv:2106.15561,
  []
@@ -1794,18 +1786,11 @@ Package fontspec Info: Font family 'STFangsong(0)' created for font
 
 [7] [8] [9] [10] [11]
 第\nobreakspace {}2{}\nobreakspace {}章 2.
-
-LaTeX Warning: Reference `fig:loudness_curve' on page 12 undefined on input line 432.
-
 File: ./image//loudness_curve.png Graphic file (type bmp)
 <./image//loudness_curve.png>
 [12
 
-]
-
-LaTeX Warning: Reference `fig:frequency_f0' on page 13 undefined on input line 465.
-
-[13]
+] [13]
 File: ./image//frequency_f0.png Graphic file (type bmp)
 <./image//frequency_f0.png>
 LaTeX Font Info:    Trying to load font information for T1+ntxsups on input line 475.
@@ -1819,23 +1804,11 @@ LaTeX Font Info:    Font shape `T1/ntxtlf/m/n' will be
 LaTeX Font Info:    Font shape `T1/ntxsups/m/n' will be
 (Font)              scaled to size 8.0pt on input line 475.
  [14]
-
-LaTeX Warning: Reference `fig:frequency_spectrum' on page 15 undefined on input line 483.
-
-
-LaTeX Warning: Reference `fig:frequency_time_fig' on page 15 undefined on input line 483.
-
 File: ./image//frequency_spectrum.jpeg Graphic file (type bmp)
 <./image//frequency_spectrum.jpeg>
 File: ./image//frequency_time_fig.png Graphic file (type bmp)
 <./image//frequency_time_fig.png>
-[15]
-
-LaTeX Warning: Reference `fig:ipa_consant' on page 16 undefined on input line 532.
-
-
-LaTeX Warning: Reference `fig:other_alphabet' on page 16 undefined on input line 532.
-
+ [15]
 File: ./image//ipa_consant.png Graphic file (type bmp)
 <./image//ipa_consant.png>
 File: ./image//ipa_consant_not.png Graphic file (type bmp)
@@ -1844,7 +1817,7 @@ File: ./image//vowel.png Graphic file (type bmp)
 <./image//vowel.png>
 File: ./image//other_alphabet.png Graphic file (type bmp)
 <./image//other_alphabet.png>
-[16] [17] [18] [19] [20]
+ [16] [17] [18] [19] [20]
 第\nobreakspace {}3{}\nobreakspace {}章 3.
 [21
 
@@ -1868,14 +1841,11 @@ File: ./image//mfcc.png Graphic file (type bmp)
 [30
 
 ]
-
-LaTeX Warning: Reference `fig:sample_praat' on page 31 undefined on input line 1089.
-
 File: ./image//sample_praat.png Graphic file (type bmp)
 <./image//sample_praat.png>
 Missing character: There is no ʌ ("28C) in font ntx-Regular-tlf-t1!
 Missing character: There is no ɪ ("26A) in font ntx-Regular-tlf-t1!
-[31] [32] [33] [34] [35]
+ [31] [32] [33] [34] [35]
 第\nobreakspace {}5{}\nobreakspace {}章 5.
 File: ./image//text_to_speech-语音合成工作流.png Graphic file (type bmp)
 <./image//text_to_speech-语音合成工作流.png>
@@ -1891,4 +1861,64 @@ File: ./image//tacotron2_decoder.png Graphic file (type bmp)
  [37]
 File: ./image//fastspeech_arch_paper.png Graphic file (type bmp)
 <./image//fastspeech_arch_paper.png>
- [38] [39] [
+ [38] [39] [40] [41] [42] [43]
+File: ./image//vits_arch.png Graphic file (type bmp)
+<./image//vits_arch.png>
+ [44] [45] [46]
+第\nobreakspace {}6{}\nobreakspace {}章 6.
+[47
+
+] [48] [49]
+File: ./image//vocoder_world_arch.png Graphic file (type bmp)
+<./image//vocoder_world_arch.png>
+File: ./image//vocoder_pitch_harmonic.png Graphic file (type bmp)
+<./image//vocoder_pitch_harmonic.png>
+File: ./image//vocoder_world_dio1.png Graphic file (type bmp)
+<./image//vocoder_world_dio1.png>
+ [50] [51]
+File: ./image//vocoder_world_sp.png Graphic file (type bmp)
+<./image//vocoder_world_sp.png>
+File: ./image//vocoder_world_synthesis.png Graphic file (type bmp)
+<./image//vocoder_world_synthesis.png>
+ [52] [53]
+File: ./image//vocoder_nhv_source_filter.png Graphic file (type bmp)
+<./image//vocoder_nhv_source_filter.png>
+
+Overfull \hbox (1.63301pt too wide) in paragraph at lines 1916--1917
+ [][] 
+ []
+
+[54]
+File: ./image//vocoder_nhv_arch.png Graphic file (type bmp)
+<./image//vocoder_nhv_arch.png>
+ [55]
+File: ./image//vocoder_nhv_inference.png Graphic file (type bmp)
+<./image//vocoder_nhv_inference.png>
+File: ./image//vocoder_nhv_nn_filter_estimator.png Graphic file (type bmp)
+<./image//vocoder_nhv_nn_filter_estimator.png>
+ [56]
+File: ./image//vocoder_nhv_harmonic_sample.png Graphic file (type bmp)
+<./image//vocoder_nhv_harmonic_sample.png>
+ [57] [58]
+LaTeX Font Info:    Font shape `T1/ntxtlf/m/n' will be
+(Font)              scaled to size 5.5pt on input line 2092.
+ [59] [60] [61] [62] [63] [64] [65] [66] [67] [68] [69]
+第\nobreakspace {}7{}\nobreakspace {}章 7.
+File: ./image//text_to_speech_knowledge.png Graphic file (type bmp)
+<./image//text_to_speech_knowledge.png>
+[70
+
+] [71] [72] [73] [74] (./text_to_speech.aux)
+Package rerunfilecheck Info: File `text_to_speech.out' has not changed.
+(rerunfilecheck)             Checksum: 921A08803FF5D1BC0094C57886267B95;20683.
+ ) 
+Here is how much of TeX's memory you used:
+ 42288 strings out of 476919
+ 859558 string characters out of 5821841
+ 1798408 words of memory out of 5000000
+ 61438 multiletter control sequences out of 15000+600000
+ 454905 words of font info for 113 fonts, out of 8000000 for 9000
+ 1348 hyphenation exceptions out of 8191
+ 118i,12n,136p,1436b,2395s stack positions out of 5000i,500n,10000p,200000b,80000s
+
+Output written on text_to_speech.pdf (80 pages).
