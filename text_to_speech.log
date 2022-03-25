@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021) (preloaded format=xelatex 2022.3.2)  24 MAR 2022 11:28
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021) (preloaded format=xelatex 2022.3.2)  25 MAR 2022 10:51
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1988,7 +1988,7 @@ LaTeX Font Info:    Font shape `T1/ntxtlf/m/n' will be
 
 ]
 LaTeX Font Info:    Font shape `T1/ntxtlf/m/n' will be
-(Font)              scaled to size 7.0pt on input line 86.
+(Font)              scaled to size 7.0pt on input line 173.
  [3] [4])
 \tf@toc=\write10
 \openout10 = `text_to_speech.toc'.
@@ -2171,19 +2171,8 @@ File: ./image//text_to_speech_knowledge.png Graphic file (type bmp)
 [67
 
 ] [68] [69] [70] (./text_to_speech.aux)
-
-LaTeX Warning: There were undefined references.
-
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
 Package rerunfilecheck Info: File `text_to_speech.out' has not changed.
 (rerunfilecheck)             Checksum: 921A08803FF5D1BC0094C57886267B95;20683.
-
-Package biblatex Warning: Please (re)run Biber on the file:
-(biblatex)                text_to_speech
-(biblatex)                and rerun LaTeX afterwards.
-
 Package logreq Info: Writing requests to 'text_to_speech.run.xml'.
 \openout1 = `text_to_speech.run.xml'.
 
@@ -2191,7 +2180,7 @@ Package logreq Info: Writing requests to 'text_to_speech.run.xml'.
 Here is how much of TeX's memory you used:
  47105 strings out of 476919
  977178 string characters out of 5821841
- 2252573 words of memory out of 5000000
+ 2252613 words of memory out of 5000000
  66207 multiletter control sequences out of 15000+600000
  458064 words of font info for 113 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
