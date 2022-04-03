@@ -320,6 +320,6 @@ iv 目录
 Chen, M. (2022, March 20). CNLINXI/Book-text-to-speech: A book about text-to-speech (TTS) in Chinese. GitHub. Retrieved April 3, 2022, from https://github.com/cnlinxi/book-text-to-speech 
 ```
 
-模板来自[ElegantBook][https://github.com/ElegantLaTeX/ElegantBook]，感谢开源社区的贡献。
+模板来自[ElegantBook](https://github.com/ElegantLaTeX/ElegantBook)，感谢开源社区的贡献。
 
 开源协议：Apache-2.0 License。
