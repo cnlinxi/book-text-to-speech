@@ -2,7 +2,6 @@
 
 语音合成（Speech Synthesis）是一种将文本转换为语音的技术，是人工智能的子领域之一。本文档简要介绍当前语音合成技术的发展。
 
-
 # 目录
 
 1 语音合成概述 1
@@ -314,3 +313,11 @@ iv 目录
 7.4.5 语音合成的稳定性 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 70
 
 7.4.6 语音合成的效率优化 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 70
+
+# Citing
+
+```
+Chen, M. (2022, March 20). CNLINXI/Book-text-to-speech: A book about text-to-speech (TTS) in Chinese. GitHub. Retrieved April 3, 2022, from https://github.com/cnlinxi/book-text-to-speech 
+```
+
+模板来自[ElegantBook][https://github.com/ElegantLaTeX/ElegantBook]，感谢开源社区的贡献。
