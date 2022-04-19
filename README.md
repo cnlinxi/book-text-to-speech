@@ -2,10 +2,6 @@
 
 语音合成（Speech Synthesis）是一种将文本转换为语音的技术，是人工智能的子领域之一。本文档简要介绍当前语音合成技术的发展。
 
-## 更新日志
-
-- :tada: 为了便于阅读和及时更新，本文档内容已提供在线版本：[语音与语言处理](https://cnlinxi.github.io/blog/)。后续更新和补充将及时体现在[该在线版本](https://cnlinxi.github.io/blog/)中，成体系之后再行汇总成[本latex文档](https://github.com/cnlinxi/book-text-to-speech)。
-
 # 目录
 
 1 语音合成概述 1
