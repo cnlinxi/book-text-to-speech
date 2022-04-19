@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021) (preloaded format=xelatex 2022.3.2)  31 MAR 2022 11:13
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021) (preloaded format=xelatex 2022.3.2)  19 APR 2022 15:14
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1724,47 +1724,47 @@ Package csquotes Info: ... none found.
  (./text_to_speech.aux)
 \openout1 = `text_to_speech.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/ntxmi/m/it on input line 26.
-LaTeX Font Info:    Trying to load font information for OML+ntxmi on input line 26.
+LaTeX Font Info:    Checking defaults for OML/ntxmi/m/it on input line 25.
+LaTeX Font Info:    Trying to load font information for OML+ntxmi on input line 25.
  (/usr/local/texlive/2021/texmf-dist/tex/latex/newtx/omlntxmi.fd
 File: omlntxmi.fd 2015/08/25 Fontinst v1.933 font definitions for OML/ntxmi.
 )
-LaTeX Font Info:    ... okay on input line 26.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 26.
-LaTeX Font Info:    ... okay on input line 26.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 26.
-LaTeX Font Info:    ... okay on input line 26.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 26.
-LaTeX Font Info:    ... okay on input line 26.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 26.
-LaTeX Font Info:    ... okay on input line 26.
-LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 26.
-LaTeX Font Info:    ... okay on input line 26.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 26.
-LaTeX Font Info:    ... okay on input line 26.
-LaTeX Font Info:    Checking defaults for U/ntxexa/m/n on input line 26.
-LaTeX Font Info:    Trying to load font information for U+ntxexa on input line 26.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for U/ntxexa/m/n on input line 25.
+LaTeX Font Info:    Trying to load font information for U+ntxexa on input line 25.
  (/usr/local/texlive/2021/texmf-dist/tex/latex/newtx/untxexa.fd
 File: untxexa.fd 2012/04/16 Fontinst v1.933 font definitions for U/ntxexa.
 )
-LaTeX Font Info:    ... okay on input line 26.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 26.
-LaTeX Font Info:    ... okay on input line 26.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 26.
-LaTeX Font Info:    ... okay on input line 26.
-LaTeX Font Info:    Checking defaults for LMS/ntxsy/m/n on input line 26.
-LaTeX Font Info:    Trying to load font information for LMS+ntxsy on input line 26.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for LMS/ntxsy/m/n on input line 25.
+LaTeX Font Info:    Trying to load font information for LMS+ntxsy on input line 25.
  (/usr/local/texlive/2021/texmf-dist/tex/latex/newtx/lmsntxsy.fd
 File: lmsntxsy.fd 2016/07/02 Fontinst v1.933 font definitions for LMS/ntxsy.
 )
-LaTeX Font Info:    ... okay on input line 26.
-LaTeX Font Info:    Checking defaults for LMX/ntxexx/m/n on input line 26.
-LaTeX Font Info:    Trying to load font information for LMX+ntxexx on input line 26.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for LMX/ntxexx/m/n on input line 25.
+LaTeX Font Info:    Trying to load font information for LMX+ntxexx on input line 25.
  (/usr/local/texlive/2021/texmf-dist/tex/latex/newtx/lmxntxexx.fd
 File: lmxntxexx.fd 2016/07/03 Fontinst v1.933 font definitions for LMX/ntxexx.
 )
-LaTeX Font Info:    ... okay on input line 26.
-Package hyperref Info: Link coloring ON on input line 26.
+LaTeX Font Info:    ... okay on input line 25.
+Package hyperref Info: Link coloring ON on input line 25.
  (/usr/local/texlive/2021/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2021-04-02 v2.47 Cross-referencing by name of section
  (/usr/local/texlive/2021/texmf-dist/tex/latex/refcount/refcount.sty
@@ -1774,9 +1774,9 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
 \c@section@level=\count553
 )
-LaTeX Info: Redefining \ref on input line 26.
-LaTeX Info: Redefining \pageref on input line 26.
-LaTeX Info: Redefining \nameref on input line 26.
+LaTeX Info: Redefining \ref on input line 25.
+LaTeX Info: Redefining \pageref on input line 25.
+LaTeX Info: Redefining \nameref on input line 25.
  (./text_to_speech.out) (./text_to_speech.out)
 \@outlinefile=\write9
 \openout9 = `text_to_speech.out'.
@@ -1817,7 +1817,7 @@ LaTeX Info: Redefining \nameref on input line 26.
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 ABD: EverySelectfont initializing macros
-LaTeX Info: Redefining \selectfont on input line 26.
+LaTeX Info: Redefining \selectfont on input line 25.
 \c@mv@tabular=\count554
 \c@mv@boldtabular=\count555
 Package caption Info: Begin \AtBeginDocument code.
@@ -1858,10 +1858,10 @@ Package biblatex Info: Trying to load bibliographic data...
 Package biblatex Info: ... file 'text_to_speech.bbl' not found.
 
 No file text_to_speech.bbl.
-Package biblatex Info: Reference section=0 on input line 26.
-Package biblatex Info: Reference segment=0 on input line 26.
+Package biblatex Info: Reference section=0 on input line 25.
+Package biblatex Info: Reference segment=0 on input line 25.
 \c@lstlisting=\count557
-Package hyperref Info: Option `pageanchor' set `false' on input line 28.
+Package hyperref Info: Option `pageanchor' set `false' on input line 27.
 *geometry* verbose mode - [ newgeometry ] result:
 * driver: xetex
 * paper: a4paper
@@ -1897,49 +1897,49 @@ Package hyperref Info: Option `pageanchor' set `false' on input line 28.
 File: ./figure//cover.jpeg Graphic file (type bmp)
 <./figure//cover.jpeg>
 LaTeX Font Info:    Font shape `T1/ntxtlf/b/n' will be
-(Font)              scaled to size 10.0pt on input line 28.
+(Font)              scaled to size 10.0pt on input line 27.
 LaTeX Font Info:    Font shape `T1/ntxtlf/b/n' will be
-(Font)              scaled to size 24.88pt on input line 28.
-LaTeX Font Info:    Trying to load font information for OT1+ntxtlf on input line 28.
+(Font)              scaled to size 24.88pt on input line 27.
+LaTeX Font Info:    Trying to load font information for OT1+ntxtlf on input line 27.
 (/usr/local/texlive/2021/texmf-dist/tex/latex/newtx/ot1ntxtlf.fd
 File: ot1ntxtlf.fd 2015/01/17 v1.0 font definition file for OT1/ntx/tlf
 )
 LaTeX Font Info:    Font shape `OT1/ntxtlf/m/n' will be
-(Font)              scaled to size 10.0pt on input line 28.
+(Font)              scaled to size 10.0pt on input line 27.
 LaTeX Font Info:    Font shape `OT1/ntxtlf/m/n' will be
-(Font)              scaled to size 7.3pt on input line 28.
+(Font)              scaled to size 7.3pt on input line 27.
 LaTeX Font Info:    Font shape `OT1/ntxtlf/m/n' will be
-(Font)              scaled to size 5.5pt on input line 28.
-LaTeX Font Info:    Trying to load font information for U+ntxmia on input line 28.
+(Font)              scaled to size 5.5pt on input line 27.
+LaTeX Font Info:    Trying to load font information for U+ntxmia on input line 27.
  (/usr/local/texlive/2021/texmf-dist/tex/latex/newtx/untxmia.fd
 File: untxmia.fd 2018/04/14 Fontinst v1.933 font definitions for U/ntxmia.
 )
-LaTeX Font Info:    Trying to load font information for U+ntxsym on input line 28.
+LaTeX Font Info:    Trying to load font information for U+ntxsym on input line 27.
  (/usr/local/texlive/2021/texmf-dist/tex/latex/newtx/untxsym.fd
 File: untxsym.fd 2015/03/20 Fontinst v1.933 font definitions for U/ntxsym.
 )
-LaTeX Font Info:    Trying to load font information for U+ntxsyc on input line 28.
+LaTeX Font Info:    Trying to load font information for U+ntxsyc on input line 27.
  (/usr/local/texlive/2021/texmf-dist/tex/latex/newtx/untxsyc.fd
 File: untxsyc.fd 2012/04/12 Fontinst v1.933 font definitions for U/ntxsyc.
 )
-LaTeX Font Info:    Trying to load font information for U+esint on input line 28.
+LaTeX Font Info:    Trying to load font information for U+esint on input line 27.
  (/usr/local/texlive/2021/texmf-dist/tex/latex/esint/uesint.fd
 File: uesint.fd 
 )
-LaTeX Font Info:    Trying to load font information for U+rsfs on input line 28.
+LaTeX Font Info:    Trying to load font information for U+rsfs on input line 27.
  (/usr/local/texlive/2021/texmf-dist/tex/latex/jknapltx/ursfs.fd
 File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
 )
-LaTeX Font Info:    Trying to load font information for U+msa on input line 28.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 27.
  (/usr/local/texlive/2021/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 28.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 27.
  (/usr/local/texlive/2021/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 LaTeX Font Info:    Font shape `T1/ntxtlf/b/n' will be
-(Font)              scaled to size 14.4pt on input line 28.
+(Font)              scaled to size 14.4pt on input line 27.
 
 
 Package fontspec Warning: Font "Kaiti SC" does not contain requested Script
@@ -1977,9 +1977,9 @@ Package fontspec Info: Font family 'KaitiSC(0)' created for font 'Kaiti SC'
 
 ]
 LaTeX Font Info:    Font shape `T1/ntxtlf/b/n' will be
-(Font)              scaled to size 17.28pt on input line 31.
+(Font)              scaled to size 17.28pt on input line 30.
 LaTeX Font Info:    Font shape `T1/ntxtlf/m/n' will be
-(Font)              scaled to size 7.3pt on input line 49.
+(Font)              scaled to size 7.3pt on input line 48.
  [1
 
 
@@ -1996,7 +1996,7 @@ LaTeX Font Info:    Font shape `T1/ntxtlf/m/n' will be
  [5]
 第 1{} 章 1.
 LaTeX Font Info:    Font shape `T1/ntxtlf/b/n' will be
-(Font)              scaled to size 12.0pt on input line 67.
+(Font)              scaled to size 12.0pt on input line 66.
 File: ./image//human_speech_arch.png Graphic file (type bmp)
 <./image//human_speech_arch.png>
 File: ./image//text_to_speech_arch.png Graphic file (type bmp)
@@ -2035,9 +2035,9 @@ Package fontspec Info: Font family 'STFangsong(0)' created for font
 (fontspec)             - 'small caps'  (m/sc) with NFSS spec.: 
 
 LaTeX Font Info:    Font shape `T1/ntxtlf/m/n' will be
-(Font)              scaled to size 9.0pt on input line 253.
+(Font)              scaled to size 9.0pt on input line 252.
 LaTeX Font Info:    Font shape `T1/ntxtlf/m/n' will be
-(Font)              scaled to size 8.0pt on input line 253.
+(Font)              scaled to size 8.0pt on input line 252.
 [6] [7] [8] [9] [10]
 第 2{} 章 2.
 File: ./image//loudness_curve.png Graphic file (type bmp)
@@ -2047,14 +2047,14 @@ File: ./image//loudness_curve.png Graphic file (type bmp)
 ] [12]
 File: ./image//frequency_f0.png Graphic file (type bmp)
 <./image//frequency_f0.png>
-LaTeX Font Info:    Trying to load font information for T1+ntxsups on input line 477.
+LaTeX Font Info:    Trying to load font information for T1+ntxsups on input line 476.
  (/usr/local/texlive/2021/texmf-dist/tex/latex/newtx/t1ntxsups.fd
 File: t1ntxsups.fd 2015/01/17 v1.0
 )
 LaTeX Font Info:    Font shape `T1/ntxsups/m/n' will be
-(Font)              scaled to size 10.0pt on input line 477.
+(Font)              scaled to size 10.0pt on input line 476.
 LaTeX Font Info:    Font shape `T1/ntxsups/m/n' will be
-(Font)              scaled to size 8.0pt on input line 477.
+(Font)              scaled to size 8.0pt on input line 476.
  [13]
 File: ./image//frequency_spectrum.jpeg Graphic file (type bmp)
 <./image//frequency_spectrum.jpeg>
@@ -2075,15 +2075,15 @@ File: ./image//other_alphabet.png Graphic file (type bmp)
 
 ] [21]
 LaTeX Font Info:    Font shape `T1/ntxtlf/m/sl' will be
-(Font)              scaled to size 9.0pt on input line 784.
-LaTeX Font Info:    Trying to load font information for TS1+ntxtlf on input line 784.
+(Font)              scaled to size 9.0pt on input line 783.
+LaTeX Font Info:    Trying to load font information for TS1+ntxtlf on input line 783.
  (/usr/local/texlive/2021/texmf-dist/tex/latex/newtx/ts1ntxtlf.fd
 File: ts1ntxtlf.fd 2015/01/18 v1.0 fd file for TS1/ntxtlf
 )
 LaTeX Font Info:    Font shape `TS1/ntxtlf/m/sl' in size <9> not available
-(Font)              Font shape `TS1/ntxtlf/m/it' tried instead on input line 784.
+(Font)              Font shape `TS1/ntxtlf/m/it' tried instead on input line 783.
 LaTeX Font Info:    Font shape `TS1/ntxtlf/m/it' will be
-(Font)              scaled to size 9.0pt on input line 784.
+(Font)              scaled to size 9.0pt on input line 783.
 File: ./image//mel_vs_f.png Graphic file (type bmp)
 <./image//mel_vs_f.png>
  [22] [23]
@@ -2091,7 +2091,7 @@ File: ./image//text_to_speech_acoustic_feature.png Graphic file (type bmp)
 <./image//text_to_speech_acoustic_feature.png>
  [24]
 LaTeX Font Info:    Font shape `T1/ntxtlf/m/it' will be
-(Font)              scaled to size 9.0pt on input line 899.
+(Font)              scaled to size 9.0pt on input line 898.
 File: ./image//waveform.png Graphic file (type bmp)
 <./image//waveform.png>
  [25] [26]
@@ -2107,10 +2107,9 @@ File: ./image//mfcc.png Graphic file (type bmp)
 ]
 File: ./image//sample_praat.png Graphic file (type bmp)
 <./image//sample_praat.png>
- [30]
 Missing character: There is no ʌ ("28C) in font ntx-Regular-tlf-t1!
 Missing character: There is no ɪ ("26A) in font ntx-Regular-tlf-t1!
- [31] [32] [33] [34]
+ [30] [31] [32] [33]
 第 5{} 章 5.
 File: ./image//text_to_speech-语音合成工作流.png Graphic file (type bmp)
 <./image//text_to_speech-语音合成工作流.png>
@@ -2118,72 +2117,72 @@ Missing character: There is no ō ("14D) in font ntx-Regular-tlf-t1!
 Missing character: There is no ˌ ("2CC) in font ntx-Regular-tlf-t1!
 File: ./image//tacotron2_arch.png Graphic file (type bmp)
 <./image//tacotron2_arch.png>
-[35
+[34
 
 ]
 File: ./image//tacotron2_decoder.png Graphic file (type bmp)
 <./image//tacotron2_decoder.png>
- [36]
+ [35]
 File: ./image//fastspeech_arch_paper.png Graphic file (type bmp)
 <./image//fastspeech_arch_paper.png>
- [37] [38] [39] [40] [41] [42]
+ [36] [37] [38] [39] [40] [41]
 File: ./image//vits_arch.png Graphic file (type bmp)
 <./image//vits_arch.png>
- [43] [44] [45]
+ [42] [43] [44]
 第 6{} 章 6.
-[46
+[45
 
-] [47]
+] [46]
 File: ./image//vocoder_world_arch.png Graphic file (type bmp)
 <./image//vocoder_world_arch.png>
- [48]
+ [47]
 File: ./image//vocoder_pitch_harmonic.png Graphic file (type bmp)
 <./image//vocoder_pitch_harmonic.png>
 File: ./image//vocoder_world_dio1.png Graphic file (type bmp)
 <./image//vocoder_world_dio1.png>
- [49]
+ [48]
 File: ./image//vocoder_world_sp.png Graphic file (type bmp)
 <./image//vocoder_world_sp.png>
- [50]
+ [49]
 File: ./image//vocoder_world_synthesis.png Graphic file (type bmp)
 <./image//vocoder_world_synthesis.png>
- [51]
+ [50]
 File: ./image//vocoder_nhv_source_filter.png Graphic file (type bmp)
 <./image//vocoder_nhv_source_filter.png>
- [52]
+ [51]
 File: ./image//vocoder_nhv_arch.png Graphic file (type bmp)
 <./image//vocoder_nhv_arch.png>
- [53]
+ [52]
 File: ./image//vocoder_nhv_inference.png Graphic file (type bmp)
 <./image//vocoder_nhv_inference.png>
 File: ./image//vocoder_nhv_nn_filter_estimator.png Graphic file (type bmp)
 <./image//vocoder_nhv_nn_filter_estimator.png>
- [54]
+ [53]
 File: ./image//vocoder_nhv_harmonic_sample.png Graphic file (type bmp)
 <./image//vocoder_nhv_harmonic_sample.png>
- [55] [56]
+ [54] [55]
 LaTeX Font Info:    Font shape `T1/ntxtlf/m/n' will be
-(Font)              scaled to size 5.5pt on input line 2094.
- [57] [58] [59] [60] [61] [62] [63] [64] [65] [66]
+(Font)              scaled to size 5.5pt on input line 2077.
+ [56] [57] [58] [59] [60] [61] [62] [63] [64] [65]
 第 7{} 章 7.
 File: ./image//text_to_speech_knowledge.png Graphic file (type bmp)
 <./image//text_to_speech_knowledge.png>
-[67
+[66
 
-] [68] [69] [70] (./text_to_speech.aux)
+] [67] [68] [69] (./text_to_speech.aux)
 Package rerunfilecheck Info: File `text_to_speech.out' has not changed.
-(rerunfilecheck)             Checksum: 921A08803FF5D1BC0094C57886267B95;20683.
+(rerunfilecheck)             Checksum: 628D045CEECBE8895D4936A9E8A18887;20489.
 Package logreq Info: Writing requests to 'text_to_speech.run.xml'.
 \openout1 = `text_to_speech.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 47105 strings out of 476919
- 977178 string characters out of 5821841
- 2252613 words of memory out of 5000000
- 66207 multiletter control sequences out of 15000+600000
+ 47096 strings out of 476919
+ 976552 string characters out of 5821841
+ 2252411 words of memory out of 5000000
+ 66198 multiletter control sequences out of 15000+600000
  458064 words of font info for 113 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  118i,12n,131p,1436b,1887s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on text_to_speech.pdf (76 pages).
+Output written on text_to_speech.pdf (75 pages).
